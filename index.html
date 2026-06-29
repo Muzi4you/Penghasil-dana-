@@ -1,1 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Situs Game Sederhana</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #0f172a; 
+            color: white; 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 40px 20px;
+        }
+        h1 { 
+            color: #38bdf8; 
+            margin-bottom: 30px; 
+            font-size: 28px;
+        }
+        .game-box {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 450px;
+            margin: 0 auto;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+        p { font-size: 18px; margin: 15px 0; }
+        button {
+            background: #38bdf8;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover { background: #0ea5e9; }
+    </style>
+</head>
+<body>
+    <h1>🎮 Situs Game Penghasil Dana</h1>
+    <div class="game-box">
+        <p>Selamat datang! Mainkan game sederhana kami.</p>
+        <p>Skor Anda: <span id="skor">0</span></p>
+        <button onclick="tambahSkor()">Klik untuk Tambah Skor</button>
+    </div>
 
+    <script>
+        let skor = 0;
+        function tambahSkor() {
+            skor += 1;
+            document.getElementById("skor").textContent = skor;
+        }
+    </script>
+</body>
+</html>
