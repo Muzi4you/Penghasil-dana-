@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Ular Cerdas</title>
+    <title>🚀 Pesawat Tempur</title>
     <style>
         * {
             margin: 0;
@@ -13,118 +13,150 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            background: #0b0a1e;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
             color: white;
+            overflow: hidden;
         }
 
         h1 {
-            font-size: 36px;
+            font-size: 32px;
             margin-bottom: 15px;
-            color: #4ade80;
-            text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+            color: #60a5fa;
+            text-shadow: 0 0 20px rgba(96, 165, 250, 0.6);
         }
 
         .info-bar {
             display: flex;
             gap: 30px;
-            margin-bottom: 20px;
-            font-size: 22px;
+            margin-bottom: 15px;
+            font-size: 20px;
             font-weight: bold;
         }
 
         #skor { color: #fbbf24; }
-        #level { color: #38bdf8; }
+        #nyawa { color: #ef4444; }
+        #level { color: #34d399; }
 
-        #papan {
+        #layar {
             width: 400px;
-            height: 400px;
-            background: #1e293b;
-            border: 3px solid #4ade80;
+            height: 550px;
+            background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
+            border: 3px solid #60a5fa;
             border-radius: 12px;
-            box-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
+            box-shadow: 0 0 40px rgba(96, 165, 250, 0.4);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
-        .kotak {
+        /* Bintang bergerak */
+        .bintang {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-        }
-
-        .kepala {
-            background: #4ade80;
-            border: 2px solid #166534;
-            border-radius: 6px;
-            box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
-        }
-
-        .badan {
-            background: #22c55e;
-            border: 1px solid #15803d;
-        }
-
-        .makanan {
-            background: #ef4444;
+            width: 2px;
+            height: 2px;
+            background: white;
             border-radius: 50%;
-            box-shadow: 0 0 12px rgba(239, 68, 68, 0.7);
-            animation: kedip 0.8s infinite alternate;
+            animation: jatuh 3s linear infinite;
         }
 
-        @keyframes kedip {
-            from { transform: scale(1); }
-            to { transform: scale(1.15); }
+        @keyframes jatuh {
+            from { transform: translateY(-10px); }
+            to { transform: translateY(560px); }
         }
 
-        .tombol {
-            margin-top: 25px;
-            padding: 12px 30px;
+        /* Pesawat */
+        #pesawat {
+            width: 45px;
+            height: 55px;
+            background: linear-gradient(180deg, #3b82f6, #1d4ed8);
+            position: absolute;
+            bottom: 20px;
+            left: 177px;
+            border-radius: 8px 8px 2px 2px;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+            clip-path: polygon(50% 0%, 100% 40%, 90% 100%, 60% 90%, 40% 90%, 10% 100%, 0% 40%);
+        }
+
+        /* Peluru */
+        .peluru {
+            width: 6px;
+            height: 18px;
+            background: #fbbf24;
+            position: absolute;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
+        }
+
+        /* Musuh */
+        .musuh {
+            width: 40px;
+            height: 45px;
+            background: linear-gradient(180deg, #ef4444, #991b1b);
+            position: absolute;
+            border-radius: 8px;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+            clip-path: polygon(50% 100%, 100% 60%, 90% 0%, 60% 10%, 40% 10%, 10% 0%, 0% 60%);
+        }
+
+        /* Ledakan */
+        .ledakan {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #fbbf24, #ef4444, transparent);
+            position: absolute;
+            border-radius: 50%;
+            animation: meledak 0.3s ease-out forwards;
+        }
+
+        @keyframes meledak {
+            0% { transform: scale(0.2); opacity: 1; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+
+        #mulaiBtn {
+            margin-top: 20px;
+            padding: 12px 35px;
             font-size: 20px;
             font-weight: bold;
             border: none;
             border-radius: 10px;
-            background: linear-gradient(90deg, #4ade80, #22c55e);
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
             color: white;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
             transition: transform 0.2s;
         }
 
-        .tombol:hover {
+        #mulaiBtn:hover {
             transform: scale(1.05);
         }
 
-        .kontrol-hp {
-            margin-top: 30px;
-            display: grid;
-            grid-template-columns: repeat(3, 70px);
-            gap: 10px;
-            justify-content: center;
+        .kontrol {
+            margin-top: 25px;
+            display: flex;
+            gap: 25px;
         }
 
         .arah {
             width: 70px;
             height: 70px;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: bold;
             border: none;
             border-radius: 50%;
-            background: #38bdf8;
+            background: #34d399;
             color: white;
-            box-shadow: 0 3px 10px rgba(56, 189, 248, 0.4);
+            box-shadow: 0 3px 10px rgba(52, 211, 153, 0.4);
             cursor: pointer;
         }
 
-        .kosong { visibility: hidden; }
-
         #pesan {
-            margin-top: 20px;
+            margin-top: 15px;
             font-size: 20px;
             font-weight: bold;
             color: #fbbf24;
@@ -134,197 +166,231 @@
 </head>
 <body>
 
-    <h1>🐍 ULAR MAKAN BUAH</h1>
+    <h1>🚀 PESAWAT TEMBAK MUSUH</h1>
 
     <div class="info-bar">
         <div>Skor: <span id="skor">0</span></div>
+        <div>Nyawa: <span id="nyawa">3</span></div>
         <div>Level: <span id="level">1</span></div>
         <div>Rekor: <span id="rekor">0</span></div>
     </div>
 
-    <div id="papan"></div>
+    <div id="layar">
+        <div id="pesawat"></div>
+    </div>
 
-    <button class="tombol" id="mulaiBtn">Mulai Main</button>
+    <button id="mulaiBtn">Mulai Permainan</button>
     <div id="pesan"></div>
 
-    <div class="kontrol-hp">
-        <div class="kosong"></div>
-        <button class="arah" onclick="gerak('atas')">↑</button>
-        <div class="kosong"></div>
+    <div class="kontrol">
         <button class="arah" onclick="gerak('kiri')">←</button>
-        <div class="kosong"></div>
+        <button class="arah" onclick="tembak()">🔫</button>
         <button class="arah" onclick="gerak('kanan')">→</button>
-        <div class="kosong"></div>
-        <button class="arah" onclick="gerak('bawah')">↓</button>
-        <div class="kosong"></div>
     </div>
 
     <script>
-        const papan = document.getElementById('papan');
+        const layar = document.getElementById('layar');
+        const pesawat = document.getElementById('pesawat');
         const skorTampilan = document.getElementById('skor');
+        const nyawaTampilan = document.getElementById('nyawa');
         const levelTampilan = document.getElementById('level');
         const rekorTampilan = document.getElementById('rekor');
         const mulaiBtn = document.getElementById('mulaiBtn');
         const pesan = document.getElementById('pesan');
 
-        let ukuranKotak = 20;
-        let lebarPapan = 400;
-        let tinggiPapan = 400;
-        let lebarGrid = lebarPapan / ukuranKotak;
-        let tinggiGrid = tinggiPapan / ukuranKotak;
-
-        let ular = [{x: 10, y: 10}];
-        let arah = 'kanan';
-        let makanan = {};
+        let posPesawat = 177;
         let skor = 0;
+        let nyawa = 3;
         let level = 1;
-        let kecepatan = 180;
-        let intervalMain;
+        let kecepatanMusuh = 2;
+        let kecepatanTembak = 600;
+        let bisaTembak = true;
         let sedangMain = false;
+        let intervalMusuh, intervalBintang;
 
-        // Ambil rekor dari penyimpanan
-        let rekor = localStorage.getItem('rekorUlar') || 0;
+        // Ambil rekor
+        let rekor = localStorage.getItem('rekorPesawat') || 0;
         rekorTampilan.textContent = rekor;
 
-        function gambarSemua() {
-            papan.innerHTML = '';
+        // Buat bintang latar belakang
+        function buatBintang() {
+            const bintang = document.createElement('div');
+            bintang.classList.add('bintang');
+            bintang.style.left = `${Math.random() * 400}px`;
+            bintang.style.animationDuration = `${Math.random() * 2 + 2}s`;
+            layar.appendChild(bintang);
+            setTimeout(() => bintang.remove(), 3000);
+        }
 
-            // Gambar ular
-            ular.forEach((bagian, indeks) => {
-                const elemen = document.createElement('div');
-                elemen.classList.add('kotak', indeks === 0 ? 'kepala' : 'badan');
-                elemen.style.left = `${bagian.x * ukuranKotak}px`;
-                elemen.style.top = `${bagian.y * ukuranKotak}px`;
-                papan.appendChild(elemen);
+        // Gerakkan pesawat
+        function gerak(arah) {
+            if (!sedangMain) return;
+            if (arah === 'kiri' && posPesawat > 10) posPesawat -= 15;
+            if (arah === 'kanan' && posPesawat < 345) posPesawat += 15;
+            pesawat.style.left = `${posPesawat}px`;
+        }
+
+        // Tembak peluru
+        function tembak() {
+            if (!sedangMain || !bisaTembak) return;
+            bisaTembak = false;
+            const peluru = document.createElement('div');
+            peluru.classList.add('peluru');
+            peluru.style.left = `${posPesawat + 19}px`;
+            peluru.style.top = `490px`;
+            layar.appendChild(peluru);
+
+            let posPeluru = 490;
+            const gerakPeluru = setInterval(() => {
+                posPeluru -= 10;
+                peluru.style.top = `${posPeluru}px`;
+                if (posPeluru < 0) {
+                    clearInterval(gerakPeluru);
+                    peluru.remove();
+                }
+                cekTabrakan(peluru);
+            }, 20);
+
+            setTimeout(() => bisaTembak = true, kecepatanTembak);
+        }
+
+        // Buat musuh
+        function buatMusuh() {
+            if (!sedangMain) return;
+            const musuh = document.createElement('div');
+            musuh.classList.add('musuh');
+            const posX = Math.random() * 360;
+            musuh.style.left = `${posX}px`;
+            musuh.style.top = `-50px`;
+            layar.appendChild(musuh);
+
+            let posY = -50;
+            const gerakMusuh = setInterval(() => {
+                posY += kecepatanMusuh;
+                musuh.style.top = `${posY}px`;
+
+                // Musuh keluar layar
+                if (posY > 550) {
+                    clearInterval(gerakMusuh);
+                    musuh.remove();
+                    kurangiNyawa();
+                }
+
+                // Tabrakan dengan pesawat
+                if (posY > 480 && Math.abs(posPesawat - posX) < 35) {
+                    clearInterval(gerakMusuh);
+                    musuh.remove();
+                    efekLedakan(posPesawat + 22, 500);
+                    kurangiNyawa();
+                }
+            }, 25);
+        }
+
+        // Cek tabrakan peluru dan musuh
+        function cekTabrakan(peluru) {
+            const musuhList = document.querySelectorAll('.musuh');
+            musuhList.forEach(musuh => {
+                const posMusuhX = parseInt(musuh.style.left);
+                const posMusuhY = parseInt(musuh.style.top);
+                const posPeluruX = parseInt(peluru.style.left);
+                const posPeluruY = parseInt(peluru.style.top);
+
+                if (
+                    posPeluruY < posMusuhY + 45 &&
+                    posPeluruY > posMusuhY &&
+                    posPeluruX > posMusuhX &&
+                    posPeluruX < posMusuhX + 40
+                ) {
+                    peluru.remove();
+                    musuh.remove();
+                    efekLedakan(posMusuhX + 20, posMusuhY + 22);
+                    tambahSkor();
+                }
             });
-
-            // Gambar makanan
-            const makananElemen = document.createElement('div');
-            makananElemen.classList.add('kotak', 'makanan');
-            makananElemen.style.left = `${makanan.x * ukuranKotak}px`;
-            makananElemen.style.top = `${makanan.y * ukuranKotak}px`;
-            papan.appendChild(makananElemen);
         }
 
-        function buatMakanan() {
-            let posisi;
-            let diBadanUlar;
-            do {
-                diBadanUlar = false;
-                posisi = {
-                    x: Math.floor(Math.random() * lebarGrid),
-                    y: Math.floor(Math.random() * tinggiGrid)
-                };
-                // Cek tidak muncul di badan ular
-                ular.forEach(bagian => {
-                    if (bagian.x === posisi.x && bagian.y === posisi.y) diBadanUlar = true;
-                });
-            } while (diBadanUlar);
-            makanan = posisi;
+        // Efek ledakan
+        function efekLedakan(x, y) {
+            const ledakan = document.createElement('div');
+            ledakan.classList.add('ledakan');
+            ledakan.style.left = `${x - 25}px`;
+            ledakan.style.top = `${y - 25}px`;
+            layar.appendChild(ledakan);
+            setTimeout(() => ledakan.remove(), 300);
         }
 
-        function gerakUlar() {
-            const kepalaBaru = { ...ular[0] };
-
-            if (arah === 'atas') kepalaBaru.y--;
-            if (arah === 'bawah') kepalaBaru.y++;
-            if (arah === 'kiri') kepalaBaru.x--;
-            if (arah === 'kanan') kepalaBaru.x++;
-
-            // Cek tabrakan dinding
-            if (
-                kepalaBaru.x < 0 || kepalaBaru.x >= lebarGrid ||
-                kepalaBaru.y < 0 || kepalaBaru.y >= tinggiGrid
-            ) return gameSelesai();
-
-            // Cek tabrakan badan sendiri
-            ular.forEach(bagian => {
-                if (bagian.x === kepalaBaru.x && bagian.y === kepalaBaru.y) return gameSelesai();
-            });
-
-            // Masukkan kepala baru
-            ular.unshift(kepalaBaru);
-
-            // Cek makan
-            if (kepalaBaru.x === makanan.x && kepalaBaru.y === makanan.y) {
-                skor += 10;
-                skorTampilan.textContent = skor;
-                naikLevel();
-                buatMakanan();
-            } else {
-                ular.pop();
-            }
-
-            gambarSemua();
-        }
-
-        function naikLevel() {
-            if (skor % 50 === 0 && kecepatan > 80) {
+        // Tambah skor dan naik level
+        function tambahSkor() {
+            skor += 10;
+            skorTampilan.textContent = skor;
+            if (skor % 100 === 0 && kecepatanMusuh < 6) {
                 level++;
-                kecepatan -= 15;
+                kecepatanMusuh += 0.5;
+                kecepatanTembak = Math.max(200, kecepatanTembak - 50);
                 levelTampilan.textContent = level;
-                clearInterval(intervalMain);
-                intervalMain = setInterval(gerakUlar, kecepatan);
-                pesan.textContent = `🔥 Level Naik! Sekarang lebih cepat!`;
+                pesan.textContent = `🔥 Level ${level}! Lebih cepat!`;
                 setTimeout(() => pesan.textContent = '', 2000);
             }
         }
 
+        // Kurangi nyawa
+        function kurangiNyawa() {
+            nyawa--;
+            nyawaTampilan.textContent = nyawa;
+            if (nyawa <= 0) gameSelesai();
+        }
+
+        // Mulai permainan
+        function mulaiPermainan() {
+            bersihkanLayar();
+            posPesawat = 177;
+            skor = 0;
+            nyawa = 3;
+            level = 1;
+            kecepatanMusuh = 2;
+            kecepatanTembak = 600;
+            skorTampilan.textContent = skor;
+            nyawaTampilan.textContent = nyawa;
+            levelTampilan.textContent = level;
+            pesan.textContent = '';
+            sedangMain = true;
+            mulaiBtn.textContent = 'Sedang Bermain';
+
+            intervalBintang = setInterval(buatBintang, 150);
+            intervalMusuh = setInterval(buatMusuh, 800);
+        }
+
+        // Selesai permainan
         function gameSelesai() {
-            clearInterval(intervalMain);
+            clearInterval(intervalMusuh);
+            clearInterval(intervalBintang);
             sedangMain = false;
             mulaiBtn.textContent = 'Main Lagi';
             
             if (skor > rekor) {
                 rekor = skor;
-                localStorage.setItem('rekorUlar', rekor);
+                localStorage.setItem('rekorPesawat', rekor);
                 rekorTampilan.textContent = rekor;
-                pesan.textContent = `🎉 Bagus! Rekor baru: ${rekor} poin!`;
+                pesan.textContent = `🎉 Rekor Baru! Skor: ${skor}`;
             } else {
-                pesan.textContent = `Game Over! Skor kamu: ${skor}`;
+                pesan.textContent = `Game Over! Skor: ${skor}`;
             }
         }
 
-        function mulaiPermainan() {
-            clearInterval(intervalMain);
-            ular = [{x: 10, y: 10}];
-            arah = 'kanan';
-            skor = 0;
-            level = 1;
-            kecepatan = 180;
-            skorTampilan.textContent = skor;
-            levelTampilan.textContent = level;
-            pesan.textContent = '';
-            buatMakanan();
-            gambarSemua();
-            sedangMain = true;
-            mulaiBtn.textContent = 'Sedang Bermain';
-            intervalMain = setInterval(gerakUlar, kecepatan);
+        // Bersihkan layar
+        function bersihkanLayar() {
+            document.querySelectorAll('.musuh, .peluru, .ledakan, .bintang').forEach(el => el.remove());
         }
 
-        // Kontrol
-        function gerak(arahBaru) {
-            if (!sedangMain) return;
-            if (
-                (arahBaru === 'atas' && arah !== 'bawah') ||
-                (arahBaru === 'bawah' && arah !== 'atas') ||
-                (arahBaru === 'kiri' && arah !== 'kanan') ||
-                (arahBaru === 'kanan' && arah !== 'kiri')
-            ) {
-                arah = arahBaru;
-            }
-        }
-
+        // Kontrol keyboard
         document.addEventListener('keydown', (e) => {
             if (!sedangMain) return;
-            if (e.key === 'ArrowUp') gerak('atas');
-            if (e.key === 'ArrowDown') gerak('bawah');
             if (e.key === 'ArrowLeft') gerak('kiri');
             if (e.key === 'ArrowRight') gerak('kanan');
+            if (e.key === ' ' || e.key === 'ArrowUp') tembak();
         });
 
         mulaiBtn.addEventListener('click', mulaiPermainan);
-        gambarSemua();
     </script>
 </body>
 </html>
