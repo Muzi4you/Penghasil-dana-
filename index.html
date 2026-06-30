@@ -3,533 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 Pesawat Tempur Pro</title>
+    <title>Dompet Digital Demo</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        body {
-            background: #050517;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            color: white;
-            overflow: hidden;
-        }
-
-        h1 {
-            font-size: 34px;
-            margin-bottom: 15px;
-            color: #60a5fa;
-            text-shadow: 0 0 25px rgba(96, 165, 250, 0.7);
-            letter-spacing: 2px;
-        }
-
-        .info-bar {
-            display: flex;
-            gap: 35px;
-            margin-bottom: 20px;
-            font-size: 22px;
-            font-weight: bold;
-            background: rgba(255,255,255,0.1);
-            padding: 10px 25px;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(255,255,255,0.1);
-        }
-
-        #skor { color: #fbbf24; }
-        #nyawa { color: #ef4444; }
-        #level { color: #34d399; }
-        #rekor { color: #a78bfa; }
-
-        #layar {
-            width: 420px;
-            height: 600px;
-            background: linear-gradient(180deg, #0a0e27 0%, #121a3f 50%, #0a0e27 100%);
-            border: 3px solid #60a5fa;
-            border-radius: 16px;
-            box-shadow: 0 0 50px rgba(96, 165, 250, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Bintang bergerak cepat */
-        .bintang {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: jatuhBintang linear infinite;
-        }
-        @keyframes jatuhBintang {
-            from { transform: translateY(-10px); }
-            to { transform: translateY(610px); }
-        }
-
-        /* Awan bergerak */
-        .awan {
-            position: absolute;
-            width: 120px;
-            height: 60px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 50%;
-            animation: gerakAwan 25s linear infinite;
-        }
-        @keyframes gerakAwan {
-            from { transform: translateY(-100px); }
-            to { transform: translateY(700px); }
-        }
-
-        /* Pesawat Pemain */
-        #pesawat {
-            width: 50px;
-            height: 60px;
-            background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
-            position: absolute;
-            bottom: 25px;
-            left: 185px;
-            border-radius: 8px 8px 2px 2px;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
-            clip-path: polygon(50% 0%, 100% 35%, 92% 100%, 65% 92%, 35% 92%, 8% 100%, 0% 35%);
-            z-index: 10;
-        }
-
-        /* Asap Pesawat */
-        .asap {
-            position: absolute;
-            width: 20px;
-            height: 25px;
-            background: radial-gradient(circle, #fbbf24, #ef4444, transparent);
-            border-radius: 50%;
-            animation: hilangAsap 0.4s ease-out forwards;
-        }
-        @keyframes hilangAsap {
-            0% { transform: scale(0.6); opacity: 0.7; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-
-        /* Peluru */
-        .peluru {
-            width: 8px;
-            height: 22px;
-            background: linear-gradient(180deg, #fbbf24, #f59e0b);
-            position: absolute;
-            border-radius: 4px;
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.9);
-        }
-
-        /* Musuh Ringan */
-        .musuh-biasa {
-            width: 45px;
-            height: 50px;
-            background: linear-gradient(180deg, #ef4444, #991b1b);
-            position: absolute;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.7);
-            clip-path: polygon(50% 100%, 100% 60%, 90% 0%, 60% 10%, 40% 10%, 10% 0%, 0% 60%);
-        }
-
-        /* Musuh Berat */
-        .musuh-besar {
-            width: 70px;
-            height: 75px;
-            background: linear-gradient(180deg, #dc2626, #7f1d1d);
-            position: absolute;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
-            clip-path: polygon(50% 100%, 100% 55%, 95% 0%, 65% 8%, 35% 8%, 5% 0%, 0% 55%);
-        }
-
-        /* Item Bonus */
-        .item-bonus {
-            width: 35px;
-            height: 35px;
-            background: radial-gradient(circle, #4ade80, #166534);
-            border-radius: 50%;
-            position: absolute;
-            box-shadow: 0 0 18px rgba(74, 222, 128, 0.9);
-            animation: berputar 2s linear infinite;
-        }
-        @keyframes berputar {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Efek Ledakan */
-        .ledakan {
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle, #fbbf24, #ef4444, #991b1b, transparent);
-            position: absolute;
-            border-radius: 50%;
-            animation: meledak 0.4s ease-out forwards;
-            z-index: 20;
-        }
-        @keyframes meledak {
-            0% { transform: scale(0.3); opacity: 1; }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1.8); opacity: 0; }
-        }
-
-        #mulaiBtn {
-            margin-top: 25px;
-            padding: 14px 40px;
-            font-size: 22px;
-            font-weight: bold;
-            border: none;
-            border-radius: 12px;
-            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.5);
-            transition: all 0.2s ease;
-        }
-        #mulaiBtn:hover {
-            transform: scale(1.08);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
-        }
-
-        .kontrol {
-            margin-top: 30px;
-            display: flex;
-            gap: 30px;
-        }
-        .arah {
-            width: 75px;
-            height: 75px;
-            font-size: 30px;
-            font-weight: bold;
-            border: none;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #34d399, #059669);
-            color: white;
-            box-shadow: 0 4px 15px rgba(52, 211, 153, 0.5);
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-        .arah:active {
-            transform: scale(0.92);
-        }
-
-        #pesan {
-            margin-top: 20px;
-            font-size: 22px;
-            font-weight: bold;
-            color: #fbbf24;
-            text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
-            min-height: 35px;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
+        :root { --utama:#2563eb; --hijau:#10b981; --merah:#ef4444; --kuning:#f59e0b; --abu:#64748b; }
+        body { background:#f0f4f8; padding:20px; }
+        .wadah { max-width:420px; margin:0 auto; background:white; border-radius:20px; box-shadow:0 8px 24px rgba(0,0,0,0.1); overflow:hidden; }
+        .header { background:linear-gradient(135deg, var(--utama), #1d4ed8); color:white; padding:30px 20px; text-align:center; }
+        .saldo { font-size:36px; font-weight:bold; margin:15px 0; }
+        .info { font-size:14px; opacity:0.9; }
+        .menu { display:grid; grid-template-columns:repeat(2, 1fr); gap:15px; padding:20px; }
+        .tombol { border:none; border-radius:12px; padding:18px; font-size:16px; font-weight:bold; cursor:pointer; color:white; transition:0.2s; }
+        .tombol.isi { background:var(--hijau); }
+        .tombol.kirim { background:var(--utama); }
+        .tombol.riwayat { background:var(--kuning); }
+        .tombol.bantuan { background:var(--abu); }
+        .bagian { padding:20px; border-top:1px solid #eee; display:none; }
+        .bagian.aktif { display:block; }
+        input { width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:8px; font-size:16px; }
+        .daftar-transaksi { margin-top:15px; max-height:250px; overflow-y:auto; }
+        .item { padding:12px; border-radius:8px; margin:8px 0; background:#f8fafc; border-left:4px solid var(--utama); }
+        .masuk { border-left-color:var(--hijau); }
+        .keluar { border-left-color:var(--merah); }
     </style>
 </head>
 <body>
-
-    <h1>🚀 PESAWAT TEMBAK SUPER</h1>
-
-    <div class="info-bar">
-        <div>Skor: <span id="skor">0</span></div>
-        <div>Nyawa: <span id="nyawa">3</span></div>
-        <div>Level: <span id="level">1</span></div>
-        <div>Rekor: <span id="rekor">0</span></div>
+<div class="wadah">
+    <div class="header">
+        <h2>💳 Dompet Digital Demo</h2>
+        <div class="saldo">Rp <span id="jumlahSaldo">0</span></div>
+        <div class="info">Saldo Tersedia</div>
     </div>
 
-    <div id="layar">
-        <div id="pesawat"></div>
+    <div class="menu">
+        <button class="tombol isi" onclick="bukaBagian('isi')">➕ Isi Saldo</button>
+        <button class="tombol kirim" onclick="bukaBagian('kirim')">➡️ Kirim Uang</button>
+        <button class="tombol riwayat" onclick="bukaBagian('riwayat')">📜 Riwayat</button>
+        <button class="tombol bantuan" onclick="bukaBagian('info')">ℹ️ Info</button>
     </div>
 
-    <button id="mulaiBtn">Mulai Permainan</button>
-    <div id="pesan"></div>
-
-    <div class="kontrol">
-        <button class="arah" onclick="gerak('kiri')">←</button>
-        <button class="arah" onclick="tembak()">🔫</button>
-        <button class="arah" onclick="gerak('kanan')">→</button>
+    <div id="isi" class="bagian aktif">
+        <h3>Isi Saldo</h3>
+        <input type="number" id="nominalIsi" placeholder="Masukkan jumlah Rp">
+        <button class="tombol isi" style="width:100%" onclick="isiSaldo()">Proses</button>
     </div>
 
-    <script>
-        const layar = document.getElementById('layar');
-        const pesawat = document.getElementById('pesawat');
-        const skorTampilan = document.getElementById('skor');
-        const nyawaTampilan = document.getElementById('nyawa');
-        const levelTampilan = document.getElementById('level');
-        const rekorTampilan = document.getElementById('rekor');
-        const mulaiBtn = document.getElementById('mulaiBtn');
-        const pesan = document.getElementById('pesan');
+    <div id="kirim" class="bagian">
+        <h3>Kirim Uang</h3>
+        <input type="text" id="tujuan" placeholder="Nomor / Nama Tujuan">
+        <input type="number" id="nominalKirim" placeholder="Jumlah Rp">
+        <button class="tombol kirim" style="width:100%" onclick="kirimUang()">Kirim Sekarang</button>
+    </div>
 
-        let posPesawat = 185;
-        let skor = 0;
-        let nyawa = 3;
-        let level = 1;
-        let kecepatanMusuh = 2.2;
-        let kecepatanTembak = 550;
-        let bisaTembak = true;
-        let sedangMain = false;
-        let intervalMusuh, intervalBintang, intervalAwan;
+    <div id="riwayat" class="bagian">
+        <h3>Riwayat Transaksi</h3>
+        <div id="daftarTransaksi" class="daftar-transaksi"></div>
+    </div>
 
-        // Ambil rekor dari penyimpanan
-        let rekor = localStorage.getItem('rekorPesawatSuper') || 0;
-        rekorTampilan.textContent = rekor;
+    <div id="info" class="bagian">
+        <h3>Informasi</h3>
+        <p>✅ Ini hanya simulasi/demo, tidak menggunakan uang asli.</p>
+        <p>✅ Data tersimpan di HP kamu saja, aman dan pribadi.</p>
+        <p>✅ Cocok untuk belajar tampilan dan alur dompet digital.</p>
+    </div>
+</div>
 
-        // Buat bintang latar
-        function buatBintang() {
-            const bintang = document.createElement('div');
-            bintang.classList.add('bintang');
-            const ukuran = Math.random() * 2 + 1;
-            bintang.style.width = `${ukuran}px`;
-            bintang.style.height = `${ukuran}px`;
-            bintang.style.left = `${Math.random() * 420}px`;
-            bintang.style.animationDuration = `${Math.random() * 2 + 1.5}s`;
-            layar.appendChild(bintang);
-            setTimeout(() => bintang.remove(), 3000);
-        }
+<script>
+    let saldo = parseInt(localStorage.getItem('saldoDemo')) || 0;
+    let riwayat = JSON.parse(localStorage.getItem('riwayatDemo')) || [];
+    perbaruiTampilan();
 
-        // Buat awan
-        function buatAwan() {
-            const awan = document.createElement('div');
-            awan.classList.add('awan');
-            awan.style.left = `${Math.random() * 350}px`;
-            awan.style.animationDuration = `${Math.random() * 10 + 20}s`;
-            layar.appendChild(awan);
-            setTimeout(() => awan.remove(), 25000);
-        }
+    function bukaBagian(id) {
+        document.querySelectorAll('.bagian').forEach(b => b.classList.remove('aktif'));
+        document.getElementById(id).classList.add('aktif');
+        if (id === 'riwayat') tampilkanRiwayat();
+    }
 
-        // Buat asap pesawat
-        function buatAsap() {
-            const asap = document.createElement('div');
-            asap.classList.add('asap');
-            asap.style.left = `${posPesawat + 16}px`;
-            asap.style.top = `560px`;
-            layar.appendChild(asap);
-            setTimeout(() => asap.remove(), 400);
-        }
+    function perbaruiTampilan() {
+        document.getElementById('jumlahSaldo').textContent = saldo.toLocaleString('id-ID');
+        localStorage.setItem('saldoDemo', saldo);
+        localStorage.setItem('riwayatDemo', JSON.stringify(riwayat));
+    }
 
-        // Gerakkan pesawat
-        function gerak(arah) {
-            if (!sedangMain) return;
-            if (arah === 'kiri' && posPesawat > 12) posPesawat -= 18;
-            if (arah === 'kanan' && posPesawat < 358) posPesawat += 18;
-            pesawat.style.left = `${posPesawat}px`;
-            buatAsap();
-        }
+    function isiSaldo() {
+        let nominal = parseInt(document.getElementById('nominalIsi').value);
+        if (!nominal || nominal <= 0) return alert('Masukkan nominal yang benar!');
+        saldo += nominal;
+        riwayat.unshift({jenis:'masuk', keterangan:'Isi Saldo', jumlah:nominal, waktu:new Date().toLocaleString('id-ID')});
+        perbaruiTampilan();
+        alert(`Berhasil menambah Rp ${nominal.toLocaleString('id-ID')}`);
+        document.getElementById('nominalIsi').value = '';
+    }
 
-        // Tembak peluru
-        function tembak() {
-            if (!sedangMain || !bisaTembak) return;
-            bisaTembak = false;
+    function kirimUang() {
+        let tujuan = document.getElementById('tujuan').value.trim();
+        let nominal = parseInt(document.getElementById('nominalKirim').value);
+        if (!tujuan || !nominal || nominal <= 0) return alert('Lengkapi data dengan benar!');
+        if (nominal > saldo) return alert('Saldo tidak cukup!');
+        saldo -= nominal;
+        riwayat.unshift({jenis:'keluar', keterangan:`Kirim ke: ${tujuan}`, jumlah:nominal, waktu:new Date().toLocaleString('id-ID')});
+        perbaruiTampilan();
+        alert(`Berhasil mengirim Rp ${nominal.toLocaleString('id-ID')}`);
+        document.getElementById('tujuan').value = '';
+        document.getElementById('nominalKirim').value = '';
+    }
 
-            const peluru = document.createElement('div');
-            peluru.classList.add('peluru');
-            peluru.style.left = `${posPesawat + 21}px`;
-            peluru.style.top = `535px`;
-            layar.appendChild(peluru);
-
-            let posPeluru = 535;
-            const gerakPeluru = setInterval(() => {
-                posPeluru -= 12;
-                peluru.style.top = `${posPeluru}px`;
-                if (posPeluru < -20) {
-                    clearInterval(gerakPeluru);
-                    peluru.remove();
-                }
-                cekTabrakan(peluru);
-            }, 20);
-
-            setTimeout(() => bisaTembak = true, kecepatanTembak);
-        }
-
-        // Buat musuh acak
-        function buatMusuh() {
-            if (!sedangMain) return;
-            const tipe = Math.random() < 0.2 ? 'besar' : 'biasa';
-            const musuh = document.createElement('div');
-            
-            if (tipe === 'besar') {
-                musuh.classList.add('musuh-besar');
-                musuh.poin = 30;
-                musuh.nyawa = 3;
-            } else {
-                musuh.classList.add('musuh-biasa');
-                musuh.poin = 10;
-                musuh.nyawa = 1;
-            }
-
-            const posX = Math.random() * (tipe === 'besar' ? 350 : 375);
-            musuh.style.left = `${posX}px`;
-            musuh.style.top = `-70px`;
-            layar.appendChild(musuh);
-
-            let posY = -70;
-            const gerakMusuh = setInterval(() => {
-                posY += kecepatanMusuh;
-                musuh.style.top = `${posY}px`;
-
-                if (posY > 620) {
-                    clearInterval(gerakMusuh);
-                    musuh.remove();
-                    if (tipe === 'biasa') kurangiNyawa();
-                }
-
-                // Tabrakan dengan pesawat
-                if (posY > 530 && Math.abs(posPesawat - posX) < (tipe === 'besar' ? 50 : 35)) {
-                    clearInterval(gerakMusuh);
-                    musuh.remove();
-                    efekLedakan(posPesawat + 25, 560);
-                    kurangiNyawa();
-                }
-            }, 25);
-        }
-
-        // Buat item bonus
-        function buatBonus() {
-            if (!sedangMain) return;
-            const bonus = document.createElement('div');
-            bonus.classList.add('item-bonus');
-            const posX = Math.random() * 385;
-            bonus.style.left = `${posX}px`;
-            bonus.style.top = `-50px`;
-            layar.appendChild(bonus);
-
-            let posY = -50;
-            const gerakBonus = setInterval(() => {
-                posY += 1.8;
-                bonus.style.top = `${posY}px`;
-
-                if (posY > 620) {
-                    clearInterval(gerakBonus);
-                    bonus.remove();
-                }
-
-                // Ambil bonus
-                if (posY > 530 && posY < 580 && Math.abs(posPesawat - posX) < 25) {
-                    clearInterval(gerakBonus);
-                    bonus.remove();
-                    efekLedakan(posX + 17, posY + 17);
-                    tambahNyawa();
-                }
-            }, 25);
-        }
-
-        // Cek tabrakan
-        function cekTabrakan(peluru) {
-            const musuhList = document.querySelectorAll('.musuh-biasa, .musuh-besar');
-            musuhList.forEach(musuh => {
-                const posMX = parseInt(musuh.style.left);
-                const posMY = parseInt(musuh.style.top);
-                const posPX = parseInt(peluru.style.left);
-                const posPY = parseInt(peluru.style.top);
-                const lebar = musuh.classList.contains('musuh-besar') ? 70 : 45;
-
-                if (
-                    posPY < posMY + lebar &&
-                    posPY > posMY &&
-                    posPX > posMX &&
-                    posPX < posMX + lebar
-                ) {
-                    peluru.remove();
-                    musuh.nyawa--;
-                    if (musuh.nyawa <= 0) {
-                        musuh.remove();
-                        efekLedakan(posMX + lebar/2, posMY + lebar/2);
-                        tambahSkor(musuh.poin);
-                    }
-                }
-            });
-        }
-
-        // Efek ledakan
-        function efekLedakan(x, y) {
-            const ledakan = document.createElement('div');
-            ledakan.classList.add('ledakan');
-            ledakan.style.left = `${x - 30}px`;
-            ledakan.style.top = `${y - 30}px`;
-            layar.appendChild(ledakan);
-            setTimeout(() => ledakan.remove(), 400);
-        }
-
-        // Tambah skor & naik level
-        function tambahSkor(jumlah) {
-            skor += jumlah;
-            skorTampilan.textContent = skor;
-            if (skor % 150 === 0 && kecepatanMusuh < 7) {
-                level++;
-                kecepatanMusuh += 0.4;
-                kecepatanTembak = Math.max(180, kecepatanTembak - 40);
-                levelTampilan.textContent = level;
-                pesan.textContent = `🔥 LEVEL ${level}! Semakin Menantang!`;
-                setTimeout(() => pesan.textContent = '', 2000);
-            }
-            if (Math.random() < 0.08) buatBonus();
-        }
-
-        function tambahNyawa() {
-            nyawa = Math.min(5, nyawa + 1);
-            nyawaTampilan.textContent = nyawa;
-            pesan.textContent = `❤️ Nyawa Bertambah!`;
-            setTimeout(() => pesan.textContent = '', 1500);
-        }
-
-        function kurangiNyawa() {
-            nyawa--;
-            nyawaTampilan.textContent = nyawa;
-            if (nyawa <= 0) gameSelesai();
-        }
-
-        // Mulai permainan
-        function mulaiPermainan() {
-            bersihkanLayar();
-            posPesawat = 185;
-            skor = 0;
-            nyawa = 3;
-            level = 1;
-            kecepatanMusuh = 2.2;
-            kecepatanTembak = 550;
-            skorTampilan.textContent = skor;
-            nyawaTampilan.textContent = nyawa;
-            levelTampilan.textContent = level;
-            pesan.textContent = '';
-            sedangMain = true;
-            mulaiBtn.textContent = 'Sedang Bermain';
-
-            intervalBintang = setInterval(buatBintang, 100);
-            intervalAwan = setInterval(buatAwan, 4000);
-            intervalMusuh = setInterval(buatMusuh, 750);
-        }
-
-        // Selesai permainan
-        function gameSelesai() {
-            clearInterval(intervalMusuh);
-            clearInterval(intervalBintang);
-            clearInterval(intervalAwan);
-            sedangMain = false;
-            mulaiBtn.textContent = 'Main Lagi';
-            
-            if (skor > rekor) {
-                rekor = skor;
-                localStorage.setItem('rekorPesawatSuper', rekor);
-                rekorTampilan.textContent = rekor;
-                pesan.textContent = `🎉 REKOR BARU! Skor: ${skor}`;
-            } else {
-                pesan.textContent = `💥 Game Over! Skor: ${skor}`;
-            }
-        }
-
-        function bersihkanLayar() {
-            document.querySelectorAll('.musuh-biasa, .musuh-besar, .peluru, .ledakan, .bintang, .awan, .item-bonus, .asap').forEach(el => el.remove());
-        }
-
-        // Kontrol keyboard
-        document.addEventListener('keydown', (e) => {
-            if (!sedangMain) return;
-            if (e.key === 'ArrowLeft') gerak('kiri');
-            if (e.key === 'ArrowRight') gerak('kanan');
-            if (e.key === ' ' || e.key === 'ArrowUp') tembak();
+    function tampilkanRiwayat() {
+        let html = '';
+        riwayat.forEach(t => {
+            html += `<div class="item ${t.jenis}">
+                <strong>${t.keterangan}</strong><br>
+                Rp ${t.jumlah.toLocaleString('id-ID')}<br>
+                <small>${t.waktu}</small>
+            </div>`;
         });
-
-        mulaiBtn.addEventListener('click', mulaiPermainan);
-    </script>
+        document.getElementById('daftarTransaksi').innerHTML = html || '<p>Belum ada transaksi</p>';
+    }
+</script>
 </body>
 </html>
