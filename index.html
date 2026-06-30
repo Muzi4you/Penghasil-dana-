@@ -22,6 +22,7 @@
             --abu-terang: #f8fafc;
             --abu: #64748b;
             --gelap: #1e293b;
+            --biru-muda: #dbeafe;
         }
 
         body {
@@ -45,7 +46,6 @@
             background: linear-gradient(135deg, var(--utama), #1d4ed8);
             color: white;
             padding: 35px 25px;
-            text-align: center;
             position: relative;
         }
 
@@ -94,16 +94,40 @@
             opacity: 0.9;
         }
 
+        /* Bagian Iklan / Promo */
+        .promo {
+            margin: 20px;
+            padding: 15px;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            border-radius: 12px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .promo h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .promo p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .promo-ikon {
+            font-size: 30px;
+        }
+
         /* Menu Utama */
         .menu {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 15px;
-            padding: 25px;
+            padding: 0 25px 25px;
             background: white;
-            margin-top: -20px;
-            border-radius: 24px 24px 0 0;
-            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
         }
 
         .tombol-menu {
@@ -141,12 +165,16 @@
         .kirim { background: var(--utama); }
         .qris { background: var(--ungu); }
         .riwayat { background: var(--kuning); }
-        .pengaturan { background: var(--abu); }
+        .pulsa { background: #3b82f6; }
+        .ewallet { background: #ec4899; }
+        .game { background: #8b5cf6; }
+        .listrik { background: #f97316; }
 
         /* Konten Bagian */
         .konten {
             padding: 25px;
             display: none;
+            border-top: 1px solid #f1f5f9;
         }
 
         .konten.aktif {
@@ -200,6 +228,30 @@
 
         .tombol-aksi:hover {
             transform: translateY(-2px);
+        }
+
+        /* Pilihan Nominal */
+        .pilihan-nominal {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0 20px;
+        }
+
+        .nominal {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nominal.aktif {
+            border-color: var(--utama);
+            background: var(--biru-muda);
+            color: var(--utama);
         }
 
         /* QR Code */
@@ -319,12 +371,21 @@
         <div class="profil">
             <div class="info-pengguna">
                 <h3>Selamat Datang</h3>
-                <p>ID Pengguna: DEMO-12345</p>
+                <p>ID: DEMO-12345 | 📱 0812-xxxx-xxx</p>
             </div>
             <div class="ikon-pengguna">👤</div>
         </div>
         <div class="saldo">Rp <span id="jumlahSaldo">0</span></div>
         <div class="label-saldo">Saldo Tersedia</div>
+    </div>
+
+    <!-- Bagian Promo / Iklan -->
+    <div class="promo">
+        <div>
+            <h4>🔥 Promo Hari Ini</h4>
+            <p>Diskon 10% untuk semua pembelian pulsa & token!</p>
+        </div>
+        <div class="promo-ikon">🎁</div>
     </div>
 
     <!-- Menu Utama -->
@@ -335,7 +396,7 @@
         </button>
         <button class="tombol-menu" onclick="bukaBagian('kirim')">
             <div class="ikon-menu kirim">➡️</div>
-            <div class="label-menu">Kirim</div>
+            <div class="label-menu">Kirim Uang</div>
         </button>
         <button class="tombol-menu" onclick="bukaBagian('qris')">
             <div class="ikon-menu qris">📱</div>
@@ -345,19 +406,35 @@
             <div class="ikon-menu riwayat">📜</div>
             <div class="label-menu">Riwayat</div>
         </button>
+        <button class="tombol-menu" onclick="bukaBagian('pulsa')">
+            <div class="ikon-menu pulsa">📶</div>
+            <div class="label-menu">Pulsa/Data</div>
+        </button>
+        <button class="tombol-menu" onclick="bukaBagian('ewallet')">
+            <div class="ikon-menu ewallet">💳</div>
+            <div class="label-menu">Top Up E-Wallet</div>
+        </button>
+        <button class="tombol-menu" onclick="bukaBagian('game')">
+            <div class="ikon-menu game">🎮</div>
+            <div class="label-menu">Voucher Game</div>
+        </button>
+        <button class="tombol-menu" onclick="bukaBagian('listrik')">
+            <div class="ikon-menu listrik">⚡</div>
+            <div class="label-menu">Token Listrik</div>
+        </button>
     </div>
 
     <!-- Konten Halaman -->
     <div id="isi" class="konten aktif">
         <h3>➕ Isi Saldo</h3>
-        <input type="number" id="nominalIsi" placeholder="Masukkan nominal (Rp)" min="1000">
+        <input type="number" id="nominalIsi" placeholder="Masukkan nominal (min Rp10.000)" min="10000">
         <button class="tombol-aksi" onclick="isiSaldo()">Proses Isi Saldo</button>
     </div>
 
     <div id="kirim" class="konten">
         <h3>➡️ Kirim Uang</h3>
-        <input type="text" id="tujuan" placeholder="Nomor HP / Nama Tujuan">
-        <input type="number" id="nominalKirim" placeholder="Jumlah yang dikirim (Rp)" min="1000">
+        <input type="text" id="tujuan" placeholder="Nomor HP / Nama / Rekening">
+        <input type="number" id="nominalKirim" placeholder="Jumlah uang" min="1000">
         <button class="tombol-aksi" onclick="mintaPIN('kirim')">Lanjutkan</button>
     </div>
 
@@ -365,7 +442,7 @@
         <h3>📱 Kode QR Pembayaran</h3>
         <div class="kotak-qr">
             <div id="qrcode"></div>
-            <p class="info-qr">Tunjukkan kode ini untuk pembayaran<br>ID: DEMO-12345 | Saldo Aman</p>
+            <p class="info-qr">Tunjukkan kode ini untuk pembayaran<br>ID: DEMO-12345 | Berlaku 5 menit</p>
         </div>
         <button class="tombol-aksi" onclick="buatBaruQR()">Buat Kode Baru</button>
     </div>
@@ -374,12 +451,92 @@
         <h3>📜 Riwayat Transaksi</h3>
         <div id="daftarTransaksi" class="daftar-transaksi"></div>
     </div>
+
+    <div id="pulsa" class="konten">
+        <h3>📶 Beli Pulsa & Paket Data</h3>
+        <input type="text" id="nomorHP" placeholder="Masukkan nomor HP" maxlength="15">
+        <p style="margin:10px 0; font-weight:500;">Pilih Nominal:</p>
+        <div class="pilihan-nominal">
+            <div class="nominal" onclick="pilihNominal(this, 10000)">Rp10.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 20000)">Rp20.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 50000)">Rp50.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 100000)">Rp100.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 200000)">Rp200.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 500000)">Rp500.000</div>
+        </div>
+        <input type="hidden" id="nominalPulsa" value="0">
+        <button class="tombol-aksi" onclick="mintaPIN('pulsa')">Beli Sekarang</button>
+    </div>
+
+    <div id="ewallet" class="konten">
+        <h3>💳 Top Up E-Wallet</h3>
+        <select id="jenisEWallet" style="width:100%; padding:12px; border-radius:8px; border:2px solid #e2e8f0; margin:10px 0;">
+            <option value="">Pilih E-Wallet</option>
+            <option value="GoPay">GoPay</option>
+            <option value="OVO">OVO</option>
+            <option value="DANA">DANA</option>
+            <option value="LinkAja">LinkAja</option>
+            <option value="ShopeePay">ShopeePay</option>
+        </select>
+        <input type="text" id="nomorEWallet" placeholder="Masukkan nomor akun">
+        <p style="margin:10px 0; font-weight:500;">Nominal:</p>
+        <div class="pilihan-nominal">
+            <div class="nominal" onclick="pilihNominal(this, 20000)">Rp20.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 50000)">Rp50.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 100000)">Rp100.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 200000)">Rp200.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 500000)">Rp500.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 1000000)">Rp1.000.000</div>
+        </div>
+        <input type="hidden" id="nominalEWallet" value="0">
+        <button class="tombol-aksi" onclick="mintaPIN('ewallet')">Proses Top Up</button>
+    </div>
+
+    <div id="game" class="konten">
+        <h3>🎮 Beli Voucher Game</h3>
+        <select id="jenisGame" style="width:100%; padding:12px; border-radius:8px; border:2px solid #e2e8f0; margin:10px 0;">
+            <option value="">Pilih Game</option>
+            <option value="Mobile Legends">Mobile Legends</option>
+            <option value="Free Fire">Free Fire</option>
+            <option value="PUBG Mobile">PUBG Mobile</option>
+            <option value="Genshin Impact">Genshin Impact</option>
+            <option value="Valorant">Valorant</option>
+        </select>
+        <input type="text" id="idGame" placeholder="Masukkan ID Pengguna">
+        <p style="margin:10px 0; font-weight:500;">Nominal:</p>
+        <div class="pilihan-nominal">
+            <div class="nominal" onclick="pilihNominal(this, 15000)">Rp15.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 30000)">Rp30.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 50000)">Rp50.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 100000)">Rp100.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 200000)">Rp200.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 500000)">Rp500.000</div>
+        </div>
+        <input type="hidden" id="nominalGame" value="0">
+        <button class="tombol-aksi" onclick="mintaPIN('game')">Beli Voucher</button>
+    </div>
+
+    <div id="listrik" class="konten">
+        <h3>⚡ Beli Token Listrik</h3>
+        <input type="text" id="nomorMeter" placeholder="Masukkan nomor meter / ID Pelanggan" maxlength="12">
+        <p style="margin:10px 0; font-weight:500;">Nominal:</p>
+        <div class="pilihan-nominal">
+            <div class="nominal" onclick="pilihNominal(this, 20000)">Rp20.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 50000)">Rp50.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 100000)">Rp100.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 200000)">Rp200.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 500000)">Rp500.000</div>
+            <div class="nominal" onclick="pilihNominal(this, 1000000)">Rp1.000.000</div>
+        </div>
+        <input type="hidden" id="nominalListrik" value="0">
+        <button class="tombol-aksi" onclick="mintaPIN('listrik')">Beli Token</button>
+    </div>
 </div>
 
 <!-- Modal Verifikasi PIN -->
 <div id="modalPIN" class="modal">
     <div class="modal-badan">
-        <h3>Masukkan PIN</h3>
+        <h3>Masukkan PIN Transaksi</h3>
         <input type="password" id="inputPIN" class="input-pin" maxlength="6" placeholder="******">
         <div id="pesanPIN" class="pesan"></div>
         <button class="tombol-aksi" style="margin-top:15px;" onclick="cekPIN()">Verifikasi</button>
@@ -391,8 +548,9 @@
     // Data awal
     let saldo = parseInt(localStorage.getItem('saldoDemo')) || 0;
     let riwayat = JSON.parse(localStorage.getItem('riwayatDemo')) || [];
-    let pinAkun = localStorage.getItem('pinDemo') || '123456'; // PIN awal 123456
+    let pinAkun = localStorage.getItem('pinDemo') || '123456'; // PIN awal
     let aksiSetelahPIN = null;
+    let dataTransaksi = {};
 
     // Tampilkan data awal
     perbaruiTampilan();
@@ -405,6 +563,14 @@
         if (id === 'riwayat') tampilkanRiwayat();
     }
 
+    // Pilih nominal
+    function pilihNominal(elemen, nilai) {
+        document.querySelectorAll('.nominal').forEach(n => n.classList.remove('aktif'));
+        elemen.classList.add('aktif');
+        let inputTersembunyi = elemen.closest('.konten').querySelector('input[type="hidden"]');
+        inputTersembunyi.value = nilai;
+    }
+
     // Perbarui tampilan saldo
     function perbaruiTampilan() {
         document.getElementById('jumlahSaldo').textContent = saldo.toLocaleString('id-ID');
@@ -415,7 +581,7 @@
     // Isi saldo
     function isiSaldo() {
         let nominal = parseInt(document.getElementById('nominalIsi').value);
-        if (!nominal || nominal < 1000) return alert('Masukkan nominal minimal Rp 1.000!');
+        if (!nominal || nominal < 10000) return alert('Masukkan nominal minimal Rp10.000!');
         saldo += nominal;
         riwayat.unshift({
             jenis: 'masuk',
@@ -428,9 +594,10 @@
         document.getElementById('nominalIsi').value = '';
     }
 
-    // Minta PIN sebelum kirim
+    // Minta PIN
     function mintaPIN(jenisAksi) {
         aksiSetelahPIN = jenisAksi;
+        dataTransaksi = {};
         document.getElementById('inputPIN').value = '';
         document.getElementById('pesanPIN').textContent = '';
         document.getElementById('modalPIN').style.display = 'flex';
@@ -442,7 +609,7 @@
         let input = document.getElementById('inputPIN').value;
         if (input === pinAkun) {
             tutupModal();
-            if (aksiSetelahPIN === 'kirim') prosesKirimUang();
+            prosesTransaksi();
         } else {
             document.getElementById('pesanPIN').textContent = '❌ PIN salah! Coba lagi';
             document.getElementById('inputPIN').value = '';
@@ -454,24 +621,69 @@
         aksiSetelahPIN = null;
     }
 
-    // Proses kirim uang
-    function prosesKirimUang() {
-        let tujuan = document.getElementById('tujuan').value.trim();
-        let nominal = parseInt(document.getElementById('nominalKirim').value);
-        if (!tujuan || !nominal || nominal < 1000) return alert('Lengkapi data dengan benar!');
+    // Proses semua jenis transaksi
+    function prosesTransaksi() {
+        let nominal, keterangan;
+
+        switch(aksiSetelahPIN) {
+            case 'kirim':
+                let tujuan = document.getElementById('tujuan').value.trim();
+                nominal = parseInt(document.getElementById('nominalKirim').value);
+                if (!tujuan || !nominal || nominal < 1000) return alert('Lengkapi data dengan benar!');
+                keterangan = `Kirim ke: ${tujuan}`;
+                break;
+
+            case 'pulsa':
+                let noHP = document.getElementById('nomorHP').value.trim();
+                nominal = parseInt(document.getElementById('nominalPulsa').value);
+                if (!noHP || noHP.length < 10 || nominal <= 0) return alert('Masukkan nomor HP dan nominal dengan benar!');
+                keterangan = `Beli Pulsa/Data - No: ${noHP}`;
+                break;
+
+            case 'ewallet':
+                let jenis = document.getElementById('jenisEWallet').value;
+                let noAkun = document.getElementById('nomorEWallet').value.trim();
+                nominal = parseInt(document.getElementById('nominalEWallet').value);
+                if (!jenis || !noAkun || nominal <= 0) return alert('Lengkapi jenis dan nomor akun!');
+                keterangan = `Top Up ${jenis} - No: ${noAkun}`;
+                break;
+
+            case 'game':
+                let game = document.getElementById('jenisGame').value;
+                let idPengguna = document.getElementById('idGame').value.trim();
+                nominal = parseInt(document.getElementById('nominalGame').value);
+                if (!game || !idPengguna || nominal <= 0) return alert('Lengkapi data game!');
+                keterangan = `Voucher ${game} - ID: ${idPengguna}`;
+                break;
+
+            case 'listrik':
+                let noMeter = document.getElementById('nomorMeter').value.trim();
+                nominal = parseInt(document.getElementById('nominalListrik').value);
+                if (!noMeter || noMeter.length < 10 || nominal <= 0) return alert('Masukkan nomor meter dan nominal!');
+                keterangan = `Beli Token Listrik - No: ${noMeter}`;
+                break;
+
+            default:
+                return;
+        }
+
         if (nominal > saldo) return alert('❌ Saldo tidak cukup!');
-        
+
+        // Kurangi saldo dan simpan riwayat
         saldo -= nominal;
         riwayat.unshift({
             jenis: 'keluar',
-            keterangan: `Kirim ke: ${tujuan}`,
+            keterangan: keterangan,
             jumlah: nominal,
             waktu: new Date().toLocaleString('id-ID')
         });
+
         perbaruiTampilan();
-        alert(`✅ Berhasil mengirim Rp ${nominal.toLocaleString('id-ID')}`);
-        document.getElementById('tujuan').value = '';
-        document.getElementById('nominalKirim').value = '';
+        alert(`✅ Transaksi Berhasil!\n${keterangan}\nNominal: Rp ${nominal.toLocaleString('id-ID')}`);
+
+        // Kosongkan input
+        document.querySelectorAll('input').forEach(i => i.value = '');
+        document.querySelectorAll('.nominal').forEach(n => n.classList.remove('aktif'));
     }
 
     // Buat kode QR
@@ -514,7 +726,7 @@
         document.getElementById('daftarTransaksi').innerHTML = html;
     }
 
-    // Izinkan tekan Enter untuk verifikasi PIN
+    // Tekan Enter untuk verifikasi PIN
     document.getElementById('inputPIN').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') cekPIN();
     });
