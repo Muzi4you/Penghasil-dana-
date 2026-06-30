@@ -3,250 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Mobil Balap</title>
+    <title>Peta Acak & Labirin</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background: #333;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #222; color: white; text-align: center; padding: 20px; }
+        h1 { color: #4ade80; margin-bottom: 15px; }
+        .info-atas {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        h1 {
-            color: #fff;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px #ffcc00;
-        }
-
-        #jalan {
-            width: 320px;
-            height: 550px;
-            background: #222;
-            border: 5px solid #fff;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(255,255,255,0.2);
-        }
-
-        .garis {
-            position: absolute;
-            width: 10px;
-            height: 80px;
-            background: #fff;
-            left: 50%;
-            margin-left: -5px;
-            animation: jalan 1s linear infinite;
-        }
-
-        @keyframes jalan {
-            from { top: -80px; }
-            to { top: 550px; }
-        }
-
-        #mobil {
-            width: 50px;
-            height: 90px;
-            background: #ff3333;
-            position: absolute;
-            bottom: 20px;
-            left: 135px;
-            border-radius: 8px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        #mobil::before {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 10px;
-            width: 30px;
-            height: 25px;
-            background: #222;
-            border-radius: 4px;
-        }
-
-        #mobil::after {
-            content: '';
-            position: absolute;
-            bottom: 5px;
-            left: 5px;
-            width: 12px;
-            height: 15px;
-            background: #000;
-            border-radius: 2px;
-            box-shadow: 28px 0 0 #000;
-        }
-
-        .rintangan {
-            width: 50px;
-            height: 90px;
-            background: #3399ff;
-            position: absolute;
-            top: -100px;
-            border-radius: 8px;
-        }
-
-        #info {
-            margin-top: 15px;
-            color: white;
+            justify-content: center;
+            gap: 30px;
             font-size: 20px;
             font-weight: bold;
+            margin-bottom: 15px;
         }
-
-        #mulai {
-            margin-top: 15px;
-            padding: 10px 25px;
-            font-size: 18px;
-            font-weight: bold;
-            background: #ffcc00;
+        #waktu { color: #f87171; }
+        #skor { color: #fbbf24; }
+        #peta {
+            display: grid;
+            gap: 1px;
+            background: #444;
+            margin: 0 auto;
+            border: 3px solid #fff;
+            width: fit-content;
+        }
+        .kotak {
+            width: 22px;
+            height: 22px;
+            transition: 0.1s;
+        }
+        .dinding { background: #111; }
+        .jalan { background: #86efac; }
+        .pemain { background: #3b82f6; border-radius: 4px; }
+        .tujuan { background: #fbbf24; border-radius: 4px; }
+        button {
+            margin: 12px 8px;
+            padding: 10px 20px;
+            font-size: 16px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-        }
-
-        #mulai:hover {
-            background: #ffdd33;
-        }
-
-        /* Kontrol untuk HP */
-        .kontrol {
-            margin-top: 20px;
-            display: flex;
-            gap: 20px;
-        }
-
-        .kontrol button {
-            width: 70px;
-            height: 70px;
-            font-size: 24px;
             font-weight: bold;
-            border: none;
-            border-radius: 50%;
-            background: #4CAF50;
-            color: white;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
         }
+        .btn-buat { background: #4ade80; }
+        .btn-kontrol { background: #3b82f6; width: 60px; height: 60px; font-size: 22px; }
     </style>
 </head>
 <body>
 
-    <h1>🚗 MOBIL BALAP</h1>
-    <div id="jalan">
-        <div class="garis" style="top: 100px;"></div>
-        <div class="garis" style="top: 250px;"></div>
-        <div class="garis" style="top: 400px;"></div>
-        <div id="mobil"></div>
+    <h1>🗺️ Peta Acak & Labirin</h1>
+
+    <div class="info-atas">
+        <div>Waktu: <span id="waktu">60</span> dtk</div>
+        <div>Skor: <span id="skor">0</span></div>
     </div>
 
-    <div id="info">Jarak: 0 m</div>
-    <button id="mulai">Mulai Balap</button>
+    <button class="btn-buat" onclick="mulaiPermainan()">Mulai Permainan</button>
+    <div id="peta"></div>
 
-    <div class="kontrol">
-        <button id="kiri">←</button>
-        <button id="kanan">→</button>
+    <div style="margin-top:15px;">
+        <button class="btn-kontrol" onclick="gerak('atas')">↑</button><br>
+        <button class="btn-kontrol" onclick="gerak('kiri')">←</button>
+        <button class="btn-kontrol" onclick="gerak('bawah')">↓</button>
+        <button class="btn-kontrol" onclick="gerak('kanan')">→</button>
     </div>
 
     <script>
-        const jalan = document.getElementById('jalan');
-        const mobil = document.getElementById('mobil');
-        const info = document.getElementById('info');
-        const tombolMulai = document.getElementById('mulai');
-        const tombolKiri = document.getElementById('kiri');
-        const tombolKanan = document.getElementById('kanan');
+        const UKURAN = 15;
+        let peta = [];
+        let posPemain = {x:1, y:1};
+        let posTujuan = {x:UKURAN-2, y:UKURAN-2};
+        let sisaWaktu = 60;
+        let skor = 0;
+        let timerWaktu;
+        let sedangMain = false;
 
-        let posisiMobil = 135;
-        let jarak = 0;
-        let berjalan = false;
-        let rintangan;
-        let gerakRintangan;
-        let tambahJarak;
-
-        // Kontrol lewat tombol HP
-        tombolKiri.addEventListener('touchstart', () => gerakKiri());
-        tombolKanan.addEventListener('touchstart', () => gerakKanan());
-        tombolKiri.addEventListener('mousedown', () => gerakKiri());
-        tombolKanan.addEventListener('mousedown', () => gerakKanan());
-
-        // Kontrol lewat keyboard
-        document.addEventListener('keydown', (e) => {
-            if(e.key === 'ArrowLeft') gerakKiri();
-            if(e.key === 'ArrowRight') gerakKanan();
-        });
-
-        function gerakKiri() {
-            if(posisiMobil > 10) posisiMobil -= 20;
-            mobil.style.left = posisiMobil + 'px';
+        function mulaiPermainan() {
+            bersihkanSemua();
+            buatPetaBaru();
+            mulaiHitungWaktu();
+            sedangMain = true;
         }
 
-        function gerakKanan() {
-            if(posisiMobil < 260) posisiMobil += 20;
-            mobil.style.left = posisiMobil + 'px';
+        function bersihkanSemua() {
+            clearInterval(timerWaktu);
+            sisaWaktu = 60;
+            document.getElementById('waktu').textContent = sisaWaktu;
         }
 
-        function buatRintangan() {
-            rintangan = document.createElement('div');
-            rintangan.classList.add('rintangan');
-            rintangan.style.left = Math.floor(Math.random() * 260) + 'px';
-            jalan.appendChild(rintangan);
-        }
+        function buatPetaBaru() {
+            peta = Array(UKURAN).fill().map(() => Array(UKURAN).fill(1));
+            let tumpukan = [{x:1, y:1}];
+            peta[1][1] = 0;
 
-        function jalankanRintangan() {
-            let posisiRintangan = -100;
-            gerakRintangan = setInterval(() => {
-                if(!berjalan) return;
-                posisiRintangan += 5;
-                rintangan.style.top = posisiRintangan + 'px';
-
-                // Cek tabrakan
-                if(
-                    posisiRintangan > 440 && posisiRintangan < 530 &&
-                    Math.abs(posisiMobil - parseInt(rintangan.style.left)) < 45
-                ) {
-                    clearInterval(gerakRintangan);
-                    clearInterval(tambahJarak);
-                    berjalan = false;
-                    alert(`Game Over! Jarak tempuh: ${jarak} meter`);
-                    tombolMulai.textContent = 'Main Lagi';
+            while(tumpukan.length > 0) {
+                let sekarang = tumpukan.pop();
+                let arah = kocok([[0,-2],[0,2],[-2,0],[2,0]]);
+                for(let [dx, dy] of arah) {
+                    let nx = sekarang.x + dx;
+                    let ny = sekarang.y + dy;
+                    if(nx > 0 && nx < UKURAN-1 && ny > 0 && ny < UKURAN-1 && peta[ny][nx] === 1) {
+                        peta[ny][nx] = 0;
+                        peta[sekarang.y + dy/2][sekarang.x + dx/2] = 0;
+                        tumpukan.push({x:nx, y:ny});
+                    }
                 }
-
-                if(posisiRintangan > 550) {
-                    clearInterval(gerakRintangan);
-                    jalan.removeChild(rintangan);
-                    buatRintangan();
-                    jalankanRintangan();
-                }
-            }, 30);
+            }
+            posPemain = {x:1, y:1};
+            gambarPeta();
         }
 
-        tombolMulai.addEventListener('click', () => {
-            if(berjalan) return;
-            berjalan = true;
-            jarak = 0;
-            info.textContent = 'Jarak: 0 m';
-            tombolMulai.textContent = 'Sedang Berjalan';
-            
-            // Hapus rintangan lama jika ada
-            if(rintangan) jalan.removeChild(rintangan);
-            
-            buatRintangan();
-            jalankanRintangan();
-            
-            tambahJarak = setInterval(() => {
-                jarak++;
-                info.textContent = `Jarak: ${jarak} m`;
-            }, 100);
+        function gambarPeta() {
+            const wadah = document.getElementById('peta');
+            wadah.innerHTML = '';
+            wadah.style.gridTemplateColumns = `repeat(${UKURAN}, auto)`;
+
+            for(let y = 0; y < UKURAN; y++) {
+                for(let x = 0; x < UKURAN; x++) {
+                    const kotak = document.createElement('div');
+                    kotak.classList.add('kotak');
+                    if(x === posPemain.x && y === posPemain.y) {
+                        kotak.classList.add('pemain');
+                    } else if(x === posTujuan.x && y === posTujuan.y) {
+                        kotak.classList.add('tujuan');
+                    } else {
+                        kotak.classList.add(peta[y][x] === 1 ? 'dinding' : 'jalan');
+                    }
+                    wadah.appendChild(kotak);
+                }
+            }
+        }
+
+        function gerak(arah) {
+            if(!sedangMain) return;
+            let nx = posPemain.x;
+            let ny = posPemain.y;
+
+            if(arah === 'atas') ny--;
+            if(arah === 'bawah') ny++;
+            if(arah === 'kiri') nx--;
+            if(arah === 'kanan') nx++;
+
+            if(nx >= 0 && nx < UKURAN && ny >= 0 && ny < UKURAN && peta[ny][nx] === 0) {
+                posPemain = {x:nx, y:ny};
+                gambarPeta();
+                cekTujuan();
+            }
+        }
+
+        function cekTujuan() {
+            if(posPemain.x === posTujuan.x && posPemain.y === posTujuan.y) {
+                clearInterval(timerWaktu);
+                skor += sisaWaktu * 2;
+                document.getElementById('skor').textContent = skor;
+                alert(`🎉 Berhasil! Skor ditambah ${sisaWaktu * 2} poin`);
+                sedangMain = false;
+            }
+        }
+
+        function mulaiHitungWaktu() {
+            timerWaktu = setInterval(() => {
+                sisaWaktu--;
+                document.getElementById('waktu').textContent = sisaWaktu;
+                if(sisaWaktu <= 0) {
+                    clearInterval(timerWaktu);
+                    alert('⏱️ Waktu Habis! Coba lagi');
+                    sedangMain = false;
+                }
+            }, 1000);
+        }
+
+        function kocok(arr) {
+            return arr.sort(() => Math.random() - 0.5);
+        }
+
+        document.addEventListener('keydown', e => {
+            if(!sedangMain) return;
+            if(e.key === 'ArrowUp') gerak('atas');
+            if(e.key === 'ArrowDown') gerak('bawah');
+            if(e.key === 'ArrowLeft') gerak('kiri');
+            if(e.key === 'ArrowRight') gerak('kanan');
         });
     </script>
-
 </body>
 </html>
