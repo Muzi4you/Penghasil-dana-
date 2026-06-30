@@ -3,57 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Situs Game Sederhana</title>
+    <title>Game Mobil Balap</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: #0f172a; 
-            color: white; 
-            font-family: Arial, sans-serif; 
-            text-align: center; 
-            padding: 40px 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
-        h1 { 
-            color: #38bdf8; 
-            margin-bottom: 30px; 
-            font-size: 28px;
+
+        body {
+            background: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
-        .game-box {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 450px;
-            margin: 0 auto;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+
+        h1 {
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #ffcc00;
         }
-        p { font-size: 18px; margin: 15px 0; }
-        button {
-            background: #38bdf8;
-            border: none;
-            padding: 12px 25px;
+
+        #jalan {
+            width: 320px;
+            height: 550px;
+            background: #222;
+            border: 5px solid #fff;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        .garis {
+            position: absolute;
+            width: 10px;
+            height: 80px;
+            background: #fff;
+            left: 50%;
+            margin-left: -5px;
+            animation: jalan 1s linear infinite;
+        }
+
+        @keyframes jalan {
+            from { top: -80px; }
+            to { top: 550px; }
+        }
+
+        #mobil {
+            width: 50px;
+            height: 90px;
+            background: #ff3333;
+            position: absolute;
+            bottom: 20px;
+            left: 135px;
             border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        #mobil::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 10px;
+            width: 30px;
+            height: 25px;
+            background: #222;
+            border-radius: 4px;
+        }
+
+        #mobil::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            width: 12px;
+            height: 15px;
+            background: #000;
+            border-radius: 2px;
+            box-shadow: 28px 0 0 #000;
+        }
+
+        .rintangan {
+            width: 50px;
+            height: 90px;
+            background: #3399ff;
+            position: absolute;
+            top: -100px;
+            border-radius: 8px;
+        }
+
+        #info {
+            margin-top: 15px;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #mulai {
+            margin-top: 15px;
+            padding: 10px 25px;
             font-size: 18px;
             font-weight: bold;
+            background: #ffcc00;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
-            margin-top: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
         }
-        button:hover { background: #0ea5e9; }
+
+        #mulai:hover {
+            background: #ffdd33;
+        }
+
+        /* Kontrol untuk HP */
+        .kontrol {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .kontrol button {
+            width: 70px;
+            height: 70px;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50%;
+            background: #4CAF50;
+            color: white;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
-    <h1>🎮 Situs Game Penghasil Dana</h1>
-    <div class="game-box">
-        <p>Selamat datang! Mainkan game sederhana kami.</p>
-        <p>Skor Anda: <span id="skor">0</span></p>
-        <button onclick="tambahSkor()">Klik untuk Tambah Skor</button>
+
+    <h1>🚗 MOBIL BALAP</h1>
+    <div id="jalan">
+        <div class="garis" style="top: 100px;"></div>
+        <div class="garis" style="top: 250px;"></div>
+        <div class="garis" style="top: 400px;"></div>
+        <div id="mobil"></div>
+    </div>
+
+    <div id="info">Jarak: 0 m</div>
+    <button id="mulai">Mulai Balap</button>
+
+    <div class="kontrol">
+        <button id="kiri">←</button>
+        <button id="kanan">→</button>
     </div>
 
     <script>
-        let skor = 0;
-        function tambahSkor() {
-            skor += 1;
-            document.getElementById("skor").textContent = skor;
+        const jalan = document.getElementById('jalan');
+        const mobil = document.getElementById('mobil');
+        const info = document.getElementById('info');
+        const tombolMulai = document.getElementById('mulai');
+        const tombolKiri = document.getElementById('kiri');
+        const tombolKanan = document.getElementById('kanan');
+
+        let posisiMobil = 135;
+        let jarak = 0;
+        let berjalan = false;
+        let rintangan;
+        let gerakRintangan;
+        let tambahJarak;
+
+        // Kontrol lewat tombol HP
+        tombolKiri.addEventListener('touchstart', () => gerakKiri());
+        tombolKanan.addEventListener('touchstart', () => gerakKanan());
+        tombolKiri.addEventListener('mousedown', () => gerakKiri());
+        tombolKanan.addEventListener('mousedown', () => gerakKanan());
+
+        // Kontrol lewat keyboard
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowLeft') gerakKiri();
+            if(e.key === 'ArrowRight') gerakKanan();
+        });
+
+        function gerakKiri() {
+            if(posisiMobil > 10) posisiMobil -= 20;
+            mobil.style.left = posisiMobil + 'px';
         }
+
+        function gerakKanan() {
+            if(posisiMobil < 260) posisiMobil += 20;
+            mobil.style.left = posisiMobil + 'px';
+        }
+
+        function buatRintangan() {
+            rintangan = document.createElement('div');
+            rintangan.classList.add('rintangan');
+            rintangan.style.left = Math.floor(Math.random() * 260) + 'px';
+            jalan.appendChild(rintangan);
+        }
+
+        function jalankanRintangan() {
+            let posisiRintangan = -100;
+            gerakRintangan = setInterval(() => {
+                if(!berjalan) return;
+                posisiRintangan += 5;
+                rintangan.style.top = posisiRintangan + 'px';
+
+                // Cek tabrakan
+                if(
+                    posisiRintangan > 440 && posisiRintangan < 530 &&
+                    Math.abs(posisiMobil - parseInt(rintangan.style.left)) < 45
+                ) {
+                    clearInterval(gerakRintangan);
+                    clearInterval(tambahJarak);
+                    berjalan = false;
+                    alert(`Game Over! Jarak tempuh: ${jarak} meter`);
+                    tombolMulai.textContent = 'Main Lagi';
+                }
+
+                if(posisiRintangan > 550) {
+                    clearInterval(gerakRintangan);
+                    jalan.removeChild(rintangan);
+                    buatRintangan();
+                    jalankanRintangan();
+                }
+            }, 30);
+        }
+
+        tombolMulai.addEventListener('click', () => {
+            if(berjalan) return;
+            berjalan = true;
+            jarak = 0;
+            info.textContent = 'Jarak: 0 m';
+            tombolMulai.textContent = 'Sedang Berjalan';
+            
+            // Hapus rintangan lama jika ada
+            if(rintangan) jalan.removeChild(rintangan);
+            
+            buatRintangan();
+            jalankanRintangan();
+            
+            tambahJarak = setInterval(() => {
+                jarak++;
+                info.textContent = `Jarak: ${jarak} m`;
+            }, 100);
+        });
     </script>
+
 </body>
 </html>
