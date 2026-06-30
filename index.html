@@ -19,7 +19,6 @@
             --abu: #757575;
             --abu-terang: #F8F9FA;
             --putih: #FFFFFF;
-            --kuning: #FFC107;
             --hijau: #10B981;
             --merah: #EF4444;
         }
@@ -345,25 +344,64 @@
             cursor: pointer;
         }
 
+        /* Riwayat gaya sesuai gambar */
         .daftar-transaksi {
             margin-top: 15px;
-            max-height: 600px;
-            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         .item-trx {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
-            margin-bottom: 10px;
-            background: white;
-            border-radius: 8px;
-            border-left: 3px solid var(--utama);
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
         }
 
-        .masuk { border-left-color: var(--hijau); }
-        .keluar { border-left-color: var(--merah); }
+        .item-trx::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 15px;
+            bottom: 15px;
+            width: 4px;
+        }
+
+        .masuk::before {
+            background: var(--hijau);
+        }
+
+        .keluar::before {
+            background: var(--merah);
+        }
+
+        .info-trx h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--gelap);
+        }
+
+        .info-trx small {
+            font-size: 13px;
+            color: var(--abu);
+        }
+
+        .jumlah-trx {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .masuk .jumlah-trx {
+            color: var(--hijau);
+        }
+
+        .keluar .jumlah-trx {
+            color: var(--merah);
+        }
 
         /* Navigasi Bawah */
         .nav-bawah {
@@ -560,9 +598,9 @@
 <div id="halaman-transfer" class="konten">
     <h3 style="margin-bottom:15px;">Transfer Uang</h3>
     <div class="kotak-form">
-        <input type="text" id="tujuanTransfer" placeholder="Nomor Rekening / HP">
+        <input type="text" id="tujuanTransfer" placeholder="Nomor Rekening / HP / Nama">
         <input type="number" id="nominalTransfer" placeholder="Jumlah transfer" min="1000">
-        <button class="tombol-utama" onclick="mintaPIN('transfer')">Lanjutkan</button>
+        <button class="tombol-utama" onclick="mintaPIN('transfer')">Lanjutkan Transfer</button>
     </div>
 </div>
 
@@ -626,8 +664,8 @@
 
 <!-- Halaman Riwayat -->
 <div id="halaman-riwayat" class="konten">
-    <h3 style="margin-bottom:15px;">Riwayat Transaksi</h3>
-    <div class="kotak-form daftar-transaksi" id="daftarRiwayat"></div>
+    <h2 style="font-size:22px; font-weight:700; margin-bottom:20px;">Riwayat Transaksi</h2>
+    <div class="daftar-transaksi" id="daftarRiwayat"></div>
 </div>
 
 <!-- Halaman Saya -->
@@ -774,7 +812,7 @@
             case 'transfer':
                 const tujuan = document.getElementById('tujuanTransfer').value.trim();
                 nominal = Number(document.getElementById('nominalTransfer').value);
-                if (!tujuan || isNaN(nominal) || nominal < 1000) return alert('Lengkapi data transfer dengan benar!');
+                if (!tujuan || isNaN(nominal) || nominal < 1000) return alert('Lengkapi nomor/tujuan & nominal minimal Rp1.000!');
                 if (nominal > saldo) return alert('Saldo tidak cukup!');
                 
                 // Kurangi saldo
@@ -866,19 +904,19 @@
         alert('✅ Kode QR diperbarui');
     }
 
-    // Tampilkan daftar riwayat
+    // Tampilkan daftar riwayat (sesuai gaya di gambar)
     function tampilkanRiwayat() {
         let daftarHTML = '';
         if (riwayat.length === 0) {
-            daftarHTML = '<p style="text-align:center; color:var(--abu); padding:30px;">Belum ada riwayat transaksi</p>';
+            daftarHTML = '<p style="text-align:center; color:var(--abu); padding:40px;">Belum ada riwayat transaksi</p>';
         } else {
             daftarHTML = riwayat.map(trx => `
                 <div class="item-trx ${trx.jenis}">
-                    <div>
-                        <h4 style="font-size:14px; margin-bottom:4px;">${trx.keterangan}</h4>
-                        <small style="font-size:11px; color:var(--abu);">${trx.waktu}</small>
+                    <div class="info-trx">
+                        <h4>${trx.keterangan}</h4>
+                        <small>${trx.waktu}</small>
                     </div>
-                    <div style="font-weight:600; font-size:14px;">
+                    <div class="jumlah-trx">
                         ${trx.jenis === 'masuk' ? '+' : '-'} Rp ${trx.jumlah.toLocaleString('id-ID')}
                     </div>
                 </div>
