@@ -4,121 +4,520 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dompet Digital Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
-        :root { --utama:#2563eb; --hijau:#10b981; --merah:#ef4444; --kuning:#f59e0b; --abu:#64748b; }
-        body { background:#f0f4f8; padding:20px; }
-        .wadah { max-width:420px; margin:0 auto; background:white; border-radius:20px; box-shadow:0 8px 24px rgba(0,0,0,0.1); overflow:hidden; }
-        .header { background:linear-gradient(135deg, var(--utama), #1d4ed8); color:white; padding:30px 20px; text-align:center; }
-        .saldo { font-size:36px; font-weight:bold; margin:15px 0; }
-        .info { font-size:14px; opacity:0.9; }
-        .menu { display:grid; grid-template-columns:repeat(2, 1fr); gap:15px; padding:20px; }
-        .tombol { border:none; border-radius:12px; padding:18px; font-size:16px; font-weight:bold; cursor:pointer; color:white; transition:0.2s; }
-        .tombol.isi { background:var(--hijau); }
-        .tombol.kirim { background:var(--utama); }
-        .tombol.riwayat { background:var(--kuning); }
-        .tombol.bantuan { background:var(--abu); }
-        .bagian { padding:20px; border-top:1px solid #eee; display:none; }
-        .bagian.aktif { display:block; }
-        input { width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:8px; font-size:16px; }
-        .daftar-transaksi { margin-top:15px; max-height:250px; overflow-y:auto; }
-        .item { padding:12px; border-radius:8px; margin:8px 0; background:#f8fafc; border-left:4px solid var(--utama); }
-        .masuk { border-left-color:var(--hijau); }
-        .keluar { border-left-color:var(--merah); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --utama: #2563eb;
+            --hijau: #10b981;
+            --merah: #ef4444;
+            --kuning: #f59e0b;
+            --ungu: #8b5cf6;
+            --abu-terang: #f8fafc;
+            --abu: #64748b;
+            --gelap: #1e293b;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .wadah {
+            max-width: 420px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(37, 99, 235, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Header Profil & Saldo */
+        .header {
+            background: linear-gradient(135deg, var(--utama), #1d4ed8);
+            color: white;
+            padding: 35px 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        .profil {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .info-pengguna {
+            text-align: left;
+        }
+
+        .info-pengguna h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .info-pengguna p {
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+        .ikon-pengguna {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .saldo {
+            font-size: 40px;
+            font-weight: 700;
+            margin: 15px 0;
+            letter-spacing: 1px;
+        }
+
+        .label-saldo {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Menu Utama */
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            padding: 25px;
+            background: white;
+            margin-top: -20px;
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+        }
+
+        .tombol-menu {
+            border: none;
+            background: none;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .tombol-menu:hover {
+            transform: translateY(-3px);
+        }
+
+        .ikon-menu {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 8px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .label-menu {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gelap);
+        }
+
+        .isi { background: var(--hijau); }
+        .kirim { background: var(--utama); }
+        .qris { background: var(--ungu); }
+        .riwayat { background: var(--kuning); }
+        .pengaturan { background: var(--abu); }
+
+        /* Konten Bagian */
+        .konten {
+            padding: 25px;
+            display: none;
+        }
+
+        .konten.aktif {
+            display: block;
+            animation: muncul 0.3s ease;
+        }
+
+        @keyframes muncul {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .konten h3 {
+            color: var(--gelap);
+            margin-bottom: 20px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            margin: 10px 0 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--utama);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .tombol-aksi {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            background: linear-gradient(90deg, var(--utama), #1d4ed8);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            transition: transform 0.2s;
+        }
+
+        .tombol-aksi:hover {
+            transform: translateY(-2px);
+        }
+
+        /* QR Code */
+        .kotak-qr {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: inset 0 0 0 2px #e2e8f0;
+            margin: 20px 0;
+        }
+
+        #qrcode {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .info-qr {
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--abu);
+            text-align: center;
+        }
+
+        /* Riwayat Transaksi */
+        .daftar-transaksi {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .item-transaksi {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: var(--abu-terang);
+            border-radius: 12px;
+            border-left: 4px solid var(--utama);
+        }
+
+        .masuk { border-left-color: var(--hijau); }
+        .keluar { border-left-color: var(--merah); }
+
+        .keterangan h4 {
+            font-size: 15px;
+            color: var(--gelap);
+            margin-bottom: 4px;
+        }
+
+        .keterangan p {
+            font-size: 12px;
+            color: var(--abu);
+        }
+
+        .jumlah {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .masuk .jumlah { color: var(--hijau); }
+        .keluar .jumlah { color: var(--merah); }
+
+        /* Modal PIN */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            display: none;
+        }
+
+        .modal-badan {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 320px;
+            text-align: center;
+        }
+
+        .modal-badan h3 {
+            margin-bottom: 20px;
+            color: var(--gelap);
+        }
+
+        .input-pin {
+            letter-spacing: 8px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .pesan {
+            margin-top: 12px;
+            font-size: 14px;
+            color: var(--merah);
+            height: 20px;
+        }
     </style>
 </head>
 <body>
+
 <div class="wadah">
+    <!-- Header -->
     <div class="header">
-        <h2>💳 Dompet Digital Demo</h2>
+        <div class="profil">
+            <div class="info-pengguna">
+                <h3>Selamat Datang</h3>
+                <p>ID Pengguna: DEMO-12345</p>
+            </div>
+            <div class="ikon-pengguna">👤</div>
+        </div>
         <div class="saldo">Rp <span id="jumlahSaldo">0</span></div>
-        <div class="info">Saldo Tersedia</div>
+        <div class="label-saldo">Saldo Tersedia</div>
     </div>
 
+    <!-- Menu Utama -->
     <div class="menu">
-        <button class="tombol isi" onclick="bukaBagian('isi')">➕ Isi Saldo</button>
-        <button class="tombol kirim" onclick="bukaBagian('kirim')">➡️ Kirim Uang</button>
-        <button class="tombol riwayat" onclick="bukaBagian('riwayat')">📜 Riwayat</button>
-        <button class="tombol bantuan" onclick="bukaBagian('info')">ℹ️ Info</button>
+        <button class="tombol-menu" onclick="bukaBagian('isi')">
+            <div class="ikon-menu isi">➕</div>
+            <div class="label-menu">Isi Saldo</div>
+        </button>
+        <button class="tombol-menu" onclick="bukaBagian('kirim')">
+            <div class="ikon-menu kirim">➡️</div>
+            <div class="label-menu">Kirim</div>
+        </button>
+        <button class="tombol-menu" onclick="bukaBagian('qris')">
+            <div class="ikon-menu qris">📱</div>
+            <div class="label-menu">QRIS</div>
+        </button>
+        <button class="tombol-menu" onclick="bukaBagian('riwayat')">
+            <div class="ikon-menu riwayat">📜</div>
+            <div class="label-menu">Riwayat</div>
+        </button>
     </div>
 
-    <div id="isi" class="bagian aktif">
-        <h3>Isi Saldo</h3>
-        <input type="number" id="nominalIsi" placeholder="Masukkan jumlah Rp">
-        <button class="tombol isi" style="width:100%" onclick="isiSaldo()">Proses</button>
+    <!-- Konten Halaman -->
+    <div id="isi" class="konten aktif">
+        <h3>➕ Isi Saldo</h3>
+        <input type="number" id="nominalIsi" placeholder="Masukkan nominal (Rp)" min="1000">
+        <button class="tombol-aksi" onclick="isiSaldo()">Proses Isi Saldo</button>
     </div>
 
-    <div id="kirim" class="bagian">
-        <h3>Kirim Uang</h3>
-        <input type="text" id="tujuan" placeholder="Nomor / Nama Tujuan">
-        <input type="number" id="nominalKirim" placeholder="Jumlah Rp">
-        <button class="tombol kirim" style="width:100%" onclick="kirimUang()">Kirim Sekarang</button>
+    <div id="kirim" class="konten">
+        <h3>➡️ Kirim Uang</h3>
+        <input type="text" id="tujuan" placeholder="Nomor HP / Nama Tujuan">
+        <input type="number" id="nominalKirim" placeholder="Jumlah yang dikirim (Rp)" min="1000">
+        <button class="tombol-aksi" onclick="mintaPIN('kirim')">Lanjutkan</button>
     </div>
 
-    <div id="riwayat" class="bagian">
-        <h3>Riwayat Transaksi</h3>
+    <div id="qris" class="konten">
+        <h3>📱 Kode QR Pembayaran</h3>
+        <div class="kotak-qr">
+            <div id="qrcode"></div>
+            <p class="info-qr">Tunjukkan kode ini untuk pembayaran<br>ID: DEMO-12345 | Saldo Aman</p>
+        </div>
+        <button class="tombol-aksi" onclick="buatBaruQR()">Buat Kode Baru</button>
+    </div>
+
+    <div id="riwayat" class="konten">
+        <h3>📜 Riwayat Transaksi</h3>
         <div id="daftarTransaksi" class="daftar-transaksi"></div>
     </div>
+</div>
 
-    <div id="info" class="bagian">
-        <h3>Informasi</h3>
-        <p>✅ Ini hanya simulasi/demo, tidak menggunakan uang asli.</p>
-        <p>✅ Data tersimpan di HP kamu saja, aman dan pribadi.</p>
-        <p>✅ Cocok untuk belajar tampilan dan alur dompet digital.</p>
+<!-- Modal Verifikasi PIN -->
+<div id="modalPIN" class="modal">
+    <div class="modal-badan">
+        <h3>Masukkan PIN</h3>
+        <input type="password" id="inputPIN" class="input-pin" maxlength="6" placeholder="******">
+        <div id="pesanPIN" class="pesan"></div>
+        <button class="tombol-aksi" style="margin-top:15px;" onclick="cekPIN()">Verifikasi</button>
+        <button onclick="tutupModal()" style="margin-top:10px; background:none; border:none; color:var(--abu); font-weight:500;">Batal</button>
     </div>
 </div>
 
 <script>
+    // Data awal
     let saldo = parseInt(localStorage.getItem('saldoDemo')) || 0;
     let riwayat = JSON.parse(localStorage.getItem('riwayatDemo')) || [];
-    perbaruiTampilan();
+    let pinAkun = localStorage.getItem('pinDemo') || '123456'; // PIN awal 123456
+    let aksiSetelahPIN = null;
 
+    // Tampilkan data awal
+    perbaruiTampilan();
+    buatQR();
+
+    // Buka halaman
     function bukaBagian(id) {
-        document.querySelectorAll('.bagian').forEach(b => b.classList.remove('aktif'));
+        document.querySelectorAll('.konten').forEach(b => b.classList.remove('aktif'));
         document.getElementById(id).classList.add('aktif');
         if (id === 'riwayat') tampilkanRiwayat();
     }
 
+    // Perbarui tampilan saldo
     function perbaruiTampilan() {
         document.getElementById('jumlahSaldo').textContent = saldo.toLocaleString('id-ID');
         localStorage.setItem('saldoDemo', saldo);
         localStorage.setItem('riwayatDemo', JSON.stringify(riwayat));
     }
 
+    // Isi saldo
     function isiSaldo() {
         let nominal = parseInt(document.getElementById('nominalIsi').value);
-        if (!nominal || nominal <= 0) return alert('Masukkan nominal yang benar!');
+        if (!nominal || nominal < 1000) return alert('Masukkan nominal minimal Rp 1.000!');
         saldo += nominal;
-        riwayat.unshift({jenis:'masuk', keterangan:'Isi Saldo', jumlah:nominal, waktu:new Date().toLocaleString('id-ID')});
+        riwayat.unshift({
+            jenis: 'masuk',
+            keterangan: 'Isi Saldo',
+            jumlah: nominal,
+            waktu: new Date().toLocaleString('id-ID')
+        });
         perbaruiTampilan();
-        alert(`Berhasil menambah Rp ${nominal.toLocaleString('id-ID')}`);
+        alert(`✅ Berhasil menambah saldo Rp ${nominal.toLocaleString('id-ID')}`);
         document.getElementById('nominalIsi').value = '';
     }
 
-    function kirimUang() {
+    // Minta PIN sebelum kirim
+    function mintaPIN(jenisAksi) {
+        aksiSetelahPIN = jenisAksi;
+        document.getElementById('inputPIN').value = '';
+        document.getElementById('pesanPIN').textContent = '';
+        document.getElementById('modalPIN').style.display = 'flex';
+        document.getElementById('inputPIN').focus();
+    }
+
+    // Cek PIN
+    function cekPIN() {
+        let input = document.getElementById('inputPIN').value;
+        if (input === pinAkun) {
+            tutupModal();
+            if (aksiSetelahPIN === 'kirim') prosesKirimUang();
+        } else {
+            document.getElementById('pesanPIN').textContent = '❌ PIN salah! Coba lagi';
+            document.getElementById('inputPIN').value = '';
+        }
+    }
+
+    function tutupModal() {
+        document.getElementById('modalPIN').style.display = 'none';
+        aksiSetelahPIN = null;
+    }
+
+    // Proses kirim uang
+    function prosesKirimUang() {
         let tujuan = document.getElementById('tujuan').value.trim();
         let nominal = parseInt(document.getElementById('nominalKirim').value);
-        if (!tujuan || !nominal || nominal <= 0) return alert('Lengkapi data dengan benar!');
-        if (nominal > saldo) return alert('Saldo tidak cukup!');
+        if (!tujuan || !nominal || nominal < 1000) return alert('Lengkapi data dengan benar!');
+        if (nominal > saldo) return alert('❌ Saldo tidak cukup!');
+        
         saldo -= nominal;
-        riwayat.unshift({jenis:'keluar', keterangan:`Kirim ke: ${tujuan}`, jumlah:nominal, waktu:new Date().toLocaleString('id-ID')});
+        riwayat.unshift({
+            jenis: 'keluar',
+            keterangan: `Kirim ke: ${tujuan}`,
+            jumlah: nominal,
+            waktu: new Date().toLocaleString('id-ID')
+        });
         perbaruiTampilan();
-        alert(`Berhasil mengirim Rp ${nominal.toLocaleString('id-ID')}`);
+        alert(`✅ Berhasil mengirim Rp ${nominal.toLocaleString('id-ID')}`);
         document.getElementById('tujuan').value = '';
         document.getElementById('nominalKirim').value = '';
     }
 
+    // Buat kode QR
+    function buatQR() {
+        const dataQR = `ID_DEMO:DEMO-12345|SALDO:${saldo}|WAKTU:${Date.now()}`;
+        document.getElementById('qrcode').innerHTML = '';
+        QRCode.toCanvas(document.getElementById('qrcode'), dataQR, {
+            width: 180,
+            height: 180,
+            colorDark: '#1e293b',
+            colorLight: '#ffffff',
+            margin: 2
+        });
+    }
+
+    function buatBaruQR() {
+        buatQR();
+        alert('✅ Kode QR baru berhasil dibuat');
+    }
+
+    // Tampilkan riwayat
     function tampilkanRiwayat() {
         let html = '';
-        riwayat.forEach(t => {
-            html += `<div class="item ${t.jenis}">
-                <strong>${t.keterangan}</strong><br>
-                Rp ${t.jumlah.toLocaleString('id-ID')}<br>
-                <small>${t.waktu}</small>
-            </div>`;
-        });
-        document.getElementById('daftarTransaksi').innerHTML = html || '<p>Belum ada transaksi</p>';
+        if (riwayat.length === 0) {
+            html = '<p style="text-align:center; color:var(--abu); padding:20px;">Belum ada transaksi</p>';
+        } else {
+            riwayat.forEach(trx => {
+                html += `
+                <div class="item-transaksi ${trx.jenis}">
+                    <div class="keterangan">
+                        <h4>${trx.keterangan}</h4>
+                        <p>${trx.waktu}</p>
+                    </div>
+                    <div class="jumlah">
+                        ${trx.jenis === 'masuk' ? '+' : '-'} Rp ${trx.jumlah.toLocaleString('id-ID')}
+                    </div>
+                </div>`;
+            });
+        }
+        document.getElementById('daftarTransaksi').innerHTML = html;
     }
+
+    // Izinkan tekan Enter untuk verifikasi PIN
+    document.getElementById('inputPIN').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') cekPIN();
+    });
 </script>
 </body>
 </html>
