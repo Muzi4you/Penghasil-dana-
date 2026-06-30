@@ -688,47 +688,47 @@
 </div>
 
 <script>
-    // Data Awal
-    let saldo = parseInt(localStorage.getItem('saldoAkun')) || 0;
+    // Ambil data dari penyimpanan browser
+    let saldo = Number(localStorage.getItem('saldoAkun')) || 0;
     let riwayat = JSON.parse(localStorage.getItem('riwayatTransaksi')) || [];
     let pinAkun = localStorage.getItem('pinAkun') || '123456';
     let aksiSetelahPIN = null;
 
-    // Tampilkan Data Saat Awal Dibuka
+    // Tampilkan data saat halaman dibuka
     perbaruiTampilan();
     buatQR();
     tampilkanRiwayat();
 
-    // Pindah Halaman Navigasi Bawah
+    // Pindah halaman navigasi
     function pindahNav(halaman) {
         document.querySelectorAll('.konten').forEach(el => el.classList.remove('aktif'));
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('aktif'));
         document.getElementById(`halaman-${halaman}`).classList.add('aktif');
         event.currentTarget.classList.add('aktif');
-        if(halaman === 'riwayat') tampilkanRiwayat();
-        if(halaman === 'saya') document.getElementById('infoSaldoSaya').textContent = saldo.toLocaleString('id-ID');
+        if (halaman === 'riwayat') tampilkanRiwayat();
+        if (halaman === 'saya') document.getElementById('infoSaldoSaya').textContent = saldo.toLocaleString('id-ID');
     }
 
-    // Buka Halaman Tertentu
+    // Buka halaman tertentu
     function bukaHalaman(nama) {
         document.querySelectorAll('.konten').forEach(el => el.classList.remove('aktif'));
         document.getElementById(`halaman-${nama}`).classList.add('aktif');
-        if(nama === 'riwayat') tampilkanRiwayat();
+        if (nama === 'riwayat') tampilkanRiwayat();
     }
 
-    // Perbarui Tampilan Saldo & Simpan Data
+    // Perbarui tampilan & simpan data
     function perbaruiTampilan() {
         document.getElementById('saldoUtama').textContent = saldo.toLocaleString('id-ID');
-        localStorage.setItem('saldoAkun', saldo);
+        localStorage.setItem('saldoAkun', saldo.toString());
         localStorage.setItem('riwayatTransaksi', JSON.stringify(riwayat));
     }
 
-    // Proses Isi Saldo
+    // Proses tambah saldo
     function prosesIsiSaldo() {
-        const nominal = parseInt(document.getElementById('nominalIsi').value);
-        if(!nominal || nominal < 10000) return alert('Minimal isi saldo Rp10.000');
+        const nominal = Number(document.getElementById('nominalIsi').value);
+        if (!nominal || nominal < 10000) return alert('Minimal isi saldo Rp10.000');
         
-        saldo += nominal;
+        saldo = saldo + nominal;
         riwayat.unshift({
             jenis: 'masuk',
             keterangan: 'Isi Saldo',
@@ -753,7 +753,7 @@
     // Cek PIN
     function cekPIN() {
         const input = document.getElementById('inputPIN').value;
-        if(input === pinAkun) {
+        if (input === pinAkun) {
             tutupModal();
             prosesTransaksi();
         } else {
@@ -766,17 +766,19 @@
         aksiSetelahPIN = null;
     }
 
-    // Proses Semua Transaksi
+    // Proses semua transaksi
     function prosesTransaksi() {
         let nominal, total, keterangan;
 
-        switch(aksiSetelahPIN) {
+        switch (aksiSetelahPIN) {
             case 'transfer':
                 const tujuan = document.getElementById('tujuanTransfer').value.trim();
-                nominal = parseInt(document.getElementById('nominalTransfer').value);
-                if(!tujuan || !nominal || nominal < 1000) return alert('Lengkapi data transfer dengan benar!');
-                if(nominal > saldo) return alert('Saldo tidak cukup!');
-                saldo -= nominal;
+                nominal = Number(document.getElementById('nominalTransfer').value);
+                if (!tujuan || isNaN(nominal) || nominal < 1000) return alert('Lengkapi data transfer dengan benar!');
+                if (nominal > saldo) return alert('Saldo tidak cukup!');
+                
+                // Kurangi saldo
+                saldo = saldo - nominal;
                 keterangan = `Transfer ke ${tujuan}`;
                 total = nominal;
                 break;
@@ -784,30 +786,33 @@
             case 'tagihan':
                 const layanan = document.getElementById('layananTagihan').value;
                 const nomor = document.getElementById('nomorTagihan').value.trim();
-                nominal = parseInt(document.getElementById('nominalTagihan').value);
-                if(!nomor || !nominal) return alert('Lengkapi data pembayaran!');
-                if(nominal > saldo) return alert('Saldo tidak cukup!');
-                saldo -= nominal;
+                nominal = Number(document.getElementById('nominalTagihan').value);
+                if (!nomor || isNaN(nominal)) return alert('Lengkapi data pembayaran!');
+                if (nominal > saldo) return alert('Saldo tidak cukup!');
+                
+                saldo = saldo - nominal;
                 keterangan = `Bayar ${layanan.toUpperCase()} - No: ${nomor}`;
                 total = nominal;
                 break;
 
             case 'topup_dana':
                 const noDana = document.getElementById('nomorDana').value.trim();
-                nominal = parseInt(document.getElementById('nominalDana').value);
+                nominal = Number(document.getElementById('nominalDana').value);
                 const biaya = 1000;
                 total = nominal + biaya;
-                if(!noDana || !nominal || nominal < 10000) return alert('Minimal Rp10.000 & masukkan nomor yang benar!');
-                if(total > saldo) return alert(`Saldo tidak cukup! Diperlukan Rp ${total.toLocaleString('id-ID')}`);
-                saldo -= total;
+                if (!noDana || isNaN(nominal) || nominal < 10000) return alert('Minimal Rp10.000 & masukkan nomor yang benar!');
+                if (total > saldo) return alert(`Saldo tidak cukup! Diperlukan Rp ${total.toLocaleString('id-ID')}`);
+                
+                saldo = saldo - total;
                 keterangan = `Top Up DANA ke ${noDana} | Rp${nominal} + Admin Rp${biaya}`;
                 break;
 
             case 'tarik':
-                nominal = parseInt(document.getElementById('nominalTarik').value);
-                if(!nominal || nominal < 50000) return alert('Minimal tarik Rp50.000');
-                if(nominal > saldo) return alert('Saldo tidak cukup!');
-                saldo -= nominal;
+                nominal = Number(document.getElementById('nominalTarik').value);
+                if (isNaN(nominal) || nominal < 50000) return alert('Minimal tarik Rp50.000');
+                if (nominal > saldo) return alert('Saldo tidak cukup!');
+                
+                saldo = saldo - nominal;
                 keterangan = 'Tarik Tunai ATM';
                 total = nominal;
                 break;
@@ -815,7 +820,7 @@
             default: return;
         }
 
-        // Simpan ke Riwayat
+        // Simpan ke riwayat
         riwayat.unshift({
             jenis: 'keluar',
             keterangan: keterangan,
@@ -823,23 +828,24 @@
             waktu: new Date().toLocaleString('id-ID')
         });
 
+        // Perbarui semua tampilan
         perbaruiTampilan();
         tampilkanRiwayat();
         alert(`✅ Berhasil!\n${keterangan}\nRp ${total.toLocaleString('id-ID')}`);
 
-        // Kosongkan Input
+        // Kosongkan input
         document.querySelectorAll('input').forEach(i => i.value = '');
     }
 
-    // Proses Ubah PIN
+    // Proses ubah PIN
     function prosesGantiPIN() {
         const pinLama = document.getElementById('pinLama').value;
         const pinBaru = document.getElementById('pinBaru').value;
         const konfirmasi = document.getElementById('konfirmasiPin').value;
 
-        if(pinLama !== pinAkun) return alert('❌ PIN lama salah!');
-        if(pinBaru.length !== 6) return alert('PIN baru harus 6 digit angka!');
-        if(pinBaru !== konfirmasi) return alert('❌ Konfirmasi PIN tidak cocok!');
+        if (pinLama !== pinAkun) return alert('❌ PIN lama salah!');
+        if (pinBaru.length !== 6 || isNaN(pinBaru)) return alert('PIN baru harus 6 digit angka!');
+        if (pinBaru !== konfirmasi) return alert('❌ Konfirmasi PIN tidak cocok!');
 
         pinAkun = pinBaru;
         localStorage.setItem('pinAkun', pinAkun);
@@ -860,10 +866,10 @@
         alert('✅ Kode QR diperbarui');
     }
 
-    // Tampilkan Riwayat Transaksi
+    // Tampilkan daftar riwayat
     function tampilkanRiwayat() {
         let daftarHTML = '';
-        if(riwayat.length === 0) {
+        if (riwayat.length === 0) {
             daftarHTML = '<p style="text-align:center; color:var(--abu); padding:30px;">Belum ada riwayat transaksi</p>';
         } else {
             daftarHTML = riwayat.map(trx => `
