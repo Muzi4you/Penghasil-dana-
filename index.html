@@ -3,506 +3,789 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dompet Digital Demo</title>
+    <title>Akun Digital</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Roboto, sans-serif; }
-        :root {
-            --utama: #0066CC;
-            --hijau: #10b981;
-            --kuning: #f59e0b;
-            --merah: #ef4444;
-            --ungu: #8b5cf6;
-            --abu-terang: #f8fafc;
-            --abu: #64748b;
-            --gelap: #1e293b;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
-        body { background: #f5f7fa; padding-bottom: 80px; }
+        :root {
+            --utama: #FF7A00;
+            --gelap: #1A1A1A;
+            --abu: #757575;
+            --abu-terang: #F8F9FA;
+            --putih: #FFFFFF;
+            --kuning: #FFC107;
+            --hijau: #10B981;
+            --merah: #EF4444;
+        }
+
+        body {
+            background: #F5F5F5;
+            padding-bottom: 90px;
+        }
 
         /* Header Atas */
-        .header {
-            background: linear-gradient(135deg, var(--utama), #0052a3);
+        .header-atas {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--putih);
+        }
+
+        .info-pengguna {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .foto-profil {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--utama);
             color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .nama h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gelap);
+        }
+
+        .nama p {
+            font-size: 13px;
+            color: var(--abu);
+            margin-top: 2px;
+        }
+
+        .ikon-notif {
+            position: relative;
+            font-size: 22px;
+            color: var(--gelap);
+        }
+
+        .lencana {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: var(--merah);
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        /* Kartu Saldo */
+        .kartu-saldo {
+            background: linear-gradient(135deg, #FF7A00, #FF5C00);
+            color: white;
+            margin: 0 15px 15px;
+            border-radius: 16px;
             padding: 25px 20px;
-        }
-        .profil { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-        .info h3 { font-size:18px; font-weight:600; }
-        .info p { font-size:13px; opacity:0.8; }
-        .ikon-user { width:45px; height:45px; background:rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; }
-        .saldo { font-size:36px; font-weight:700; margin:10px 0; }
-        .label-saldo { font-size:14px; opacity:0.9; }
-
-        /* Menu Cepat */
-        .menu-cepat {
-            display:grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap:12px;
-            padding:15px 20px;
-            background:white;
-            margin:-15px 15px 20px;
-            border-radius:16px;
-            box-shadow:0 4px 12px rgba(0,0,0,0.08);
-        }
-        .tombol-cepat { border:none; background:none; text-align:center; cursor:pointer; position:relative; }
-        .ikon-cepat {
-            width:48px; height:48px; border-radius:12px;
-            display:flex; align-items:center; justify-content:center;
-            margin:0 auto 6px; font-size:22px; color:white;
-        }
-        .label-cepat { font-size:12px; font-weight:500; color:var(--gelap); }
-        .notif {
-            position:absolute; top:-2px; right:10px;
-            background:var(--merah); color:white; font-size:11px;
-            width:18px; height:18px; border-radius:50%;
-            display:flex; align-items:center; justify-content:center;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.25);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Bagian Layanan */
-        .bagian {
-            background:white;
-            margin:15px;
-            border-radius:16px;
-            overflow:hidden;
-            box-shadow:0 2px 8px rgba(0,0,0,0.05);
+        .kartu-saldo::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 100%;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+            transform: translateX(50%);
         }
-        .judul-bagian {
-            font-size:16px; font-weight:600;
-            padding:15px 20px;
-            border-bottom:1px solid #f1f5f9;
-            color:var(--gelap);
+
+        .baris-saldo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
         }
-        .grid-layanan {
-            display:grid;
+
+        .label-saldo {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .tombol-riwayat {
+            background: rgba(0,0,0,0.15);
+            border: none;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .jumlah-saldo {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .baris-bawah {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .kolom-saldo h4 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .kolom-saldo .nilai {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .kolom-saldo .keterangan {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .tombol-buka {
+            background: white;
+            color: var(--utama);
+            border: none;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Menu Utama */
+        .menu-utama {
+            background: white;
+            margin: 0 15px 15px;
+            border-radius: 16px;
+            padding: 20px 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .grid-menu {
+            display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap:15px;
-            padding:20px;
+            gap: 20px 10px;
+            text-align: center;
         }
-        .item-layanan { text-align:center; cursor:pointer; }
-        .ikon-layanan {
-            width:50px; height:50px; border-radius:12px;
-            display:flex; align-items:center; justify-content:center;
-            margin:0 auto 8px; font-size:24px; color:white;
-        }
-        .nama-layanan { font-size:12px; color:var(--gelap); line-height:1.4; }
 
-        /* Konten Halaman */
-        .konten { display:none; padding:20px; }
-        .konten.aktif { display:block; animation: muncul 0.3s ease; }
-        @keyframes muncul { from {opacity:0; transform:translateY(8px);} to {opacity:1; transform:translateY(0);} }
+        .item-menu {
+            cursor: pointer;
+        }
+
+        .ikon-menu {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: #FFF3E8;
+            color: var(--utama);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin: 0 auto 8px;
+            position: relative;
+        }
+
+        .label-baru {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: var(--utama);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        .label-promo {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: var(--kuning);
+            color: var(--gelap);
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        .nama-menu {
+            font-size: 13px;
+            color: var(--gelap);
+            font-weight: 500;
+        }
+
+        /* Bagian Promo */
+        .bagian-promo {
+            margin: 0 15px 15px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .judul-promo {
+            background: #FFEFD8;
+            padding: 12px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--utama);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .banner-promo {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(90deg, #0052CC, #0077FF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+        }
+
+        /* E-Wallet Terhubung */
+        .bagian-ewallet {
+            background: white;
+            margin: 0 15px 20px;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .judul-bagian {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gelap);
+            margin-bottom: 15px;
+        }
+
+        .grid-ewallet {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .kartu-ewallet {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border-radius: 10px;
+            background: var(--abu-terang);
+        }
+
+        .info-ewallet {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-ewallet {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .nama-ewallet p:first-child {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gelap);
+        }
+
+        .nama-ewallet p:last-child {
+            font-size: 12px;
+            color: var(--abu);
+        }
+
+        .tombol-hubung {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--utama);
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        /* Halaman Konten */
+        .konten {
+            display: none;
+            padding: 20px 15px;
+        }
+
+        .konten.aktif {
+            display: block;
+        }
+
+        .kotak-form {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
 
         input, select {
-            width:100%; padding:14px; margin:10px 0 18px;
-            border:2px solid #e2e8f0; border-radius:10px;
-            font-size:16px;
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0 18px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 15px;
         }
-        input:focus, select:focus { outline:none; border-color:var(--utama); }
 
-        .tombol-aksi {
-            width:100%; padding:14px; border:none; border-radius:10px;
-            background:var(--utama); color:white; font-size:16px; font-weight:600;
-            cursor:pointer;
-            transition:0.2s;
+        input:focus {
+            outline: none;
+            border-color: var(--utama);
+            box-shadow: 0 0 0 2px rgba(255, 122, 0, 0.15);
         }
-        .tombol-aksi:hover { background:#0052a3; }
 
-        /* Riwayat Transaksi */
-        .daftar-trx { max-height:450px; overflow-y:auto; }
+        .tombol-utama {
+            width: 100%;
+            padding: 14px;
+            background: var(--utama);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .daftar-transaksi {
+            margin-top: 15px;
+        }
+
         .item-trx {
-            display:flex; justify-content:space-between; align-items:center;
-            padding:15px; margin:8px 0; background:var(--abu-terang);
-            border-radius:10px; border-left:4px solid var(--utama);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 8px;
+            border-left: 3px solid var(--utama);
         }
-        .masuk { border-left-color:var(--hijau); }
-        .keluar { border-left-color:var(--merah); }
 
-        /* Daftar Pesan */
-        .daftar-pesan { max-height:450px; overflow-y:auto; }
-        .item-pesan {
-            padding:15px; margin:8px 0; background:var(--abu-terang);
-            border-radius:10px; border-left:4px solid var(--kuning);
-        }
-        .item-pesan.belum-dibaca { background:#fffbeb; border-left-color:var(--merah); }
-        .item-pesan h4 { font-size:15px; margin-bottom:4px; color:var(--gelap); }
-        .item-pesan p { font-size:13px; color:var(--abu); margin-bottom:6px; }
-        .item-pesan small { font-size:11px; color:var(--abu); }
+        .masuk { border-left-color: var(--hijau); }
+        .keluar { border-left-color: var(--merah); }
 
         /* Navigasi Bawah */
         .nav-bawah {
-            position:fixed; bottom:0; left:0; right:0;
-            background:white; display:grid; grid-template-columns: repeat(4,1fr);
-            padding:10px 0; box-shadow:0 -2px 10px rgba(0,0,0,0.08);
-            z-index:99;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            padding: 10px 0 6px;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+            z-index: 999;
         }
-        .nav-item { text-align:center; cursor:pointer; font-size:22px; color:var(--abu); position:relative; }
-        .nav-item.aktif { color:var(--utama); }
-        .nav-label { font-size:11px; margin-top:3px; }
+
+        .nav-item {
+            text-align: center;
+            cursor: pointer;
+            color: var(--abu);
+        }
+
+        .nav-item.aktif {
+            color: var(--utama);
+        }
+
+        .nav-ikon {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+        }
+
+        .nav-qr {
+            transform: translateY(-12px);
+        }
+
+        .nav-qr .nav-ikon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--utama);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 4px;
+            font-size: 24px;
+            box-shadow: 0 3px 8px rgba(255, 122, 0, 0.3);
+        }
 
         /* Modal PIN */
         .modal {
-            position:fixed; top:0; left:0; right:0; bottom:0;
-            background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center;
-            z-index:999; display:none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
         }
+
         .modal-kotak {
-            background:white; padding:30px; border-radius:16px;
-            width:90%; max-width:320px; text-align:center;
+            background: white;
+            width: 90%;
+            max-width: 320px;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
         }
-        .input-pin { letter-spacing:8px; text-align:center; font-size:24px; font-weight:bold; }
-        .pesan-error { color:var(--merah); margin-top:10px; height:20px; font-size:14px; }
+
+        .input-pin {
+            letter-spacing: 10px;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .pesan {
+            color: var(--merah);
+            font-size: 13px;
+            margin-bottom: 15px;
+            height: 18px;
+        }
     </style>
 </head>
 <body>
 
-<!-- Halaman Home -->
-<div id="halaman-home" class="konten aktif">
-    <div class="header">
-        <div class="profil">
-            <div class="info">
-                <h3>Selamat Datang</h3>
-                <p>ID: DEMO-12345 | 0812-xxxx-xxx</p>
+<!-- Halaman Beranda -->
+<div id="halaman-beranda" class="konten aktif">
+    <div class="header-atas">
+        <div class="info-pengguna">
+            <div class="foto-profil">M</div>
+            <div class="nama">
+                <h3>Muzi Adriyan</h3>
+                <p>No. Rekening: 9019 0876 4416</p>
             </div>
-            <div class="ikon-user">👤</div>
         </div>
-        <div class="saldo">Rp <span id="jumlahSaldo">0</span></div>
-        <div class="label-saldo">Saldo Tersedia</div>
+        <div class="ikon-notif">
+            <span>🔔</span>
+            <span class="lencana">77</span>
+        </div>
     </div>
 
-    <!-- Menu Cepat -->
-    <div class="menu-cepat">
-        <button class="tombol-cepat" onclick="bukaLayanan('isi-saldo')">
-            <div class="ikon-cepat" style="background:#10b981;">+</div>
-            <div class="label-cepat">Isi Saldo</div>
-        </button>
-        <button class="tombol-cepat" onclick="bukaLayanan('minta')">
-            <div class="ikon-cepat" style="background:#f59e0b;">↓</div>
-            <div class="label-cepat">Minta</div>
-        </button>
-        <button class="tombol-cepat" onclick="bukaLayanan('kirim')">
-            <div class="ikon-cepat" style="background:#0066CC;">→</div>
-            <div class="label-cepat">Kirim</div>
-        </button>
-        <button class="tombol-cepat" onclick="bukaLayanan('pesan')">
-            <div class="ikon-cepat" style="background:#8b5cf6;">✉️</div>
-            <div class="label-cepat">Pesan</div>
-            <div id="notifPesan" class="notif" style="display:none;">2</div>
-        </button>
-        <button class="tombol-cepat" onclick="bukaLayanan('qris')">
-            <div class="ikon-cepat" style="background:#ec4899;">📱</div>
-            <div class="label-cepat">QRIS</div>
-        </button>
-        <button class="tombol-cepat" onclick="bukaLayanan('riwayat')">
-            <div class="ikon-cepat" style="background:#64748b;">📋</div>
-            <div class="label-cepat">Riwayat</div>
-        </button>
-    </div>
-
-    <!-- Bagian Top Up & Layanan Digital -->
-    <div class="bagian">
-        <h3 class="judul-bagian">Top Up & Layanan Digital</h3>
-        <div class="grid-layanan">
-            <div class="item-layanan" onclick="bukaLayanan('pulsa')">
-                <div class="ikon-layanan" style="background:#3b82f6;">📶</div>
-                <div class="nama-layanan">Pulsa & Data</div>
+    <div class="kartu-saldo">
+        <div class="baris-saldo">
+            <div class="label-saldo">Total Saldo 👁️</div>
+            <button class="tombol-riwayat" onclick="bukaHalaman('riwayat')">Riwayat &gt;</button>
+        </div>
+        <div class="jumlah-saldo">Rp <span id="saldoUtama">0</span></div>
+        <div class="baris-bawah">
+            <div class="kolom-saldo">
+                <h4>Tabungan &gt;</h4>
+                <div class="nilai">Rp <span id="saldoTabungan">0</span></div>
+                <div class="keterangan">2,5% p.a. cair harian</div>
             </div>
-            <div class="item-layanan" onclick="bukaLayanan('pascabayar')">
-                <div class="ikon-layanan" style="background:#2563eb;">📊</div>
-                <div class="nama-layanan">Pascabayar</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('kirim-ewallet')">
-                <div class="ikon-layanan" style="background:#10b981;">💳</div>
-                <div class="nama-layanan">Kirim ke e-Wallet</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('rekan-dana')">
-                <div class="ikon-layanan" style="background:#0066CC;">🏪</div>
-                <div class="nama-layanan">Rekan DANA</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('uang-elektronik')">
-                <div class="ikon-layanan" style="background:#8b5cf6;">📡</div>
-                <div class="nama-layanan">Uang Elektronik</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('apple-zone')">
-                <div class="ikon-layanan" style="background:#000;">🍎</div>
-                <div class="nama-layanan">Apple Zone</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('esim-lokal')">
-                <div class="ikon-layanan" style="background:#2563eb;">📇</div>
-                <div class="nama-layanan">eSIM Lokal</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('esim-indobest')">
-                <div class="ikon-layanan" style="background:#3b82f6;">📲</div>
-                <div class="nama-layanan">Indobest Travel eSIM</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('esim-trial')">
-                <div class="ikon-layanan" style="background:#10b981;">📟</div>
-                <div class="nama-layanan">eSIM Trial</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('esim-kr')">
-                <div class="ikon-layanan" style="background:#7c3aed;">🆔</div>
-                <div class="nama-layanan">KR Global Travel eSIM</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('roaming')">
-                <div class="ikon-layanan" style="background:#059669;">🌐</div>
-                <div class="nama-layanan">Roaming</div>
+            <div class="kolom-saldo">
+                <h4>Deposito &gt; <button class="tombol-buka">Buka Deposito</button></h4>
+                <div class="nilai">Rp <span id="saldoDeposito">0</span></div>
+                <div class="keterangan">Hingga 6% p.a.</div>
             </div>
         </div>
     </div>
 
-    <!-- Bagian Tagihan -->
-    <div class="bagian">
-        <h3 class="judul-bagian">Tagihan</h3>
-        <div class="grid-layanan">
-            <div class="item-layanan" onclick="bukaLayanan('mybills')">
-                <div class="ikon-layanan" style="background:#f59e0b;">🧾</div>
-                <div class="nama-layanan">My Bills</div>
+    <div class="menu-utama">
+        <div class="grid-menu">
+            <div class="item-menu" onclick="bukaHalaman('transfer')">
+                <div class="ikon-menu">🔄</div>
+                <div class="nama-menu">Transfer</div>
             </div>
-            <div class="item-layanan" onclick="bukaLayanan('listrik')">
-                <div class="ikon-layanan" style="background:#3b82f6;">⚡</div>
-                <div class="nama-layanan">Listrik</div>
+            <div class="item-menu" onclick="bukaHalaman('topup-tagihan')">
+                <div class="ikon-menu">📑<span class="label-promo">Promo</span></div>
+                <div class="nama-menu">Top Up & Tagihan</div>
             </div>
-            <div class="item-layanan" onclick="bukaLayanan('pln-nontaglis')">
-                <div class="ikon-layanan" style="background:#f97316;">🔧</div>
-                <div class="nama-layanan">PLN Non Taglis</div>
+            <div class="item-menu" onclick="bukaHalaman('topup-ewallet')">
+                <div class="ikon-menu">💳<span class="label-baru">Baru</span></div>
+                <div class="nama-menu">Top Up E-Wallet</div>
             </div>
-            <div class="item-layanan" onclick="bukaLayanan('air')">
-                <div class="ikon-layanan" style="background:#0ea5e9;">💧</div>
-                <div class="nama-layanan">Air</div>
+            <div class="item-menu" onclick="alert('Fitur Undang Teman tersedia')">
+                <div class="ikon-menu">👥</div>
+                <div class="nama-menu">Undang Teman</div>
             </div>
-            <div class="item-layanan" onclick="bukaLayanan('telkom')">
-                <div class="ikon-layanan" style="background:#8b5cf6;">📞</div>
-                <div class="nama-layanan">Telkom</div>
+            <div class="item-menu" onclick="bukaHalaman('deposito')">
+                <div class="ikon-menu">💰</div>
+                <div class="nama-menu">Deposito</div>
             </div>
-            <div class="item-layanan" onclick="bukaLayanan('gas')">
-                <div class="ikon-layanan" style="background:#f59e0b;">🔥</div>
-                <div class="nama-layanan">PGN Gas</div>
+            <div class="item-menu" onclick="bukaHalaman('tarik-tunai')">
+                <div class="ikon-menu">⬇️</div>
+                <div class="nama-menu">Tarik Tunai</div>
             </div>
-            <div class="item-layanan" onclick="bukaLayanan('internet-tv')">
-                <div class="ikon-layanan" style="background:#0284c7;">📡</div>
-                <div class="nama-layanan">Internet & TV Kabel</div>
+            <div class="item-menu" onclick="alert('Fitur Pinjaman tersedia')">
+                <div class="ikon-menu">💸</div>
+                <div class="nama-menu">Pinjaman</div>
             </div>
-            <div class="item-layanan" onclick="bukaLayanan('pascabayar-tagihan')">
-                <div class="ikon-layanan" style="background:#2563eb;">📊</div>
-                <div class="nama-layanan">Pascabayar</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('ipl')">
-                <div class="ikon-layanan" style="background:#3b82f6;">🏢</div>
-                <div class="nama-layanan">IPL</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('asuransi')">
-                <div class="ikon-layanan" style="background:#ef4444;">❤️</div>
-                <div class="nama-layanan">Bayar Asuransi</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('bpjs-kes')">
-                <div class="ikon-layanan" style="background:#10b981;">⚕️</div>
-                <div class="nama-layanan">BPJS Kesehatan</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('bpjs-tk')">
-                <div class="ikon-layanan" style="background:#65a30d;">👷</div>
-                <div class="nama-layanan">BPJS Ketenagakerjaan</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('set-internet')">
-                <div class="ikon-layanan" style="background:#2563eb;">⚙️</div>
-                <div class="nama-layanan">Set Up Internet</div>
+            <div class="item-menu" onclick="alert('Lihat semua layanan')">
+                <div class="ikon-menu">⋮</div>
+                <div class="nama-menu">Lihat Semua</div>
             </div>
         </div>
     </div>
 
-    <!-- Bagian Pembayaran -->
-    <div class="bagian">
-        <h3 class="judul-bagian">Pembayaran</h3>
-        <div class="grid-layanan">
-            <div class="item-layanan" onclick="bukaLayanan('dompet-dhuafa')">
-                <div class="ikon-layanan" style="background:#15803d;">🌿</div>
-                <div class="nama-layanan">Dompet Dhuafa</div>
+    <div class="bagian-promo">
+        <div class="judul-promo">
+            <span>⏱️ Deposito Flash Deals</span>
+            <span>⌄</span>
+        </div>
+        <div class="banner-promo">
+            <div>RAIH UNTUNG BUNGA S.D. 7,25% P.A.<br><small>KEJAR SEKARANG!</small></div>
+        </div>
+    </div>
+
+    <div class="bagian-ewallet">
+        <h4 class="judul-bagian">E-Wallet Terhubung</h4>
+        <div class="grid-ewallet">
+            <div class="kartu-ewallet">
+                <div class="info-ewallet">
+                    <div class="logo-ewallet" style="background:#EF4444; color:white;">S</div>
+                    <div class="nama-ewallet">
+                        <p>H***********t</p>
+                        <p>Rp 0</p>
+                    </div>
+                </div>
+                <span>&gt;</span>
             </div>
-            <div class="item-layanan" onclick="bukaLayanan('donasi')">
-                <div class="ikon-layanan" style="background:#3b82f6;">🤝</div>
-                <div class="nama-layanan">DANA Donasi</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('ecommerce')">
-                <div class="ikon-layanan" style="background:#f59e0b;">🛒</div>
-                <div class="nama-layanan">E-Commerce</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('kartu-kredit')">
-                <div class="ikon-layanan" style="background:#ef4444;">💳</div>
-                <div class="nama-layanan">Bayar Kartu Kredit</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('cicilan')">
-                <div class="ikon-layanan" style="background:#f97316;">📅</div>
-                <div class="nama-layanan">Bayar Cicilan</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('pendidikan')">
-                <div class="ikon-layanan" style="background:#7c3aed;">🎓</div>
-                <div class="nama-layanan">Biaya Pendidikan</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('parkir')">
-                <div class="ikon-layanan" style="background:#2563eb;">🅿️</div>
-                <div class="nama-layanan">Parking</div>
-            </div>
-            <div class="item-layanan" onclick="bukaLayanan('parkee')">
-                <div class="ikon-layanan" style="background:#dc2626;">📍</div>
-                <div class="nama-layanan">Parkee</div>
+            <div class="kartu-ewallet">
+                <div class="info-ewallet">
+                    <div class="logo-ewallet" style="background:#6D28D9; color:white;">O</div>
+                    <div class="nama-ewallet">
+                        <p>OVO</p>
+                        <p>Belum terhubung</p>
+                    </div>
+                </div>
+                <button class="tombol-hubung" onclick="alert('Hubungkan akun OVO')">Hubungkan &gt;</button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Halaman Bayar/Transfer -->
+<div id="halaman-transfer" class="konten">
+    <h3 style="margin-bottom:15px;">Transfer Uang</h3>
+    <div class="kotak-form">
+        <input type="text" id="tujuanTransfer" placeholder="Nomor Rekening / HP">
+        <input type="number" id="nominalTransfer" placeholder="Jumlah transfer" min="1000">
+        <button class="tombol-utama" onclick="mintaPIN('transfer')">Lanjutkan</button>
+    </div>
+</div>
+
+<!-- Halaman Top Up & Tagihan -->
+<div id="halaman-topup-tagihan" class="konten">
+    <h3 style="margin-bottom:15px;">Top Up & Pembayaran</h3>
+    <div class="kotak-form">
+        <p style="margin-bottom:12px; font-weight:500;">Pilih Layanan:</p>
+        <select id="layananTagihan">
+            <option value="pulsa">Pulsa & Data</option>
+            <option value="listrik">Token Listrik</option>
+            <option value="air">PDAM</option>
+            <option value="bpjs">BPJS</option>
+            <option value="telkom">Internet/Telkom</option>
+        </select>
+        <input type="text" id="nomorTagihan" placeholder="Masukkan nomor pelanggan">
+        <input type="number" id="nominalTagihan" placeholder="Jumlah pembayaran" min="5000">
+        <button class="tombol-utama" onclick="mintaPIN('tagihan')">Bayar Sekarang</button>
+    </div>
+</div>
+
+<!-- Halaman Top Up E-Wallet -->
+<div id="halaman-topup-ewallet" class="konten">
+    <h3 style="margin-bottom:15px;">Top Up E-Wallet</h3>
+    <div class="kotak-form">
+        <select id="jenisEwallet">
+            <option value="gopay">GoPay</option>
+            <option value="ovo">OVO</option>
+            <option value="dana">DANA</option>
+            <option value="shopeepay">ShopeePay</option>
+            <option value="linkaja">LinkAja</option>
+        </select>
+        <input type="text" id="nomorEwallet" placeholder="Nomor akun e-wallet">
+        <input type="number" id="nominalEwallet" placeholder="Nominal isi ulang" min="10000">
+        <button class="tombol-utama" onclick="mintaPIN('ewallet')">Proses Top Up</button>
+    </div>
+</div>
+
+<!-- Halaman QRIS -->
+<div id="halaman-qris" class="konten">
+    <h3 style="margin-bottom:15px;">QRIS Pembayaran</h3>
+    <div class="kotak-form" style="text-align:center;">
+        <div id="qrcode" style="margin:0 auto;"></div>
+        <p style="margin-top:15px; color:var(--abu);">Tunjukkan kode ini untuk pembayaran</p>
+        <button class="tombol-utama" style="margin-top:20px;" onclick="buatQRBaru()">Buat Kode Baru</button>
+    </div>
+</div>
+
+<!-- Halaman Deposito -->
+<div id="halaman-deposito" class="konten">
+    <h3 style="margin-bottom:15px;">Deposito</h3>
+    <div class="kotak-form">
+        <p>Bunga hingga 7,25% per tahun</p>
+        <input type="number" id="nominalDeposito" placeholder="Jumlah setoran" min="100000">
+        <select id="jangkaDeposito">
+            <option value="1">1 Bulan</option>
+            <option value="3">3 Bulan</option>
+            <option value="6">6 Bulan</option>
+            <option value="12">12 Bulan</option>
+        </select>
+        <button class="tombol-utama" onclick="mintaPIN('deposito')">Buka Deposito</button>
+    </div>
+</div>
+
+<!-- Halaman Tarik Tunai -->
+<div id="halaman-tarik-tunai" class="konten">
+    <h3 style="margin-bottom:15px;">Tarik Tunai</h3>
+    <div class="kotak-form">
+        <input type="number" id="nominalTarik" placeholder="Jumlah tarik tunai" min="50000">
+        <p style="font-size:13px; color:var(--abu); margin:10px 0;">Bisa diambil di seluruh ATM berlogo bersama</p>
+        <button class="tombol-utama" onclick="mintaPIN('tarik')">Proses Tarik</button>
     </div>
 </div>
 
 <!-- Halaman Riwayat -->
 <div id="halaman-riwayat" class="konten">
-    <h2 style="margin-bottom:20px; color:var(--gelap);">📜 Riwayat Transaksi</h2>
-    <div id="daftarRiwayat" class="daftar-trx"></div>
-</div>
-
-<!-- Halaman Bayar -->
-<div id="halaman-bayar" class="konten">
-    <h2 style="margin-bottom:20px; color:var(--gelap);">💳 Pembayaran</h2>
-    <p style="text-align:center; padding:30px; color:var(--abu);">Pilih layanan pembayaran di halaman utama</p>
+    <h3 style="margin-bottom:15px;">Riwayat Transaksi</h3>
+    <div class="kotak-form daftar-transaksi" id="daftarRiwayat"></div>
 </div>
 
 <!-- Halaman Saya -->
 <div id="halaman-saya" class="konten">
-    <h2 style="margin-bottom:20px; color:var(--gelap);">👤 Akun Saya</h2>
-    <div style="background:white; padding:20px; border-radius:12px; margin-bottom:15px;">
-        <p style="margin:8px 0;">Nama Pengguna: Pengguna Demo</p>
-        <p style="margin:8px 0;">ID Akun: DEMO-12345</p>
-        <p style="margin:8px 0;">Nomor HP: 0812-xxxx-xxx</p>
-        <p style="margin:8px 0;">Saldo: Rp <span id="saldoSaya">0</span></p>
+    <h3 style="margin-bottom:15px;">Akun Saya</h3>
+    <div class="kotak-form">
+        <p>Nama: Muzi Adriyan</p>
+        <p>No. Rekening: 9019 0876 4416</p>
+        <p>Saldo: Rp <span id="infoSaldoSaya">0</span></p>
         <hr style="margin:15px 0;">
-        <button class="tombol-aksi" onclick="bukaLayanan('ganti-pin')">🔐 Ganti PIN Keamanan</button>
+        <button class="tombol-utama" onclick="bukaHalaman('ganti-pin')">🔐 Ubah PIN Keamanan</button>
     </div>
 </div>
 
-<!-- Halaman Isi Saldo -->
-<div id="halaman-isi-saldo" class="konten">
-    <h2>➕ Isi Saldo</h2>
-    <input type="number" id="nominalIsi" placeholder="Masukkan nominal (min Rp10.000)" min="10000">
-    <button class="tombol-aksi" onclick="isiSaldo()">Proses Isi Saldo</button>
-</div>
-
-<!-- Halaman Kirim -->
-<div id="halaman-kirim" class="konten">
-    <h2>➡️ Kirim Uang</h2>
-    <input type="text" id="tujuanKirim" placeholder="Nomor HP / ID Akun">
-    <input type="number" id="nominalKirim" placeholder="Jumlah uang" min="1000">
-    <button class="tombol-aksi" onclick="mintaPIN('kirim')">Lanjutkan</button>
-</div>
-
-<!-- Halaman Minta -->
-<div id="halaman-minta" class="konten">
-    <h2>↓ Minta Uang</h2>
-    <input type="text" id="namaMinta" placeholder="Nama / Nomor Pengirim">
-    <input type="number" id="nominalMinta" placeholder="Jumlah yang diminta" min="1000">
-    <input type="text" id="keteranganMinta" placeholder="Keterangan (opsional)">
-    <button class="tombol-aksi" onclick="buatPermintaan()">Buat Permintaan</button>
-</div>
-
-<!-- Halaman Pesan -->
-<div id="halaman-pesan" class="konten">
-    <h2>✉️ Pesan Masuk</h2>
-    <div id="daftarPesan" class="daftar-pesan"></div>
-</div>
-
-<!-- Halaman QRIS -->
-<div id="halaman-qris" class="konten">
-    <h2>📱 Kode QR Pembayaran</h2>
-    <div style="text-align:center; padding:20px; background:white; border-radius:12px; margin:15px 0;">
-        <div id="qrcode"></div>
-        <p style="margin-top:15px; color:var(--abu);">Tunjukkan kode ini untuk pembayaran</p>
-    </div>
-    <button class="tombol-aksi" onclick="buatQRBaru()">Buat Kode Baru</button>
-</div>
-
-<!-- Halaman Ganti PIN -->
+<!-- Halaman Ubah PIN -->
 <div id="halaman-ganti-pin" class="konten">
-    <h2>🔐 Ganti PIN Keamanan</h2>
-    <input type="password" id="pinLama" placeholder="Masukkan PIN saat ini" maxlength="6">
-    <input type="password" id="pinBaru" placeholder="Masukkan PIN baru" maxlength="6">
-    <input type="password" id="konfirmasiPin" placeholder="Konfirmasi PIN baru" maxlength="6">
-    <button class="tombol-aksi" onclick="prosesGantiPIN()">Simpan Perubahan</button>
+    <h3 style="margin-bottom:15px;">Ubah PIN Keamanan</h3>
+    <div class="kotak-form">
+        <input type="password" id="pinLama" placeholder="PIN Saat Ini" maxlength="6">
+        <input type="password" id="pinBaru" placeholder="PIN Baru (6 digit)" maxlength="6">
+        <input type="password" id="konfirmasiPin" placeholder="Ulangi PIN Baru" maxlength="6">
+        <button class="tombol-utama" onclick="prosesGantiPIN()">Simpan Perubahan</button>
+    </div>
 </div>
 
-<!-- Modal PIN -->
+<!-- Modal Verifikasi PIN -->
 <div id="modalPIN" class="modal">
     <div class="modal-kotak">
-        <h3>Masukkan PIN Transaksi</h3>
+        <h4>Masukkan PIN Transaksi</h4>
         <input type="password" id="inputPIN" class="input-pin" maxlength="6" placeholder="******">
-        <div id="pesanPIN" class="pesan-error"></div>
-        <button class="tombol-aksi" onclick="cekPIN()">Verifikasi</button>
+        <div id="pesanPIN" class="pesan"></div>
+        <button class="tombol-utama" onclick="cekPIN()">Verifikasi</button>
         <button onclick="tutupModal()" style="margin-top:10px; background:none; border:none; color:var(--abu);">Batal</button>
     </div>
 </div>
 
 <!-- Navigasi Bawah -->
 <div class="nav-bawah">
-    <div class="nav-item aktif" onclick="pindahHalaman('home')">
-        <div>🏠</div>
-        <div class="nav-label">Home</div>
+    <div class="nav-item aktif" onclick="pindahNav('beranda')">
+        <div class="nav-ikon">🏠</div>
+        <div class="nav-label">Beranda</div>
     </div>
-    <div class="nav-item" onclick="pindahHalaman('riwayat')">
-        <div>📋</div>
-        <div class="nav-label">Riwayat</div>
+    <div class="nav-item" onclick="pindahNav('transfer')">
+        <div class="nav-ikon">↔️</div>
+        <div class="nav-label">Bayar/Transfer</div>
     </div>
-    <div class="nav-item" onclick="pindahHalaman('bayar')">
-        <div>💳</div>
-        <div class="nav-label">Bayar</div>
+    <div class="nav-item nav-qr" onclick="pindahNav('qris')">
+        <div class="nav-ikon">🔲</div>
     </div>
-    <div class="nav-item" onclick="pindahHalaman('saya')">
-        <div>👤</div>
+    <div class="nav-item" onclick="pindahNav('deposito')">
+        <div class="nav-ikon">Rp</div>
+        <div class="nav-label">Deposito</div>
+    </div>
+    <div class="nav-item" onclick="pindahNav('saya')">
+        <div class="nav-ikon">👤</div>
         <div class="nav-label">Saya</div>
     </div>
 </div>
 
 <script>
-    let saldo = parseInt(localStorage.getItem('saldoDemo')) || 0;
-    let riwayat = JSON.parse(localStorage.getItem('riwayatDemo')) || [];
-    let pinAkun = localStorage.getItem('pinDemo') || '123456';
-    let pesanMasuk = JSON.parse(localStorage.getItem('pesanMasuk')) || [
-        {id:1, judul:"Permintaan Dana", isi:"Anda menerima permintaan Rp 50.000 dari Budi", waktu:"Hari ini, 09:30", dibaca:false},
-        {id:2, judul:"Info Promo", isi:"Diskon 10% untuk semua pulsa hari ini!", waktu:"Hari ini, 08:15", dibaca:false}
-    ];
+    // Data Awal
+    let saldo = parseInt(localStorage.getItem('saldoAkun')) || 0;
+    let saldoTabungan = parseInt(localStorage.getItem('saldoTabungan')) || 0;
+    let saldoDeposito = parseInt(localStorage.getItem('saldoDeposito')) || 0;
+    let riwayat = JSON.parse(localStorage.getItem('riwayatTransaksi')) || [];
+    let pinAkun = localStorage.getItem('pinAkun') || '123456';
     let aksiSetelahPIN = null;
 
+    // Tampilkan Data
     perbaruiTampilan();
     buatQR();
-    tampilkanPesan();
 
-    function pindahHalaman(nama) {
-        document.querySelectorAll('.konten').forEach(k => k.classList.remove('aktif'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('aktif'));
-        document.getElementById(`halaman-${nama}`).classList.add('aktif');
+    // Pindah Halaman Navigasi Bawah
+    function pindahNav(halaman) {
+        document.querySelectorAll('.konten').forEach(el => el.classList.remove('aktif'));
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('aktif'));
+        document.getElementById(`halaman-${halaman}`).classList.add('aktif');
         event.currentTarget.classList.add('aktif');
-        if(nama === 'riwayat') tampilkanRiwayat();
-        if(nama === 'saya') document.getElementById('saldoSaya').textContent = saldo.toLocaleString('id-ID');
+        if(halaman === 'riwayat') tampilkanRiwayat();
+        if(halaman === 'saya') document.getElementById('infoSaldoSaya').textContent = saldo.toLocaleString('id-ID');
     }
 
-    function bukaLayanan(nama) {
-        if(['isi-saldo','kirim','minta','pesan','qris','ganti-pin'].includes(nama)) {
-            document.querySelectorAll('.konten').forEach(k => k.classList.remove('aktif'));
-            document.getElementById(`halaman-${nama}`).classList.add('aktif');
-            if(nama === 'pesan') tandaiSemuaDibaca();
-        } else if(nama === 'riwayat') {
-            pindahHalaman('riwayat');
-        } else {
-            alert(`✅ Layanan ${nama.replace('-',' ')} tersedia! Ini versi demo.`);
-        }
+    // Buka Halaman Tertentu
+    function bukaHalaman(nama) {
+        document.querySelectorAll('.konten').forEach(el => el.classList.remove('aktif'));
+        document.getElementById(`halaman-${nama}`).classList.add('aktif');
     }
 
+    // Perbarui Tampilan Saldo
     function perbaruiTampilan() {
-        document.getElementById('jumlahSaldo').textContent = saldo.toLocaleString('id-ID');
-        localStorage.setItem('saldoDemo', saldo);
-        localStorage.setItem('riwayatDemo', JSON.stringify(riwayat));
+        document.getElementById('saldoUtama').textContent = saldo.toLocaleString('id-ID');
+        document.getElementById('saldoTabungan').textContent = saldoTabungan.toLocaleString('id-ID');
+        document.getElementById('saldoDeposito').textContent = saldoDeposito.toLocaleString('id-ID');
+        localStorage.setItem('saldoAkun', saldo);
+        localStorage.setItem('saldoTabungan', saldoTabungan);
+        localStorage.setItem('saldoDeposito', saldoDeposito);
+        localStorage.setItem('riwayatTransaksi', JSON.stringify(riwayat));
     }
 
-    function isiSaldo() {
-        let nominal = parseInt(document.getElementById('nominalIsi').value);
-        if(!nominal || nominal < 10000) return alert('Minimal isi saldo Rp10.000');
-        saldo += nominal;
-        riwayat.unshift({jenis:'masuk', keterangan:'Isi Saldo', jumlah:nominal, waktu:new Date().toLocaleString('id-ID')});
-        perbaruiTampilan();
-        alert(`✅ Berhasil menambah saldo Rp${nominal.toLocaleString('id-ID')}`);
-        document.getElementById('nominalIsi').value = '';
-    }
-
+    // Minta PIN
     function mintaPIN(aksi) {
         aksiSetelahPIN = aksi;
         document.getElementById('inputPIN').value = '';
@@ -510,11 +793,12 @@
         document.getElementById('modalPIN').style.display = 'flex';
     }
 
+    // Cek PIN
     function cekPIN() {
-        let input = document.getElementById('inputPIN').value;
+        const input = document.getElementById('inputPIN').value;
         if(input === pinAkun) {
             tutupModal();
-            if(aksiSetelahPIN === 'kirim') prosesKirim();
+            prosesTransaksi();
         } else {
             document.getElementById('pesanPIN').textContent = '❌ PIN salah, coba lagi';
         }
@@ -525,104 +809,120 @@
         aksiSetelahPIN = null;
     }
 
-    function prosesKirim() {
-        let tujuan = document.getElementById('tujuanKirim').value.trim();
-        let nominal = parseInt(document.getElementById('nominalKirim').value);
-        if(!tujuan || !nominal || nominal < 1000) return alert('Lengkapi semua data dengan benar!');
-        if(nominal > saldo) return alert('❌ Saldo tidak cukup!');
-        saldo -= nominal;
-        riwayat.unshift({jenis:'keluar', keterangan:`Kirim ke ${tujuan}`, jumlah:nominal, waktu:new Date().toLocaleString('id-ID')});
-        perbaruiTampilan();
-        alert(`✅ Berhasil mengirim Rp${nominal.toLocaleString('id-ID')}`);
-        document.getElementById('tujuanKirim').value = '';
-        document.getElementById('nominalKirim').value = '';
-    }
+    // Proses Semua Transaksi
+    function prosesTransaksi() {
+        let nominal, keterangan;
 
-    function buatPermintaan() {
-        let nama = document.getElementById('namaMinta').value.trim();
-        let nominal = parseInt(document.getElementById('nominalMinta').value);
-        let keterangan = document.getElementById('keteranganMinta').value || 'Tidak ada keterangan';
-        if(!nama || !nominal || nominal < 1000) return alert('Lengkapi data dengan benar!');
-        pesanMasuk.unshift({
-            id: Date.now(),
-            judul: 'Permintaan Uang Terkirim',
-            isi: `Permintaan Rp${nominal.toLocaleString('id-ID')} ke ${nama} terkirim. ${keterangan}`,
-            waktu: new Date().toLocaleString('id-ID'),
-            dibaca: false
-        });
-        simpanPesan();
-        tampilkanPesan();
-        alert('✅ Permintaan berhasil dibuat');
-        document.getElementById('namaMinta').value = '';
-        document.getElementById('nominalMinta').value = '';
-        document.getElementById('keteranganMinta').value = '';
-    }
+        switch(aksiSetelahPIN) {
+            case 'transfer':
+                const tujuan = document.getElementById('tujuanTransfer').value.trim();
+                nominal = parseInt(document.getElementById('nominalTransfer').value);
+                if(!tujuan || !nominal || nominal < 1000) return alert('Lengkapi data transfer!');
+                if(nominal > saldo) return alert('Saldo tidak cukup!');
+                saldo -= nominal;
+                keterangan = `Transfer ke ${tujuan}`;
+                break;
 
-    function tampilkanPesan() {
-        let belumDibaca = pesanMasuk.filter(p => !p.dibaca).length;
-        document.getElementById('notifPesan').style.display = belumDibaca > 0 ? 'flex' : 'none';
-        document.getElementById('notifPesan').textContent = belumDibaca;
+            case 'tagihan':
+                const layanan = document.getElementById('layananTagihan').value;
+                const nomor = document.getElementById('nomorTagihan').value.trim();
+                nominal = parseInt(document.getElementById('nominalTagihan').value);
+                if(!nomor || !nominal) return alert('Lengkapi data pembayaran!');
+                if(nominal > saldo) return alert('Saldo tidak cukup!');
+                saldo -= nominal;
+                keterangan = `Bayar ${layanan.toUpperCase()} - No: ${nomor}`;
+                break;
 
-        let html = pesanMasuk.length ? pesanMasuk.map(p => `
-            <div class="item-pesan ${p.dibaca ? '' : 'belum-dibaca'}" onclick="bacaPesan(${p.id})">
-                <h4>${p.judul}</h4>
-                <p>${p.isi}</p>
-                <small>${p.waktu}</small>
-            </div>`).join('') : '<p style="text-align:center; padding:30px; color:var(--abu);">Belum ada pesan</p>';
-        document.getElementById('daftarPesan').innerHTML = html;
-    }
+            case 'ewallet':
+                const jenis = document.getElementById('jenisEwallet').value;
+                const noAkun = document.getElementById('nomorEwallet').value.trim();
+                nominal = parseInt(document.getElementById('nominalEwallet').value);
+                if(!noAkun || !nominal) return alert('Lengkapi data!');
+                if(nominal > saldo) return alert('Saldo tidak cukup!');
+                saldo -= nominal;
+                keterangan = `Top Up ${jenis.toUpperCase()} - No: ${noAkun}`;
+                break;
 
-    function bacaPesan(id) {
-        let pesan = pesanMasuk.find(p => p.id === id);
-        if(pesan) {
-            pesan.dibaca = true;
-            simpanPesan();
-            tampilkanPesan();
+            case 'deposito':
+                nominal = parseInt(document.getElementById('nominalDeposito').value);
+                const jangka = document.getElementById('jangkaDeposito').value;
+                if(!nominal || nominal < 100000) return alert('Minimal Rp100.000');
+                if(nominal > saldo) return alert('Saldo tidak cukup!');
+                saldo -= nominal;
+                saldoDeposito += nominal;
+                keterangan = `Buka Deposito ${jangka} Bulan`;
+                break;
+
+            case 'tarik':
+                nominal = parseInt(document.getElementById('nominalTarik').value);
+                if(!nominal || nominal < 50000) return alert('Minimal tarik Rp50.000');
+                if(nominal > saldo) return alert('Saldo tidak cukup!');
+                saldo -= nominal;
+                keterangan = 'Tarik Tunai ATM';
+                break;
+
+            default: return;
         }
+
+        // Simpan ke Riwayat
+        riwayat.unshift({
+            jenis: 'keluar',
+            keterangan: keterangan,
+            jumlah: nominal,
+            waktu: new Date().toLocaleString('id-ID')
+        });
+
+        perbaruiTampilan();
+        alert(`✅ Berhasil!\n${keterangan}\nRp ${nominal.toLocaleString('id-ID')}`);
+
+        // Kosongkan Input
+        document.querySelectorAll('input').forEach(i => i.value = '');
     }
 
-    function tandaiSemuaDibaca() {
-        pesanMasuk.forEach(p => p.dibaca = true);
-        simpanPesan();
-        tampilkanPesan();
-    }
-
-    function simpanPesan() {
-        localStorage.setItem('pesanMasuk', JSON.stringify(pesanMasuk));
-    }
-
+    // Proses Ubah PIN
     function prosesGantiPIN() {
-        let pinLama = document.getElementById('pinLama').value;
-        let pinBaru = document.getElementById('pinBaru').value;
-        let konfirmasi = document.getElementById('konfirmasiPin').value;
+        const pinLama = document.getElementById('pinLama').value;
+        const pinBaru = document.getElementById('pinBaru').value;
+        const konfirmasi = document.getElementById('konfirmasiPin').value;
 
         if(pinLama !== pinAkun) return alert('❌ PIN lama salah!');
         if(pinBaru.length !== 6) return alert('PIN baru harus 6 digit!');
         if(pinBaru !== konfirmasi) return alert('❌ Konfirmasi PIN tidak cocok!');
 
         pinAkun = pinBaru;
-        localStorage.setItem('pinDemo', pinAkun);
+        localStorage.setItem('pinAkun', pinAkun);
         alert('✅ PIN berhasil diubah!');
         document.getElementById('pinLama').value = '';
         document.getElementById('pinBaru').value = '';
         document.getElementById('konfirmasiPin').value = '';
-        pindahHalaman('saya');
+        bukaHalaman('saya');
     }
 
+    // Buat QR
     function buatQR() {
-        QRCode.toCanvas(document.getElementById('qrcode'), `ID:DEMO-12345 | Saldo:Rp${saldo.toLocaleString('id-ID')}`, {width:180, height:180, margin:2});
+        QRCode.toCanvas(document.getElementById('qrcode'), `ID:901908764416 | Nama:Muzi Adriyan`, {width:180, height:180, margin:2});
     }
-    function buatQRBaru() { buatQR(); alert('✅ Kode QR diperbarui'); }
 
+    function buatQRBaru() {
+        buatQR();
+        alert('✅ Kode QR diperbarui');
+    }
+
+    // Tampilkan Riwayat
     function tampilkanRiwayat() {
-        let html = riwayat.length ? riwayat.map(trx => `
-            <div class="item-trx ${trx.jenis}">
-                <div>
-                    <h4>${trx.keterangan}</h4>
-                    <small>${trx.waktu}</small>
-                </div>
-                <div>${trx.jenis==='masuk' ? '+' : '-'} Rp${trx.jumlah.toLocaleString('id-ID')}</div>
-            </div>`).join('') : '<p style="text-align:center; padding:30px; color:var(--abu);">Belum ada transaksi</p>';
+        let html = '';
+        if(riwayat.length === 0) {
+            html = '<p style="text-align:center; color:var(--abu); padding:20px;">Belum ada transaksi</p>';
+        } else {
+            html = riwayat.map(trx => `
+                <div class="item-trx ${trx.jenis}">
+                    <div>
+                        <h4>${trx.keterangan}</h4>
+                        <small>${trx.waktu}</small>
+                    </div>
+                    <div>${trx.jenis === 'masuk' ? '+' : '-'} Rp ${trx.jumlah.toLocaleString('id-ID')}</div>
+                </div>`).join('');
+        }
         document.getElementById('daftarRiwayat').innerHTML = html;
     }
 </script>
