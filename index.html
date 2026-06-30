@@ -3,186 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peta Acak & Labirin</title>
+    <title>Game Ular Cerdas</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background: #222; color: white; text-align: center; padding: 20px; }
-        h1 { color: #4ade80; margin-bottom: 15px; }
-        .info-atas {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #4ade80;
+            text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+        }
+
+        .info-bar {
+            display: flex;
             gap: 30px;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        #skor { color: #fbbf24; }
+        #level { color: #38bdf8; }
+
+        #papan {
+            width: 400px;
+            height: 400px;
+            background: #1e293b;
+            border: 3px solid #4ade80;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kotak {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .kepala {
+            background: #4ade80;
+            border: 2px solid #166534;
+            border-radius: 6px;
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+        }
+
+        .badan {
+            background: #22c55e;
+            border: 1px solid #15803d;
+        }
+
+        .makanan {
+            background: #ef4444;
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.7);
+            animation: kedip 0.8s infinite alternate;
+        }
+
+        @keyframes kedip {
+            from { transform: scale(1); }
+            to { transform: scale(1.15); }
+        }
+
+        .tombol {
+            margin-top: 25px;
+            padding: 12px 30px;
             font-size: 20px;
             font-weight: bold;
-            margin-bottom: 15px;
-        }
-        #waktu { color: #f87171; }
-        #skor { color: #fbbf24; }
-        #peta {
-            display: grid;
-            gap: 1px;
-            background: #444;
-            margin: 0 auto;
-            border: 3px solid #fff;
-            width: fit-content;
-        }
-        .kotak {
-            width: 22px;
-            height: 22px;
-            transition: 0.1s;
-        }
-        .dinding { background: #111; }
-        .jalan { background: #86efac; }
-        .pemain { background: #3b82f6; border-radius: 4px; }
-        .tujuan { background: #fbbf24; border-radius: 4px; }
-        button {
-            margin: 12px 8px;
-            padding: 10px 20px;
-            font-size: 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #4ade80, #22c55e);
+            color: white;
             cursor: pointer;
-            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
+            transition: transform 0.2s;
         }
-        .btn-buat { background: #4ade80; }
-        .btn-kontrol { background: #3b82f6; width: 60px; height: 60px; font-size: 22px; }
+
+        .tombol:hover {
+            transform: scale(1.05);
+        }
+
+        .kontrol-hp {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(3, 70px);
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .arah {
+            width: 70px;
+            height: 70px;
+            font-size: 28px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50%;
+            background: #38bdf8;
+            color: white;
+            box-shadow: 0 3px 10px rgba(56, 189, 248, 0.4);
+            cursor: pointer;
+        }
+
+        .kosong { visibility: hidden; }
+
+        #pesan {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fbbf24;
+            min-height: 30px;
+        }
     </style>
 </head>
 <body>
 
-    <h1>🗺️ Peta Acak & Labirin</h1>
+    <h1>🐍 ULAR MAKAN BUAH</h1>
 
-    <div class="info-atas">
-        <div>Waktu: <span id="waktu">60</span> dtk</div>
+    <div class="info-bar">
         <div>Skor: <span id="skor">0</span></div>
+        <div>Level: <span id="level">1</span></div>
+        <div>Rekor: <span id="rekor">0</span></div>
     </div>
 
-    <button class="btn-buat" onclick="mulaiPermainan()">Mulai Permainan</button>
-    <div id="peta"></div>
+    <div id="papan"></div>
 
-    <div style="margin-top:15px;">
-        <button class="btn-kontrol" onclick="gerak('atas')">↑</button><br>
-        <button class="btn-kontrol" onclick="gerak('kiri')">←</button>
-        <button class="btn-kontrol" onclick="gerak('bawah')">↓</button>
-        <button class="btn-kontrol" onclick="gerak('kanan')">→</button>
+    <button class="tombol" id="mulaiBtn">Mulai Main</button>
+    <div id="pesan"></div>
+
+    <div class="kontrol-hp">
+        <div class="kosong"></div>
+        <button class="arah" onclick="gerak('atas')">↑</button>
+        <div class="kosong"></div>
+        <button class="arah" onclick="gerak('kiri')">←</button>
+        <div class="kosong"></div>
+        <button class="arah" onclick="gerak('kanan')">→</button>
+        <div class="kosong"></div>
+        <button class="arah" onclick="gerak('bawah')">↓</button>
+        <div class="kosong"></div>
     </div>
 
     <script>
-        const UKURAN = 15;
-        let peta = [];
-        let posPemain = {x:1, y:1};
-        let posTujuan = {x:UKURAN-2, y:UKURAN-2};
-        let sisaWaktu = 60;
+        const papan = document.getElementById('papan');
+        const skorTampilan = document.getElementById('skor');
+        const levelTampilan = document.getElementById('level');
+        const rekorTampilan = document.getElementById('rekor');
+        const mulaiBtn = document.getElementById('mulaiBtn');
+        const pesan = document.getElementById('pesan');
+
+        let ukuranKotak = 20;
+        let lebarPapan = 400;
+        let tinggiPapan = 400;
+        let lebarGrid = lebarPapan / ukuranKotak;
+        let tinggiGrid = tinggiPapan / ukuranKotak;
+
+        let ular = [{x: 10, y: 10}];
+        let arah = 'kanan';
+        let makanan = {};
         let skor = 0;
-        let timerWaktu;
+        let level = 1;
+        let kecepatan = 180;
+        let intervalMain;
         let sedangMain = false;
 
+        // Ambil rekor dari penyimpanan
+        let rekor = localStorage.getItem('rekorUlar') || 0;
+        rekorTampilan.textContent = rekor;
+
+        function gambarSemua() {
+            papan.innerHTML = '';
+
+            // Gambar ular
+            ular.forEach((bagian, indeks) => {
+                const elemen = document.createElement('div');
+                elemen.classList.add('kotak', indeks === 0 ? 'kepala' : 'badan');
+                elemen.style.left = `${bagian.x * ukuranKotak}px`;
+                elemen.style.top = `${bagian.y * ukuranKotak}px`;
+                papan.appendChild(elemen);
+            });
+
+            // Gambar makanan
+            const makananElemen = document.createElement('div');
+            makananElemen.classList.add('kotak', 'makanan');
+            makananElemen.style.left = `${makanan.x * ukuranKotak}px`;
+            makananElemen.style.top = `${makanan.y * ukuranKotak}px`;
+            papan.appendChild(makananElemen);
+        }
+
+        function buatMakanan() {
+            let posisi;
+            let diBadanUlar;
+            do {
+                diBadanUlar = false;
+                posisi = {
+                    x: Math.floor(Math.random() * lebarGrid),
+                    y: Math.floor(Math.random() * tinggiGrid)
+                };
+                // Cek tidak muncul di badan ular
+                ular.forEach(bagian => {
+                    if (bagian.x === posisi.x && bagian.y === posisi.y) diBadanUlar = true;
+                });
+            } while (diBadanUlar);
+            makanan = posisi;
+        }
+
+        function gerakUlar() {
+            const kepalaBaru = { ...ular[0] };
+
+            if (arah === 'atas') kepalaBaru.y--;
+            if (arah === 'bawah') kepalaBaru.y++;
+            if (arah === 'kiri') kepalaBaru.x--;
+            if (arah === 'kanan') kepalaBaru.x++;
+
+            // Cek tabrakan dinding
+            if (
+                kepalaBaru.x < 0 || kepalaBaru.x >= lebarGrid ||
+                kepalaBaru.y < 0 || kepalaBaru.y >= tinggiGrid
+            ) return gameSelesai();
+
+            // Cek tabrakan badan sendiri
+            ular.forEach(bagian => {
+                if (bagian.x === kepalaBaru.x && bagian.y === kepalaBaru.y) return gameSelesai();
+            });
+
+            // Masukkan kepala baru
+            ular.unshift(kepalaBaru);
+
+            // Cek makan
+            if (kepalaBaru.x === makanan.x && kepalaBaru.y === makanan.y) {
+                skor += 10;
+                skorTampilan.textContent = skor;
+                naikLevel();
+                buatMakanan();
+            } else {
+                ular.pop();
+            }
+
+            gambarSemua();
+        }
+
+        function naikLevel() {
+            if (skor % 50 === 0 && kecepatan > 80) {
+                level++;
+                kecepatan -= 15;
+                levelTampilan.textContent = level;
+                clearInterval(intervalMain);
+                intervalMain = setInterval(gerakUlar, kecepatan);
+                pesan.textContent = `🔥 Level Naik! Sekarang lebih cepat!`;
+                setTimeout(() => pesan.textContent = '', 2000);
+            }
+        }
+
+        function gameSelesai() {
+            clearInterval(intervalMain);
+            sedangMain = false;
+            mulaiBtn.textContent = 'Main Lagi';
+            
+            if (skor > rekor) {
+                rekor = skor;
+                localStorage.setItem('rekorUlar', rekor);
+                rekorTampilan.textContent = rekor;
+                pesan.textContent = `🎉 Bagus! Rekor baru: ${rekor} poin!`;
+            } else {
+                pesan.textContent = `Game Over! Skor kamu: ${skor}`;
+            }
+        }
+
         function mulaiPermainan() {
-            bersihkanSemua();
-            buatPetaBaru();
-            mulaiHitungWaktu();
+            clearInterval(intervalMain);
+            ular = [{x: 10, y: 10}];
+            arah = 'kanan';
+            skor = 0;
+            level = 1;
+            kecepatan = 180;
+            skorTampilan.textContent = skor;
+            levelTampilan.textContent = level;
+            pesan.textContent = '';
+            buatMakanan();
+            gambarSemua();
             sedangMain = true;
+            mulaiBtn.textContent = 'Sedang Bermain';
+            intervalMain = setInterval(gerakUlar, kecepatan);
         }
 
-        function bersihkanSemua() {
-            clearInterval(timerWaktu);
-            sisaWaktu = 60;
-            document.getElementById('waktu').textContent = sisaWaktu;
-        }
-
-        function buatPetaBaru() {
-            peta = Array(UKURAN).fill().map(() => Array(UKURAN).fill(1));
-            let tumpukan = [{x:1, y:1}];
-            peta[1][1] = 0;
-
-            while(tumpukan.length > 0) {
-                let sekarang = tumpukan.pop();
-                let arah = kocok([[0,-2],[0,2],[-2,0],[2,0]]);
-                for(let [dx, dy] of arah) {
-                    let nx = sekarang.x + dx;
-                    let ny = sekarang.y + dy;
-                    if(nx > 0 && nx < UKURAN-1 && ny > 0 && ny < UKURAN-1 && peta[ny][nx] === 1) {
-                        peta[ny][nx] = 0;
-                        peta[sekarang.y + dy/2][sekarang.x + dx/2] = 0;
-                        tumpukan.push({x:nx, y:ny});
-                    }
-                }
-            }
-            posPemain = {x:1, y:1};
-            gambarPeta();
-        }
-
-        function gambarPeta() {
-            const wadah = document.getElementById('peta');
-            wadah.innerHTML = '';
-            wadah.style.gridTemplateColumns = `repeat(${UKURAN}, auto)`;
-
-            for(let y = 0; y < UKURAN; y++) {
-                for(let x = 0; x < UKURAN; x++) {
-                    const kotak = document.createElement('div');
-                    kotak.classList.add('kotak');
-                    if(x === posPemain.x && y === posPemain.y) {
-                        kotak.classList.add('pemain');
-                    } else if(x === posTujuan.x && y === posTujuan.y) {
-                        kotak.classList.add('tujuan');
-                    } else {
-                        kotak.classList.add(peta[y][x] === 1 ? 'dinding' : 'jalan');
-                    }
-                    wadah.appendChild(kotak);
-                }
+        // Kontrol
+        function gerak(arahBaru) {
+            if (!sedangMain) return;
+            if (
+                (arahBaru === 'atas' && arah !== 'bawah') ||
+                (arahBaru === 'bawah' && arah !== 'atas') ||
+                (arahBaru === 'kiri' && arah !== 'kanan') ||
+                (arahBaru === 'kanan' && arah !== 'kiri')
+            ) {
+                arah = arahBaru;
             }
         }
 
-        function gerak(arah) {
-            if(!sedangMain) return;
-            let nx = posPemain.x;
-            let ny = posPemain.y;
-
-            if(arah === 'atas') ny--;
-            if(arah === 'bawah') ny++;
-            if(arah === 'kiri') nx--;
-            if(arah === 'kanan') nx++;
-
-            if(nx >= 0 && nx < UKURAN && ny >= 0 && ny < UKURAN && peta[ny][nx] === 0) {
-                posPemain = {x:nx, y:ny};
-                gambarPeta();
-                cekTujuan();
-            }
-        }
-
-        function cekTujuan() {
-            if(posPemain.x === posTujuan.x && posPemain.y === posTujuan.y) {
-                clearInterval(timerWaktu);
-                skor += sisaWaktu * 2;
-                document.getElementById('skor').textContent = skor;
-                alert(`🎉 Berhasil! Skor ditambah ${sisaWaktu * 2} poin`);
-                sedangMain = false;
-            }
-        }
-
-        function mulaiHitungWaktu() {
-            timerWaktu = setInterval(() => {
-                sisaWaktu--;
-                document.getElementById('waktu').textContent = sisaWaktu;
-                if(sisaWaktu <= 0) {
-                    clearInterval(timerWaktu);
-                    alert('⏱️ Waktu Habis! Coba lagi');
-                    sedangMain = false;
-                }
-            }, 1000);
-        }
-
-        function kocok(arr) {
-            return arr.sort(() => Math.random() - 0.5);
-        }
-
-        document.addEventListener('keydown', e => {
-            if(!sedangMain) return;
-            if(e.key === 'ArrowUp') gerak('atas');
-            if(e.key === 'ArrowDown') gerak('bawah');
-            if(e.key === 'ArrowLeft') gerak('kiri');
-            if(e.key === 'ArrowRight') gerak('kanan');
+        document.addEventListener('keydown', (e) => {
+            if (!sedangMain) return;
+            if (e.key === 'ArrowUp') gerak('atas');
+            if (e.key === 'ArrowDown') gerak('bawah');
+            if (e.key === 'ArrowLeft') gerak('kiri');
+            if (e.key === 'ArrowRight') gerak('kanan');
         });
+
+        mulaiBtn.addEventListener('click', mulaiPermainan);
+        gambarSemua();
     </script>
 </body>
 </html>
