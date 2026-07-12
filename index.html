@@ -792,20 +792,26 @@
     }
 
     // Cek PIN
-    function cekPIN() {
-        const input = document.getElementById('inputPIN').value.trim();
-        if (input === pinAkun) {
-            tutupModal();
-            prosesTransaksi();
-        } else {
-            document.getElementById('pesanPIN').textContent = '❌ PIN salah, coba lagi';
-        }
+function cekPIN() {
+    const input = document.getElementById('inputPIN').value.trim();
+
+    if (input === pinAkun) {
+        document.getElementById('modalPIN').style.display = 'none';
+        document.getElementById('pesanPIN').textContent = '';
+
+        prosesTransaksi();
+
+        aksiSetelahPIN = null;
+    } else {
+        document.getElementById('pesanPIN').textContent = '❌ PIN salah, coba lagi';
     }
+}
 
     function tutupModal() {
-        document.getElementById('modalPIN').style.display = 'none';
-        aksiSetelahPIN = null;
-    }
+    document.getElementById('modalPIN').style.display = 'none';
+    document.getElementById('pesanPIN').textContent = '';
+}
+    
 
     // Proses inti transaksi - DIPERBAIKI SEPENUHNYA
     function prosesTransaksi() {
