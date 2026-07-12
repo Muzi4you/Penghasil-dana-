@@ -853,13 +853,8 @@ function cekPIN() {
                 if (total > saldo) return alert(`Saldo tidak cukup! Diperlukan Rp ${total.toLocaleString('id-ID')}`);
                 
                 saldo = saldo - total;
-                const namaPenerima = "Muzi Adriyan";
-                keterangan =
-                    `Top Up DANA
-                    Atas Nama : ${namaPenerima}
-                    Nomor     : ${noDana}
-                    Nominal   : Rp ${nominal.toLocaleString('id-ID')}
-                    Biaya Admin : Rp ${biaya.toLocaleString('id-ID')}`;
+                keterangan = `Top Up DANA ke ${noDana} | Rp${nominal} + Admin Rp${biaya}`;
+                break;
 
             case 'tarik':
                 nominal = Number(document.getElementById('nominalTarik').value);
@@ -920,35 +915,27 @@ function cekPIN() {
         alert('✅ Kode QR diperbarui');
     }
 
-function tampilkanRiwayat() {
-    let daftarHTML = '';
-
-    if (riwayat.length === 0) {
-        daftarHTML = `
-            <p style="text-align:center; color:#94a3b8; padding:30px;">
-                Belum ada riwayat transaksi
-            </p>
-        `;
-    } else {
-        daftarHTML = riwayat.map(trx => `
-            <div class="item-trx ${trx.jenis}">
-                <div class="info-trx">
-                    <h4 style="white-space: pre-line; line-height: 1.6; font-family: 'Courier New', monospace; margin:0;">
-${trx.keterangan}
-                    </h4>
-                    <small style="color:#94a3b8; font-size:0.8rem; margin-top:4px; display:block;">${trx.waktu}</small>
+    // Tampilkan riwayat
+    function tampilkanRiwayat() {
+        let daftarHTML = '';
+        if (riwayat.length === 0) {
+            daftarHTML = '<p style="text-align:center; color:var(--abu); padding:40px;">Belum ada riwayat transaksi</p>';
+        } else {
+            daftarHTML = riwayat.map(trx => `
+                <div class="item-trx ${trx.jenis}">
+                    <div class="info-trx">
+                        <h4>${trx.keterangan}</h4>
+                        <small>${trx.waktu}</small>
+                    </div>
+                    <div class="jumlah-trx">
+                        ${trx.jenis === 'masuk' ? '+' : '-'} Rp ${trx.jumlah.toLocaleString('id-ID')}
+                    </div>
                 </div>
-                <div class="jumlah-trx">
-                    <strong style="color: ${trx.jenis === 'masuk' ? '#10b981' : '#ef4444'}; font-size:1.1rem;">
-                        ${trx.jenis === 'masuk' ? '+' : '-'} Rp ${trx.nominal.toLocaleString('id-ID')}
-                    </strong>
-                </div>
-            </div>
-        `).join('');
+            `).join('');
+        }
+        document.getElementById('daftarRiwayat').innerHTML = daftarHTML;
     }
-
-    document.getElementById('daftarRiwayat').innerHTML = daftarHTML;
-}
 </script>
 </body>
 </html>
+  NIH pin nya brp 
