@@ -821,14 +821,26 @@
                 break;
 
             case 'topup_dana':
+
                 const noDana = document.getElementById('nomorDana').value.trim();
+                const namaDana = document.getElementById('namaDana').value.trim();
                 nominal = Number(document.getElementById('nominalDana').value);
                 const biaya = 1000;
                 total = nominal + biaya;
-                if (!noDana || isNaN(nominal) || nominal < 10000) return alert('Minimal Rp10.000 & masukkan nomor yang benar!');
-                if (total > saldo) return alert(`Saldo tidak cukup! Diperlukan Rp ${total.toLocaleString('id-ID')}`);
+    
+                if (!noDana || !namaDana || isNaN(nominal) || nominal < 10000) {
+                return alert('Lengkapi semua data! Minimal Rp10.000');
+                }
+                if (total > saldo) {
+                return alert(`Saldo tidak cukup! Diperlukan Rp ${total.toLocaleString('id-ID')}`);
+                }
+                
                 saldo -= total;
-                keterangan = `Top Up DANA\nAtas Nama : Muzi Adriyan\nNomor     : ${noDana}\nNominal   : Rp ${nominal.toLocaleString('id-ID')}\nBiaya Admin : Rp ${biaya.toLocaleString('id-ID')}`;
+                keterangan = `Top Up DANA
+                Atas Nama : ${namaDana}
+                Nomor     : ${noDana}
+                Nominal   : Rp ${nominal.toLocaleString('id-ID')}
+                Biaya Admin : Rp ${biaya.toLocaleString('id-ID')}`;
                 break;
 
             case 'tarik':
