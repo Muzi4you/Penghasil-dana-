@@ -714,7 +714,7 @@
     <div class="daftar-transaksi" id="daftarRiwayat"></div>
 </div>
 
-<!-- ✅ BAGIAN SAYA YANG SUDAH DIUBAH - WARNA UTAMA TETAP BIRU -->
+<!-- ✅ BAGIAN SAYA SUDAH DIPERBAIKI & LENGKAP -->
 <div id="halaman-saya" class="konten">
     <div style="background: var(--utama); color: white; padding: 30px 20px 40px; margin: -20px -15px 0; position: relative;">
         <div style="position: absolute; top: 25px; right: 20px; font-size: 24px;">
@@ -883,7 +883,6 @@
         document.getElementById(`halaman-${halaman}`).classList.add('aktif');
         event.currentTarget.classList.add('aktif');
         if (halaman === 'riwayat') tampilkanRiwayat();
-        if (halaman === 'saya') document.getElementById('infoSaldoSaya')?.textContent = saldo.toLocaleString('id-ID');
     }
 
     function bukaHalaman(nama) {
@@ -1109,4 +1108,6 @@ Waktu : ${trx.waktu}
 
     function kirimPengajuanPinjaman() {
         const nama = document.getElementById('namaPeminjam').value.trim();
-        const nik = document.getElementById('nikPemin
+        const nik = document.getElementById('nikPeminjam').value.trim();
+        const nominal = document.getElementById('nominalPinjaman').value;
+        const lama = document.getElementById('lamaPinjaman').value;
