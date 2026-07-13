@@ -14,7 +14,7 @@
         }
 
         :root {
-            --utama: #0066CC; /* Ganti ke biru */
+            --utama: #0066CC;
             --gelap: #1A1A1A;
             --abu: #757575;
             --abu-terang: #F8F9FA;
@@ -29,7 +29,6 @@
             padding-bottom: 90px;
         }
 
-        /* Header Atas */
         .header-atas {
             display: flex;
             justify-content: space-between;
@@ -86,7 +85,6 @@
             border-radius: 10px;
         }
 
-        /* Kartu Saldo - Ubah ke Biru & Ukuran Angka Lebih Kecil */
         .kartu-saldo {
             background: linear-gradient(135deg, #0066CC, #004C99);
             color: white;
@@ -134,11 +132,10 @@
         }
 
         .jumlah-saldo {
-            font-size: 28px; /* Ukuran diperkecil dari 36px */
+            font-size: 28px;
             font-weight: 700;
         }
 
-        /* Menu Utama */
         .menu-utama {
             background: white;
             margin: 0 15px 15px;
@@ -200,7 +197,6 @@
             font-weight: 500;
         }
 
-        /* Bagian Promo */
         .bagian-promo {
             margin: 0 15px 15px;
             border-radius: 12px;
@@ -232,7 +228,6 @@
             padding: 15px;
         }
 
-        /* E-Wallet Terhubung */
         .bagian-ewallet {
             background: white;
             margin: 0 15px 20px;
@@ -300,7 +295,6 @@
             cursor: pointer;
         }
 
-        /* Halaman Konten */
         .konten {
             display: none;
             padding: 20px 15px;
@@ -345,7 +339,6 @@
             cursor: pointer;
         }
 
-        /* Riwayat Transaksi */
         .daftar-transaksi {
             margin-top: 15px;
             background: white;
@@ -360,7 +353,11 @@
             padding: 20px;
             border-bottom: 1px solid #f0f0f0;
             position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
         }
+
+        .item-trx:hover { background: #f8f9fa; }
 
         .item-trx::before {
             content: '';
@@ -371,19 +368,16 @@
             width: 4px;
         }
 
-        .masuk::before {
-            background: var(--hijau);
-        }
-
-        .keluar::before {
-            background: var(--merah);
-        }
+        .masuk::before { background: var(--hijau); }
+        .keluar::before { background: var(--merah); }
 
         .info-trx h4 {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 6px;
             color: var(--gelap);
+            white-space: pre-line;
+            line-height: 1.5;
         }
 
         .info-trx small {
@@ -396,15 +390,9 @@
             font-weight: 700;
         }
 
-        .masuk .jumlah-trx {
-            color: var(--hijau);
-        }
+        .masuk .jumlah-trx { color: var(--hijau); }
+        .keluar .jumlah-trx { color: var(--merah); }
 
-        .keluar .jumlah-trx {
-            color: var(--merah);
-        }
-
-        /* Navigasi Bawah */
         .nav-bawah {
             position: fixed;
             bottom: 0;
@@ -424,22 +412,16 @@
             color: var(--abu);
         }
 
-        .nav-item.aktif {
-            color: var(--utama);
-        }
+        .nav-item.aktif { color: var(--utama); }
 
         .nav-ikon {
             font-size: 22px;
             margin-bottom: 4px;
         }
 
-        .nav-label {
-            font-size: 11px;
-        }
+        .nav-label { font-size: 11px; }
 
-        .nav-qr {
-            transform: translateY(-12px);
-        }
+        .nav-qr { transform: translateY(-12px); }
 
         .nav-qr .nav-ikon {
             width: 52px;
@@ -455,7 +437,6 @@
             box-shadow: 0 3px 8px rgba(0, 102, 204, 0.3);
         }
 
-        /* Modal PIN */
         .modal {
             position: fixed;
             top: 0;
@@ -493,11 +474,35 @@
             margin-bottom: 15px;
             height: 18px;
         }
+
+        .detail-popup {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.25);
+            z-index: 1001;
+            width: 90%; max-width: 400px;
+        }
+
+        .tutup-popup {
+            background: var(--utama);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 15px;
+            font-size: 15px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<!-- Halaman Beranda -->
 <div id="halaman-beranda" class="konten aktif">
     <div class="header-atas">
         <div class="info-pengguna">
@@ -575,7 +580,7 @@
                 <div class="info-ewallet">
                     <div class="logo-ewallet" style="background:#EF4444; color:white;">S</div>
                     <div class="nama-ewallet">
-                        <p>H***********t</p>
+                        <p>SeaBank</p>
                         <p>Rp 0</p>
                     </div>
                 </div>
@@ -595,7 +600,6 @@
     </div>
 </div>
 
-<!-- Halaman Bayar/Transfer -->
 <div id="halaman-transfer" class="konten">
     <h3 style="margin-bottom:15px;">Transfer Uang</h3>
     <div class="kotak-form">
@@ -605,7 +609,6 @@
     </div>
 </div>
 
-<!-- Halaman Top Up & Tagihan -->
 <div id="halaman-topup-tagihan" class="konten">
     <h3 style="margin-bottom:15px;">Top Up & Pembayaran</h3>
     <div class="kotak-form">
@@ -623,7 +626,6 @@
     </div>
 </div>
 
-<!-- Halaman Top Up Dana -->
 <div id="halaman-topup-dana" class="konten">
     <h3 style="margin-bottom:15px;">Top Up DANA</h3>
     <div class="kotak-form">
@@ -634,7 +636,6 @@
     </div>
 </div>
 
-<!-- Halaman Isi Saldo -->
 <div id="halaman-isi-saldo" class="konten">
     <h3 style="margin-bottom:15px;">Isi Saldo Akun</h3>
     <div class="kotak-form">
@@ -643,7 +644,6 @@
     </div>
 </div>
 
-<!-- Halaman QRIS -->
 <div id="halaman-qris" class="konten">
     <h3 style="margin-bottom:15px;">QRIS Pembayaran</h3>
     <div class="kotak-form" style="text-align:center;">
@@ -653,7 +653,6 @@
     </div>
 </div>
 
-<!-- Halaman Tarik Tunai -->
 <div id="halaman-tarik-tunai" class="konten">
     <h3 style="margin-bottom:15px;">Tarik Tunai</h3>
     <div class="kotak-form">
@@ -663,13 +662,11 @@
     </div>
 </div>
 
-<!-- Halaman Riwayat -->
 <div id="halaman-riwayat" class="konten">
     <h2 style="font-size:22px; font-weight:700; margin-bottom:20px;">Riwayat Transaksi</h2>
     <div class="daftar-transaksi" id="daftarRiwayat"></div>
 </div>
 
-<!-- Halaman Saya -->
 <div id="halaman-saya" class="konten">
     <h3 style="margin-bottom:15px;">Akun Saya</h3>
     <div class="kotak-form">
@@ -681,7 +678,6 @@
     </div>
 </div>
 
-<!-- Halaman Ubah PIN -->
 <div id="halaman-ganti-pin" class="konten">
     <h3 style="margin-bottom:15px;">Ubah PIN Keamanan</h3>
     <div class="kotak-form">
@@ -692,7 +688,6 @@
     </div>
 </div>
 
-<!-- Modal Verifikasi PIN -->
 <div id="modalPIN" class="modal">
     <div class="modal-kotak">
         <h4>Masukkan PIN Transaksi</h4>
@@ -703,7 +698,6 @@
     </div>
 </div>
 
-<!-- Navigasi Bawah -->
 <div class="nav-bawah">
     <div class="nav-item aktif" onclick="pindahNav('beranda')">
         <div class="nav-ikon">🏠</div>
@@ -727,20 +721,17 @@
 </div>
 
 <script>
-    // Kode perbaikan agar transaksi berjalan benar
     let saldo = Number(localStorage.getItem('saldoAkun')) || 0;
     let riwayat = JSON.parse(localStorage.getItem('riwayatTransaksi')) || [];
     let pinAkun = localStorage.getItem('pinAkun') || '123456';
     let aksiSetelahPIN = null;
 
-    // Inisialisasi tampilan
     window.onload = function() {
         perbaruiTampilan();
         buatQR();
         tampilkanRiwayat();
     };
 
-    // Pindah halaman navigasi
     function pindahNav(halaman) {
         document.querySelectorAll('.konten').forEach(el => el.classList.remove('aktif'));
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('aktif'));
@@ -750,21 +741,18 @@
         if (halaman === 'saya') document.getElementById('infoSaldoSaya').textContent = saldo.toLocaleString('id-ID');
     }
 
-    // Buka halaman tertentu
     function bukaHalaman(nama) {
         document.querySelectorAll('.konten').forEach(el => el.classList.remove('aktif'));
         document.getElementById(`halaman-${nama}`).classList.add('aktif');
         if (nama === 'riwayat') tampilkanRiwayat();
     }
 
-    // Perbarui semua tampilan & simpan data
     function perbaruiTampilan() {
         document.getElementById('saldoUtama').textContent = saldo.toLocaleString('id-ID');
         localStorage.setItem('saldoAkun', saldo.toString());
         localStorage.setItem('riwayatTransaksi', JSON.stringify(riwayat));
     }
 
-    // Proses isi saldo
     function prosesIsiSaldo() {
         const nominal = Number(document.getElementById('nominalIsi').value);
         if (!nominal || nominal < 10000) return alert('Minimal isi saldo Rp10.000');
@@ -783,7 +771,6 @@
         document.getElementById('nominalIsi').value = '';
     }
 
-    // Minta PIN
     function mintaPIN(aksi) {
         aksiSetelahPIN = aksi;
         document.getElementById('inputPIN').value = '';
@@ -791,29 +778,22 @@
         document.getElementById('modalPIN').style.display = 'flex';
     }
 
-    // Cek PIN
-function cekPIN() {
-    const input = document.getElementById('inputPIN').value.trim();
-
-    if (input === pinAkun) {
-        document.getElementById('modalPIN').style.display = 'none';
-        document.getElementById('pesanPIN').textContent = '';
-
-        prosesTransaksi();
-
-        aksiSetelahPIN = null;
-    } else {
-        document.getElementById('pesanPIN').textContent = '❌ PIN salah, coba lagi';
+    function cekPIN() {
+        const input = document.getElementById('inputPIN').value.trim();
+        if (input === pinAkun) {
+            document.getElementById('modalPIN').style.display = 'none';
+            prosesTransaksi();
+            aksiSetelahPIN = null;
+        } else {
+            document.getElementById('pesanPIN').textContent = '❌ PIN salah, coba lagi';
+        }
     }
-}
 
     function tutupModal() {
-    document.getElementById('modalPIN').style.display = 'none';
-    document.getElementById('pesanPIN').textContent = '';
-}
-    
+        document.getElementById('modalPIN').style.display = 'none';
+        document.getElementById('pesanPIN').textContent = '';
+    }
 
-    // Proses inti transaksi - DIPERBAIKI SEPENUHNYA
     function prosesTransaksi() {
         let nominal, total, keterangan;
 
@@ -821,13 +801,10 @@ function cekPIN() {
             case 'transfer':
                 const tujuan = document.getElementById('tujuanTransfer').value.trim();
                 nominal = Number(document.getElementById('nominalTransfer').value);
-                
                 if (!tujuan) return alert('Masukkan nomor/tujuan transfer!');
                 if (isNaN(nominal) || nominal < 1000) return alert('Nominal minimal Rp1.000!');
                 if (nominal > saldo) return alert(`Saldo tidak cukup! Saldo saat ini Rp ${saldo.toLocaleString('id-ID')}`);
-                
-                // Kurangi saldo
-                saldo = saldo - nominal;
+                saldo -= nominal;
                 keterangan = `Transfer ke ${tujuan}`;
                 total = nominal;
                 break;
@@ -838,8 +815,7 @@ function cekPIN() {
                 nominal = Number(document.getElementById('nominalTagihan').value);
                 if (!nomor || isNaN(nominal)) return alert('Lengkapi data pembayaran!');
                 if (nominal > saldo) return alert('Saldo tidak cukup!');
-                
-                saldo = saldo - nominal;
+                saldo -= nominal;
                 keterangan = `Bayar ${layanan.toUpperCase()} - No: ${nomor}`;
                 total = nominal;
                 break;
@@ -851,17 +827,15 @@ function cekPIN() {
                 total = nominal + biaya;
                 if (!noDana || isNaN(nominal) || nominal < 10000) return alert('Minimal Rp10.000 & masukkan nomor yang benar!');
                 if (total > saldo) return alert(`Saldo tidak cukup! Diperlukan Rp ${total.toLocaleString('id-ID')}`);
-                
-                saldo = saldo - total;
-                keterangan = `Top Up DANA ke ${noDana} | Rp${nominal} + Admin Rp${biaya}`;
+                saldo -= total;
+                keterangan = `Top Up DANA\nAtas Nama : Muzi Adriyan\nNomor     : ${noDana}\nNominal   : Rp ${nominal.toLocaleString('id-ID')}\nBiaya Admin : Rp ${biaya.toLocaleString('id-ID')}`;
                 break;
 
             case 'tarik':
                 nominal = Number(document.getElementById('nominalTarik').value);
                 if (isNaN(nominal) || nominal < 50000) return alert('Minimal tarik Rp50.000');
                 if (nominal > saldo) return alert('Saldo tidak cukup!');
-                
-                saldo = saldo - nominal;
+                saldo -= nominal;
                 keterangan = 'Tarik Tunai ATM';
                 total = nominal;
                 break;
@@ -869,7 +843,6 @@ function cekPIN() {
             default: return;
         }
 
-        // Simpan ke riwayat
         riwayat.unshift({
             jenis: 'keluar',
             keterangan: keterangan,
@@ -877,16 +850,12 @@ function cekPIN() {
             waktu: new Date().toLocaleString('id-ID')
         });
 
-        // Perbarui semua tampilan
         perbaruiTampilan();
         tampilkanRiwayat();
-        alert(`✅ Transaksi Berhasil!\n${keterangan}\nRp ${total.toLocaleString('id-ID')}`);
-
-        // Kosongkan input
+        alert(`✅ Transaksi Berhasil!\n\n${keterangan}\n\nTotal: Rp ${total.toLocaleString('id-ID')}`);
         document.querySelectorAll('input').forEach(i => i.value = '');
     }
 
-    // Proses ubah PIN
     function prosesGantiPIN() {
         const pinLama = document.getElementById('pinLama').value.trim();
         const pinBaru = document.getElementById('pinBaru').value.trim();
@@ -905,7 +874,6 @@ function cekPIN() {
         bukaHalaman('saya');
     }
 
-    // Buat QR
     function buatQR() {
         QRCode.toCanvas(document.getElementById('qrcode'), `ID:901908764416 | Nama:Muzi Adriyan`, {width:180, height:180, margin:2});
     }
@@ -915,14 +883,13 @@ function cekPIN() {
         alert('✅ Kode QR diperbarui');
     }
 
-    // Tampilkan riwayat
     function tampilkanRiwayat() {
         let daftarHTML = '';
         if (riwayat.length === 0) {
             daftarHTML = '<p style="text-align:center; color:var(--abu); padding:40px;">Belum ada riwayat transaksi</p>';
         } else {
-            daftarHTML = riwayat.map(trx => `
-                <div class="item-trx ${trx.jenis}">
+            daftarHTML = riwayat.map((trx, indeks) => `
+                <div class="item-trx ${trx.jenis}" onclick="lihatDetail(${indeks})">
                     <div class="info-trx">
                         <h4>${trx.keterangan}</h4>
                         <small>${trx.waktu}</small>
@@ -935,7 +902,32 @@ function cekPIN() {
         }
         document.getElementById('daftarRiwayat').innerHTML = daftarHTML;
     }
+
+    function lihatDetail(indeks) {
+        const trx = riwayat[indeks];
+        const detailHTML = `
+            <div class="detail-popup" id="popupDetail">
+                <h3 style="text-align:center; color:var(--utama);">Bukti Transaksi</h3>
+                <hr style="margin:15px 0;">
+                <div style="white-space:pre-line; line-height:1.7; font-size:0.95rem;">
+${trx.keterangan}
+Waktu : ${trx.waktu}
+                </div>
+                <p style="font-weight:bold; font-size:1.3rem; text-align:center; margin-top:15px; color:${trx.jenis==='masuk'?'var(--hijau)':'var(--merah)'}">
+                    ${trx.jenis === 'masuk' ? '+' : '-'} Rp ${trx.jumlah.toLocaleString('id-ID')}
+                </p>
+                <button class="tutup-popup" onclick="tutupDetail()">Tutup</button>
+            </div>
+            <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;" onclick="tutupDetail()"></div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', detailHTML);
+        document.getElementById('popupDetail').style.display = 'block';
+    }
+
+    function tutupDetail() {
+        document.querySelector('.detail-popup + div').remove();
+        document.getElementById('popupDetail').remove();
+    }
 </script>
 </body>
 </html>
-  NIH pin nya brp 
