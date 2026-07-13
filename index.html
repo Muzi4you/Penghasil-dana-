@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akun Digital</title>
+    <title>Akun Digital SeaBank</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <style>
         * {
@@ -14,7 +14,7 @@
         }
 
         :root {
-            --utama: #0066CC;
+            --utama: #FF671F;
             --gelap: #1A1A1A;
             --abu: #757575;
             --abu-terang: #F8F9FA;
@@ -86,12 +86,12 @@
         }
 
         .kartu-saldo {
-            background: linear-gradient(135deg, #0066CC, #004C99);
+            background: linear-gradient(135deg, #FF671F, #E65100);
             color: white;
             margin: 0 15px 15px;
             border-radius: 16px;
             padding: 25px 20px;
-            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+            box-shadow: 0 4px 12px rgba(255, 103, 31, 0.25);
             position: relative;
             overflow: hidden;
         }
@@ -159,7 +159,7 @@
             width: 50px;
             height: 50px;
             border-radius: 12px;
-            background: #E6F0FA;
+            background: #FFF3E0;
             color: var(--utama);
             display: flex;
             align-items: center;
@@ -204,7 +204,7 @@
         }
 
         .judul-promo {
-            background: #E6F0FA;
+            background: #FFF3E0;
             padding: 12px 15px;
             font-size: 14px;
             font-weight: 600;
@@ -217,7 +217,7 @@
         .banner-promo {
             width: 100%;
             height: 120px;
-            background: linear-gradient(90deg, #0052CC, #0077FF);
+            background: linear-gradient(90deg, #FF671F, #FF8A3D);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -324,7 +324,7 @@
         input:focus {
             outline: none;
             border-color: var(--utama);
-            box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.15);
+            box-shadow: 0 0 0 2px rgba(255, 103, 31, 0.15);
         }
 
         input[type="file"] {
@@ -441,7 +441,7 @@
             justify-content: center;
             margin: 0 auto 4px;
             font-size: 24px;
-            box-shadow: 0 3px 8px rgba(0, 102, 204, 0.3);
+            box-shadow: 0 3px 8px rgba(255, 103, 31, 0.3);
         }
 
         .modal {
@@ -594,7 +594,7 @@
         <div class="grid-ewallet">
             <div class="kartu-ewallet">
                 <div class="info-ewallet">
-                    <div class="logo-ewallet" style="background:#EF4444; color:white;">S</div>
+                    <div class="logo-ewallet" style="background:#FF671F; color:white;">S</div>
                     <div class="nama-ewallet">
                         <p>SeaBank</p>
                         <p>Rp 0</p>
@@ -715,13 +715,109 @@
 </div>
 
 <div id="halaman-saya" class="konten">
-    <h3 style="margin-bottom:15px;">Akun Saya</h3>
-    <div class="kotak-form">
-        <p>Nama: Muzi Adriyan</p>
-        <p>No. Rekening: 9019 0876 4416</p>
-        <p>Saldo: Rp <span id="infoSaldoSaya">0</span></p>
-        <hr style="margin:15px 0;">
-        <button class="tombol-utama" onclick="bukaHalaman('ganti-pin')">🔐 Ubah PIN Keamanan</button>
+    <div style="background: #FF671F; color: white; padding: 30px 20px 40px; margin: -20px -15px 0; position: relative;">
+        <div style="position: absolute; top: 25px; right: 20px; font-size: 24px;">
+            🔔
+            <span style="position: absolute; top: -6px; right: -6px; background: white; color: #FF671F; font-size: 12px; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">92</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="width: 55px; height: 55px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #FF671F;">👤</div>
+            <div>
+                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 2px;">Muzi Adriyan</h3>
+                <p style="font-size: 15px; opacity: 0.9;">085******804</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="background: white; margin: -20px 15px 20px; border-radius: 12px; padding: 10px 0; position: relative; z-index: 1;">
+        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
+                <span>👤</span>
+                <span>Profil Saya</span>
+            </div>
+            <span style="color: #BDBDBD;">›</span>
+        </div>
+
+        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;" onclick="bukaHalaman('ganti-pin')">
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
+                <span>🛡️</span>
+                <span>Keamanan Akun</span>
+            </div>
+            <span style="color: #BDBDBD;">›</span>
+        </div>
+
+        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
+                <span>📄</span>
+                <span>e-Statement</span>
+            </div>
+            <span style="color: #BDBDBD;">›</span>
+        </div>
+
+        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
+                <span>💳</span>
+                <span>Pengaturan Limit dan Pembayaran</span>
+            </div>
+            <span style="color: #BDBDBD;">›</span>
+        </div>
+
+        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
+                <span>📱</span>
+                <span>Pengaturan BI-FAST</span>
+            </div>
+            <span style="color: #BDBDBD;">›</span>
+        </div>
+
+        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
+                <span>⚙️</span>
+                <span>Pengaturan Umum</span>
+            </div>
+            <span style="color: #BDBDBD;">›</span>
+        </div>
+
+        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
+                <span>👥</span>
+                <span>Undang Teman</span>
+            </div>
+            <span style="color: #BDBDBD;">›</span>
+        </div>
+
+        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
+                <span>💡</span>
+                <span>Pusat Bantuan</span>
+            </div>
+            <span style="color: #BDBDBD;">›</span>
+        </div>
+
+        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
+                <span>💬</span>
+                <span>Chat dengan SeaBank</span>
+            </div>
+            <span style="color: #BDBDBD;">›</span>
+        </div>
+
+        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
+                <span>🏢</span>
+                <span>Lokasi SeaBank</span>
+            </div>
+            <span style="color: #BDBDBD;">›</span>
+        </div>
+
+        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
+                <span>📝</span>
+                <span>Beri Masukan</span>
+            </div>
+            <span style="color: #BDBDBD;">›</span>
+        </div>
     </div>
 </div>
 
@@ -757,9 +853,9 @@
     <div class="nav-item nav-qr" onclick="pindahNav('qris')">
         <div class="nav-ikon">🔲</div>
     </div>
-    <div class="nav-item" onclick="pindahNav('isi-saldo')">
-        <div class="nav-ikon">➕</div>
-        <div class="nav-label">Isi Saldo</div>
+    <div class="nav-item" onclick="alert('Fitur Deposito')">
+        <div class="nav-ikon">💰</div>
+        <div class="nav-label">Deposito</div>
     </div>
     <div class="nav-item" onclick="pindahNav('saya')">
         <div class="nav-ikon">👤</div>
@@ -786,7 +882,6 @@
         document.getElementById(`halaman-${halaman}`).classList.add('aktif');
         event.currentTarget.classList.add('aktif');
         if (halaman === 'riwayat') tampilkanRiwayat();
-        if (halaman === 'saya') document.getElementById('infoSaldoSaya').textContent = saldo.toLocaleString('id-ID');
     }
 
     function bukaHalaman(nama) {
@@ -883,11 +978,7 @@
                 }
                 
                 saldo -= total;
-                keterangan = `Top Up DANA
-Atas Nama : ${namaDana}
-Nomor     : ${noDana}
-Nominal   : Rp ${nominal.toLocaleString('id-ID')}
-Biaya Admin : Rp ${biaya.toLocaleString('id-ID')}`;
+                keterangan = `Top Up DANA\nAtas Nama : ${namaDana}\nNomor     : ${noDana}\nNominal   : Rp ${nominal.toLocaleString('id-ID')}\nBiaya Admin : Rp ${biaya.toLocaleString('id-ID')}`;
                 break;
 
             case 'tarik':
@@ -988,9 +1079,7 @@ Waktu : ${trx.waktu}
         document.getElementById('popupDetail').remove();
     }
 
-    // FUNGSI KHUSUS HALAMAN PINJAMAN
     function inisialisasiFotoPinjaman() {
-        // Pratinjau KTP
         document.getElementById('fotoKtp').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -1003,7 +1092,6 @@ Waktu : ${trx.waktu}
             }
         });
 
-        // Pratinjau Selfie
         document.getElementById('fotoSelfie').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -1022,24 +1110,8 @@ Waktu : ${trx.waktu}
         const nik = document.getElementById('nikPeminjam').value.trim();
         const nominal = document.getElementById('nominalPinjaman').value;
         const lama = document.getElementById('lamaPinjaman').value;
-        const ktp = document.getElementById('fotoKtp').value;
-        const selfie = document.getElementById('fotoSelfie').value;
 
-        if (!nama || !nik || !nominal || !lama || !ktp || !selfie) {
-            return alert('❌ Lengkapi semua data & unggah foto persyaratan!');
+        if (!nama || !nik || !nominal || !lama) {
+            return alert('Lengkapi semua data yang wajib diisi!');
         }
-        if (nik.length !== 16) {
-            return alert('❌ NIK harus 16 digit angka!');
-        }
-
-        alert(`✅ Pengajuan Berhasil Dikirim!\n\nNama: ${nama}\nNIK: ${nik}\nPinjaman: Rp ${Number(nominal).toLocaleString('id-ID')}\nJangka Waktu: ${lama} Bulan\n\nStatus: Menunggu Verifikasi Admin (1-3 Hari Kerja)`);
-        
-        // Kembali ke Beranda & Reset Form
-        bukaHalaman('beranda');
-        document.querySelectorAll('#halaman-pinjaman input').forEach(i => i.value = '');
-        document.getElementById('pratinjauKtp').style.display = 'none';
-        document.getElementById('pratinjauSelfie').style.display = 'none';
-    }
-</script>
-</body>
-</html>
+        if (nik.length !== 
