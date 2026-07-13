@@ -630,6 +630,7 @@
     <h3 style="margin-bottom:15px;">Top Up DANA</h3>
     <div class="kotak-form">
         <input type="text" id="nomorDana" placeholder="Nomor HP DANA (08xxxxx)">
+        <input type="text" id="namaDana" placeholder="Nama Pemilik Akun DANA">
         <input type="number" id="nominalDana" placeholder="Nominal Top Up" min="10000">
         <p style="font-size:13px; color:var(--abu); margin:10px 0;">Minimal Rp10.000 | Biaya admin Rp1.000</p>
         <button class="tombol-utama" onclick="mintaPIN('topup_dana')">Proses Top Up</button>
@@ -822,13 +823,24 @@
 
             case 'topup_dana':
                 const noDana = document.getElementById('nomorDana').value.trim();
+                const namaDana = document.getElementById('namaDana').value.trim();
                 nominal = Number(document.getElementById('nominalDana').value);
                 const biaya = 1000;
                 total = nominal + biaya;
-                if (!noDana || isNaN(nominal) || nominal < 10000) return alert('Minimal Rp10.000 & masukkan nomor yang benar!');
-                if (total > saldo) return alert(`Saldo tidak cukup! Diperlukan Rp ${total.toLocaleString('id-ID')}`);
+                
+                if (!noDana || !namaDana || isNaN(nominal) || nominal < 10000) {
+                    return alert('Lengkapi semua data! Minimal Top Up Rp10.000');
+                }
+                if (total > saldo) {
+                    return alert(`Saldo tidak cukup! Diperlukan Rp ${total.toLocaleString('id-ID')}`);
+                }
+                
                 saldo -= total;
-                keterangan = `Top Up DANA\nAtas Nama : Muzi Adriyan\nNomor     : ${noDana}\nNominal   : Rp ${nominal.toLocaleString('id-ID')}\nBiaya Admin : Rp ${biaya.toLocaleString('id-ID')}`;
+                keterangan = `Top Up DANA
+Atas Nama : ${namaDana}
+Nomor     : ${noDana}
+Nominal   : Rp ${nominal.toLocaleString('id-ID')}
+Biaya Admin : Rp ${biaya.toLocaleString('id-ID')}`;
                 break;
 
             case 'tarik':
