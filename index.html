@@ -327,13 +327,6 @@
             box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.15);
         }
 
-        input[type="file"] {
-            padding: 10px;
-            border: 1px dashed #ccc;
-            background: #fafafa;
-            cursor: pointer;
-        }
-
         .tombol-utama {
             width: 100%;
             padding: 14px;
@@ -506,15 +499,6 @@
             font-size: 15px;
             cursor: pointer;
         }
-
-        .pratinjau-foto {
-            margin-top: 10px;
-            display: none;
-        }
-        .pratinjau-foto img {
-            max-width: 100%;
-            border-radius: 8px;
-        }
     </style>
 </head>
 <body>
@@ -568,7 +552,7 @@
                 <div class="ikon-menu">⬇️</div>
                 <div class="nama-menu">Tarik Tunai</div>
             </div>
-            <div class="item-menu" onclick="bukaHalaman('pinjaman')">
+            <div class="item-menu" onclick="alert('Fitur Pinjaman tersedia')">
                 <div class="ikon-menu">💸</div>
                 <div class="nama-menu">Pinjaman</div>
             </div>
@@ -679,146 +663,19 @@
     </div>
 </div>
 
-<div id="halaman-pinjaman" class="konten">
-    <h3 style="margin-bottom:15px;">Ajukan Pinjaman</h3>
-    <div class="kotak-form">
-        <p style="margin-bottom:15px; color:var(--abu);">Lengkapi data & unggah dokumen persyaratan</p>
-
-        <input type="text" id="namaPeminjam" placeholder="Nama Lengkap Sesuai KTP">
-        <input type="text" id="nikPeminjam" placeholder="NIK KTP (16 Digit)" maxlength="16">
-        <input type="number" id="nominalPinjaman" placeholder="Jumlah Pinjaman Diajukan" min="100000">
-        <input type="number" id="lamaPinjaman" placeholder="Jangka Waktu (Bulan)" min="1" max="36">
-
-        <div style="margin:15px 0;">
-            <label style="font-size:14px; font-weight:500; margin-bottom:8px; display:block;">📷 Unggah Foto KTP</label>
-            <input type="file" id="fotoKtp" accept="image/*">
-            <div class="pratinjau-foto" id="pratinjauKtp">
-                <img id="gambarKtp">
-            </div>
-        </div>
-
-        <div style="margin:15px 0;">
-            <label style="font-size:14px; font-weight:500; margin-bottom:8px; display:block;">📷 Unggah Foto Selfie Pegang KTP</label>
-            <input type="file" id="fotoSelfie" accept="image/*">
-            <div class="pratinjau-foto" id="pratinjauSelfie">
-                <img id="gambarSelfie">
-            </div>
-        </div>
-
-        <button class="tombol-utama" onclick="kirimPengajuanPinjaman()">Kirim Pengajuan</button>
-    </div>
-</div>
-
 <div id="halaman-riwayat" class="konten">
     <h2 style="font-size:22px; font-weight:700; margin-bottom:20px;">Riwayat Transaksi</h2>
     <div class="daftar-transaksi" id="daftarRiwayat"></div>
 </div>
 
-<!-- ✅ BAGIAN SAYA SUDAH DIPERBAIKI & LENGKAP -->
 <div id="halaman-saya" class="konten">
-    <div style="background: var(--utama); color: white; padding: 30px 20px 40px; margin: -20px -15px 0; position: relative;">
-        <div style="position: absolute; top: 25px; right: 20px; font-size: 24px;">
-            🔔
-            <span style="position: absolute; top: -6px; right: -6px; background: white; color: var(--utama); font-size: 12px; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">92</span>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <div style="width: 55px; height: 55px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--utama); font-weight: bold;">M</div>
-            <div>
-                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 2px;">Muzi Adriyan</h3>
-                <p style="font-size: 15px; opacity: 0.9;">085******804</p>
-            </div>
-        </div>
-    </div>
-
-    <div style="background: white; margin: -20px 15px 20px; border-radius: 12px; padding: 10px 0; position: relative; z-index: 1;">
-        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
-                <span>👤</span>
-                <span>Profil Saya</span>
-            </div>
-            <span style="color: #BDBDBD;">›</span>
-        </div>
-
-        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;" onclick="bukaHalaman('ganti-pin')">
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
-                <span>🛡️</span>
-                <span>Keamanan Akun</span>
-            </div>
-            <span style="color: #BDBDBD;">›</span>
-        </div>
-
-        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
-                <span>📄</span>
-                <span>e-Statement</span>
-            </div>
-            <span style="color: #BDBDBD;">›</span>
-        </div>
-
-        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
-                <span>💳</span>
-                <span>Pengaturan Limit dan Pembayaran</span>
-            </div>
-            <span style="color: #BDBDBD;">›</span>
-        </div>
-
-        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
-                <span>📱</span>
-                <span>Pengaturan BI-FAST</span>
-            </div>
-            <span style="color: #BDBDBD;">›</span>
-        </div>
-
-        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
-                <span>⚙️</span>
-                <span>Pengaturan Umum</span>
-            </div>
-            <span style="color: #BDBDBD;">›</span>
-        </div>
-
-        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
-                <span>👥</span>
-                <span>Undang Teman</span>
-            </div>
-            <span style="color: #BDBDBD;">›</span>
-        </div>
-
-        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
-                <span>💡</span>
-                <span>Pusat Bantuan</span>
-            </div>
-            <span style="color: #BDBDBD;">›</span>
-        </div>
-
-        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
-                <span>💬</span>
-                <span>Chat dengan Layanan</span>
-            </div>
-            <span style="color: #BDBDBD;">›</span>
-        </div>
-
-        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F0F0F0; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
-                <span>🏢</span>
-                <span>Lokasi Kantor</span>
-            </div>
-            <span style="color: #BDBDBD;">›</span>
-        </div>
-
-        <div style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 17px;">
-                <span>📝</span>
-                <span>Beri Masukan</span>
-            </div>
-            <span style="color: #BDBDBD;">›</span>
-        </div>
+    <h3 style="margin-bottom:15px;">Akun Saya</h3>
+    <div class="kotak-form">
+        <p>Nama: Muzi Adriyan</p>
+        <p>No. Rekening: 9019 0876 4416</p>
+        <p>Saldo: Rp <span id="infoSaldoSaya">0</span></p>
+        <hr style="margin:15px 0;">
+        <button class="tombol-utama" onclick="bukaHalaman('ganti-pin')">🔐 Ubah PIN Keamanan</button>
     </div>
 </div>
 
@@ -874,7 +731,6 @@
         perbaruiTampilan();
         buatQR();
         tampilkanRiwayat();
-        inisialisasiFotoPinjaman();
     };
 
     function pindahNav(halaman) {
@@ -883,6 +739,7 @@
         document.getElementById(`halaman-${halaman}`).classList.add('aktif');
         event.currentTarget.classList.add('aktif');
         if (halaman === 'riwayat') tampilkanRiwayat();
+        if (halaman === 'saya') document.getElementById('infoSaldoSaya').textContent = saldo.toLocaleString('id-ID');
     }
 
     function bukaHalaman(nama) {
@@ -979,7 +836,11 @@
                 }
                 
                 saldo -= total;
-                keterangan = `Top Up DANA\nAtas Nama : ${namaDana}\nNomor     : ${noDana}\nNominal   : Rp ${nominal.toLocaleString('id-ID')}\nBiaya Admin : Rp ${biaya.toLocaleString('id-ID')}`;
+                keterangan = `Top Up DANA
+Atas Nama : ${namaDana}
+Nomor     : ${noDana}
+Nominal   : Rp ${nominal.toLocaleString('id-ID')}
+Biaya Admin : Rp ${biaya.toLocaleString('id-ID')}`;
                 break;
 
             case 'tarik':
@@ -1079,35 +940,6 @@ Waktu : ${trx.waktu}
         document.querySelector('.detail-popup + div').remove();
         document.getElementById('popupDetail').remove();
     }
-
-    function inisialisasiFotoPinjaman() {
-        document.getElementById('fotoKtp').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('gambarKtp').src = e.target.result;
-                    document.getElementById('pratinjauKtp').style.display = 'block';
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById('fotoSelfie').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('gambarSelfie').src = e.target.result;
-                    document.getElementById('pratinjauSelfie').style.display = 'block';
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-
-    function kirimPengajuanPinjaman() {
-        const nama = document.getElementById('namaPeminjam').value.trim();
-        const nik = document.getElementById('nikPeminjam').value.trim();
-        const nominal = document.getElementById('nominalPinjaman').value;
-        const lama = document.getElementById('lamaPinjaman').value;
+</script>
+</body>
+</html>
