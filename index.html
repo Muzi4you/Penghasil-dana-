@@ -327,6 +327,13 @@
             box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.15);
         }
 
+        input[type="file"] {
+            padding: 10px;
+            border: 1px dashed #ccc;
+            background: #fafafa;
+            cursor: pointer;
+        }
+
         .tombol-utama {
             width: 100%;
             padding: 14px;
@@ -499,6 +506,15 @@
             font-size: 15px;
             cursor: pointer;
         }
+
+        .pratinjau-foto {
+            margin-top: 10px;
+            display: none;
+        }
+        .pratinjau-foto img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -552,7 +568,7 @@
                 <div class="ikon-menu">⬇️</div>
                 <div class="nama-menu">Tarik Tunai</div>
             </div>
-            <div class="item-menu" onclick="alert('Fitur Pinjaman tersedia')">
+            <div class="item-menu" onclick="bukaHalaman('pinjaman')">
                 <div class="ikon-menu">💸</div>
                 <div class="nama-menu">Pinjaman</div>
             </div>
@@ -663,6 +679,36 @@
     </div>
 </div>
 
+<div id="halaman-pinjaman" class="konten">
+    <h3 style="margin-bottom:15px;">Ajukan Pinjaman</h3>
+    <div class="kotak-form">
+        <p style="margin-bottom:15px; color:var(--abu);">Lengkapi data & unggah dokumen persyaratan</p>
+
+        <input type="text" id="namaPeminjam" placeholder="Nama Lengkap Sesuai KTP">
+        <input type="text" id="nikPeminjam" placeholder="NIK KTP (16 Digit)" maxlength="16">
+        <input type="number" id="nominalPinjaman" placeholder="Jumlah Pinjaman Diajukan" min="100000">
+        <input type="number" id="lamaPinjaman" placeholder="Jangka Waktu (Bulan)" min="1" max="36">
+
+        <div style="margin:15px 0;">
+            <label style="font-size:14px; font-weight:500; margin-bottom:8px; display:block;">📷 Unggah Foto KTP</label>
+            <input type="file" id="fotoKtp" accept="image/*">
+            <div class="pratinjau-foto" id="pratinjauKtp">
+                <img id="gambarKtp">
+            </div>
+        </div>
+
+        <div style="margin:15px 0;">
+            <label style="font-size:14px; font-weight:500; margin-bottom:8px; display:block;">📷 Unggah Foto Selfie Pegang KTP</label>
+            <input type="file" id="fotoSelfie" accept="image/*">
+            <div class="pratinjau-foto" id="pratinjauSelfie">
+                <img id="gambarSelfie">
+            </div>
+        </div>
+
+        <button class="tombol-utama" onclick="kirimPengajuanPinjaman()">Kirim Pengajuan</button>
+    </div>
+</div>
+
 <div id="halaman-riwayat" class="konten">
     <h2 style="font-size:22px; font-weight:700; margin-bottom:20px;">Riwayat Transaksi</h2>
     <div class="daftar-transaksi" id="daftarRiwayat"></div>
@@ -731,6 +777,7 @@
         perbaruiTampilan();
         buatQR();
         tampilkanRiwayat();
+        inisialisasiFotoPinjaman();
     };
 
     function pindahNav(halaman) {
@@ -939,6 +986,59 @@ Waktu : ${trx.waktu}
     function tutupDetail() {
         document.querySelector('.detail-popup + div').remove();
         document.getElementById('popupDetail').remove();
+    }
+
+    // FUNGSI KHUSUS HALAMAN PINJAMAN
+    function inisialisasiFotoPinjaman() {
+        // Pratinjau KTP
+        document.getElementById('fotoKtp').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('gambarKtp').src = e.target.result;
+                    document.getElementById('pratinjauKtp').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Pratinjau Selfie
+        document.getElementById('fotoSelfie').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('gambarSelfie').src = e.target.result;
+                    document.getElementById('pratinjauSelfie').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    function kirimPengajuanPinjaman() {
+        const nama = document.getElementById('namaPeminjam').value.trim();
+        const nik = document.getElementById('nikPeminjam').value.trim();
+        const nominal = document.getElementById('nominalPinjaman').value;
+        const lama = document.getElementById('lamaPinjaman').value;
+        const ktp = document.getElementById('fotoKtp').value;
+        const selfie = document.getElementById('fotoSelfie').value;
+
+        if (!nama || !nik || !nominal || !lama || !ktp || !selfie) {
+            return alert('❌ Lengkapi semua data & unggah foto persyaratan!');
+        }
+        if (nik.length !== 16) {
+            return alert('❌ NIK harus 16 digit angka!');
+        }
+
+        alert(`✅ Pengajuan Berhasil Dikirim!\n\nNama: ${nama}\nNIK: ${nik}\nPinjaman: Rp ${Number(nominal).toLocaleString('id-ID')}\nJangka Waktu: ${lama} Bulan\n\nStatus: Menunggu Verifikasi Admin (1-3 Hari Kerja)`);
+        
+        // Kembali ke Beranda & Reset Form
+        bukaHalaman('beranda');
+        document.querySelectorAll('#halaman-pinjaman input').forEach(i => i.value = '');
+        document.getElementById('pratinjauKtp').style.display = 'none';
+        document.getElementById('pratinjauSelfie').style.display = 'none';
     }
 </script>
 </body>
